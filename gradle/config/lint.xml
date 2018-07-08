@@ -1,0 +1,7 @@
+<lint>
+    <issue id="InvalidPackage">
+        <ignore regexp=".*okio.*" />
+        <ignore regexp=".*stax.*" />
+        <ignore regexp=".*retrofit.*" />
+    </issue>
+</lint>
