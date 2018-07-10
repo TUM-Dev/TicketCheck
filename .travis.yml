@@ -19,18 +19,16 @@ android:
   - platform-tools
   - extra-android-support
   - extra-android-m2repository
-  - extra-google-google_play_services
   - extra-google-m2repository
   - android-$ANDROID_API_LEVEL
   - build-tools-$ANDROID_BUILD_TOOLS
-  - addon-google_apis-google-$ANDROID_API_LEVEL
   licenses:
   - '.+'
 before_install:
-  - yes | sdkmanager "platforms;android-27"
   - pwd
   - ls -la
   - chmod +x gradlew
+  - yes | sdkmanager "platforms;android-27"
 install:
   - "./gradlew dependencies"
 script:
