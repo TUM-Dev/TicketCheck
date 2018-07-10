@@ -10,5 +10,6 @@
 !/.idea/vcs.xml
 !/.idea/vcs.xml
 *.apk
+gradlew
 /app/release/
 fastlane/report.xml
