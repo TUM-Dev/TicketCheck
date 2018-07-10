@@ -1,5 +1,6 @@
 package de.tum.in.tca.ticketcheck.component.ticket;
 
+import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,7 +27,6 @@ public class EventsActivity extends BaseActivity implements SwipeRefreshLayout.O
         super(R.layout.activity_events);
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +34,13 @@ public class EventsActivity extends BaseActivity implements SwipeRefreshLayout.O
         TcaDb.getInstance(this);
 
         eventsController = new EventsController(getApplicationContext());
-        Toolbar toolbar = findViewById(R.id.main_toolbar);
-        setSupportActionBar(toolbar);
 
+        ActionBar actionBar = getSupportActionBar(); // getActionBar() seems to return null...
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(false); // disable the button
+            actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
+            actionBar.setDisplayShowHomeEnabled(false); // remove the icon
+        }
         setRecyclerView();
         mSwipeLayout = findViewById(R.id.event_refresh);
         mSwipeLayout.setOnRefreshListener(this);
@@ -53,7 +57,7 @@ public class EventsActivity extends BaseActivity implements SwipeRefreshLayout.O
     }
 
     private void loadEvents(){
-        List<Event> events = eventsController.getEvents();
+        List<Event> events = eventsController.refreshEvents();
         EventsAdapter adapter = new EventsAdapter(events);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();

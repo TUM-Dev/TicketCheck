@@ -55,6 +55,16 @@ public class EventsController {
             }
         };
         thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Event> refreshEvents(){
+        downloadFromService();
+        return getEvents();
     }
 
     // Event methods
