@@ -62,27 +62,7 @@
             </intent-filter>
         </activity>
 
-        
-        <activity
-            android:name="de.tum.in.tca.ticketcheck.component.ticket.ShowTicketActivity"
-            android:configChanges="keyboardHidden|screenSize"
-            android:label="@string/your_ticket"
-            android:launchMode="singleTop"
-            android:parentActivityName=".component.ticket.EventsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".component.ticket.EventsActivity" />
-        </activity>
-        <activity
-            android:name="de.tum.in.tca.ticketcheck.component.ticket.BuyTicketActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/summary"
-            android:launchMode="singleTop"
-            android:parentActivityName=".component.ticket.EventsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".component.ticket.EventsActivity" />
-        </activity>
+
         <activity
             android:name="de.tum.in.tca.ticketcheck.component.ticket.EventsActivity"
             android:configChanges="orientation|screenSize"
@@ -97,16 +77,6 @@
             android:parentActivityName="de.tum.in.tca.ticketcheck.component.ticket.EventsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeFullscreen">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.tum.in.tca.ticketcheck.component.ticket.EventsActivity" />
-        </activity>
-        <activity
-            android:name="de.tum.in.tca.ticketcheck.component.ticket.EventDetailsActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/events"
-            android:launchMode="singleTop"
-            android:parentActivityName="de.tum.in.tca.ticketcheck.component.ticket.EventsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.tum.in.tca.ticketcheck.component.ticket.EventsActivity" />
