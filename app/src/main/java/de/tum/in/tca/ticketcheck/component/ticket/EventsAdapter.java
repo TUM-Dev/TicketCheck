@@ -13,9 +13,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
-import java.text.DateFormat;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -108,9 +107,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         holder.localityView.setText(locality);
 
         // Adds date
-        DateTime date = event.getDate();
-        DateFormat sdf = DateFormat.getDateInstance();
-        holder.srcDateView.setText(sdf.format(date));
+        holder.srcDateView.setText(DateTimeFormat.mediumDateTime().print(event.getDate()));
     }
 
     @Override

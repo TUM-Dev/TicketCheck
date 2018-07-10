@@ -32,22 +32,29 @@ public class EventsController {
     public EventsController(Context context) {
         this.context = context;
         eventDao = TcaDb.getInstance(context).eventDao();
+        downloadFromService();
     }
 
 
-    public void downloadFromService(boolean force) {
-        TUMCabeClient api = TUMCabeClient.getInstance(context);
+    public void downloadFromService() {
+        // get ticket type information from API
+        Thread thread = new Thread(){
+            public void run(){
+                TUMCabeClient api = TUMCabeClient.getInstance(context);
 
-        // Delete all too old items
-        eventDao.cleanUp();
+                // Delete all too old items
+                eventDao.cleanUp();
 
-        // Load all events since the last sync
-        try {
-            List<Event> events = api.getEvents();
-            eventDao.insert(events);
-        } catch (IOException e) {
-            Utils.log(e);
-        }
+                // Load all events since the last sync
+                try {
+                    List<Event> events = api.getEvents();
+                    eventDao.insert(events);
+                } catch (IOException e) {
+                    Utils.log(e);
+                }
+            }
+        };
+        thread.start();
     }
 
     // Event methods
