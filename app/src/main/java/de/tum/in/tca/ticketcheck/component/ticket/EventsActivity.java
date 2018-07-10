@@ -1,29 +1,31 @@
 package de.tum.in.tca.ticketcheck.component.ticket;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.View;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.tum.in.tca.ticketcheck.R;
-import de.tum.in.tca.ticketcheck.component.generic.activity.ProgressActivity;
+import de.tum.in.tca.ticketcheck.component.generic.activity.BaseActivity;
+import de.tum.in.tca.ticketcheck.component.generic.adapter.EqualSpacingItemDecoration;
+import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
 import de.tum.in.tca.ticketcheck.database.TcaDb;
 
-public class EventsActivity extends ProgressActivity {
+public class EventsActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    private TabLayout eventTab;
-    private ViewPager viewPager;
+    private RecyclerView recyclerView;
+    private SwipeRefreshLayout mSwipeLayout;
+
+    private EventsController eventsController;
 
     public EventsActivity() {
         super(R.layout.activity_events);
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,77 +33,36 @@ public class EventsActivity extends ProgressActivity {
 
         TcaDb.getInstance(this);
 
-        viewPager = findViewById(R.id.viewPager);
-        setupViewPager(viewPager);
+        eventsController = new EventsController(getApplicationContext());
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
-        eventTab = findViewById(R.id.event_tab);
-        eventTab.setupWithViewPager(viewPager);//setting tab over viewpager
 
-        eventTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-                switch (tab.getPosition()) {
-                    case 0:
-                        Log.e("TAG", "TAB1");
-                        break;
-                    case 1:
-                        Log.e("TAG", "TAB2");
-                        break;
-                }
-            }
+        setRecyclerView();
+        mSwipeLayout = findViewById(R.id.event_refresh);
+        mSwipeLayout.setOnRefreshListener(this);
+    }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
+    private void setRecyclerView() {
+        recyclerView = findViewById(R.id.activity_events_list_view);
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        int spacing = Math.round(getResources().getDimension(R.dimen.material_card_view_padding));
+        recyclerView.addItemDecoration(new EqualSpacingItemDecoration(spacing));
+        loadEvents();
+    }
+
+    private void loadEvents(){
+        List<Event> events = eventsController.getEvents();
+        EventsAdapter adapter = new EventsAdapter(events);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onRefresh() {
-
-    }
-
-
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new EventFragment(this.getString(R.string.all_events)), this.getString(R.string.all_events));
-        adapter.addFrag(new EventFragment(this.getString(R.string.booked_events)), this.getString(R.string.booked_events));
-        viewPager.setAdapter(adapter);
-    }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFrag(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
+        loadEvents();
+        mSwipeLayout.setRefreshing(false);
     }
 }
 
