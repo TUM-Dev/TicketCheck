@@ -25,6 +25,7 @@ data class Event(@PrimaryKey
                 var title: String = "",
                 var description: String = "",
                 var locality: String = "",
+                 @SerializedName("start")
                 var date: DateTime = DateTime(),
                 var link:  String = ""){
 

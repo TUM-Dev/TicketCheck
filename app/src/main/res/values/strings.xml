@@ -617,8 +617,10 @@ Signature: %5$s</string>
     <string name="all_events">All Events</string>
     <string name="booked_events">Booked Events</string>
     <string name="link">VISIT WEBSITE</string>
-
     <string name="scanner">Scanner</string>
+
+    <!-- Admin Activity -->
+    <string name="search_admin">Search</string>
 
 
     <!-- Payment -->
