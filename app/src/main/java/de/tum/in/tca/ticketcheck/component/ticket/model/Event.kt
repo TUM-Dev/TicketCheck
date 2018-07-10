@@ -18,15 +18,16 @@ import org.joda.time.DateTime
  */
 @Entity
 data class Event(@PrimaryKey
-                @SerializedName("event")
-                var id: Int = 0,
+                 @SerializedName("event")
+                 var id: Int = 0,
                  @SerializedName("file")
-                var image: String? = null,
-                var title: String = "",
-                var description: String = "",
-                var locality: String = "",
-                var date: DateTime = DateTime(),
-                var link:  String = ""){
+                 var image: String? = null,
+                 var title: String = "",
+                 var description: String = "",
+                 var locality: String = "",
+                 @SerializedName("start")
+                 var date: DateTime = DateTime(),
+                 var link: String = "") {
 
     fun isFutureEvent() = date.isAfterNow
 }
