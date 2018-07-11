@@ -19,22 +19,22 @@ android:
   - platform-tools
   - extra-android-support
   - extra-android-m2repository
-  - extra-google-google_play_services
   - extra-google-m2repository
   - android-$ANDROID_API_LEVEL
   - build-tools-$ANDROID_BUILD_TOOLS
-  - addon-google_apis-google-$ANDROID_API_LEVEL
   licenses:
   - '.+'
 before_install:
-- yes | sdkmanager "platforms;android-27"
-- chmod +x gradlew
+  - pwd
+  - ls -la
+  - chmod +x gradlew
+  - yes | sdkmanager "platforms;android-27"
 install:
-- "./gradlew dependencies"
+  - "./gradlew dependencies"
 script:
-- "./gradlew check"
+  - "./gradlew check"
 before_deploy:
-- cat "$TRAVIS_BUILD_DIR/app/build/reports/lint-results.xml"
-- cat "$TRAVIS_BUILD_DIR/app/build/reports/pmd/duplicates.xml"
-- cat "$TRAVIS_BUILD_DIR/app/build/reports/detekt/detekt-checkstyle.xml"
-- cat "$TRAVIS_BUILD_DIR/app/build/reports/findbugs/findBugsDebug.xml"
+  - cat "$TRAVIS_BUILD_DIR/app/build/reports/lint-results.xml"
+  - cat "$TRAVIS_BUILD_DIR/app/build/reports/pmd/duplicates.xml"
+  - cat "$TRAVIS_BUILD_DIR/app/build/reports/detekt/detekt-checkstyle.xml"
+  - cat "$TRAVIS_BUILD_DIR/app/build/reports/findbugs/findBugsDebug.xml"

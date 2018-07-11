@@ -19,21 +19,18 @@
             android:theme="@style/TumToolbar"
             app:popupTheme="@style/TumToolbarPopUp"/>
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/event_tab"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_primary"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark"
-            app:tabIndicatorColor="@android:color/white"
-            app:tabIndicatorHeight="2dp"
-            app:tabMode="fixed"/>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/event_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!--  Recycler View  -->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/activity_events_list_view"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scrollbars="none" />
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
     <!-- The navigation drawer -->
     <include layout="@layout/navigation_drawer" />

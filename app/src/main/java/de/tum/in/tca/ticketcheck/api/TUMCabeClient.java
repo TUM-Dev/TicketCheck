@@ -33,15 +33,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public final class TUMCabeClient {
 
-
     static final String API_EVENTS = "event/";
     static final String API_TICKET = "ticket/";
 
     private static final String API_HOSTNAME = Const.API_HOSTNAME;
     private static final String API_BASEURL = "/Api/";
-    private static final String API_CHAT = "chat/";
-    static final String API_CHAT_ROOMS = API_CHAT + "rooms/";
-    static final String API_CHAT_MEMBERS = API_CHAT + "members/";
 
     private static TUMCabeClient instance;
     private final TUMCabeAPIService service;
@@ -69,10 +65,8 @@ public final class TUMCabeClient {
 
     // TICKET SALE
     // Getting event information
-    public List<Event> getEvents() throws IOException {
-        List<Event> list = service.getEvents().execute().body();
-
-        return list;
+    public void getEvents(Callback<List<Event>> callback) throws IOException {
+        service.getEvents().enqueue(callback);
     }
 
     public Event getEvent(int eventID) throws IOException {
@@ -84,43 +78,8 @@ public final class TUMCabeClient {
         return service.searchEvents(searchTerm).execute().body();
     }
 
-    // Getting ticket information
-    public void getTickets(Context context, Callback<List<Ticket>> cb) throws IOException {
-        ChatVerification chatVerification = ChatVerification.Companion.createChatVerification(context, null);
-        service.getTickets(chatVerification).enqueue(cb);
-    }
-
     public List<TicketType> getTicketTypes(int eventID) throws IOException {
         return service.getTicketTypes(eventID).execute().body();
-    }
-
-    // Ticket reservation
-    public void reserveTicket(Context context, int ticketType, Callback<TicketReservationResponse> cb) throws IOException {
-        ChatVerification chatVerification = ChatVerification.Companion.createChatVerification(context, new TicketReservation(ticketType));
-        service.reserveTicket(chatVerification).enqueue(cb);
-    }
-
-    public void cancelTicketReservation(Context context, int ticketHistory, Callback<TicketSuccessResponse> cb) throws IOException {
-        ChatVerification chatVerification = ChatVerification.Companion.createChatVerification(context, new TicketReservationCancelation(ticketHistory));
-        service.cancelTicketReservation(chatVerification).enqueue(cb);
-    }
-
-    // Ticket purchase
-    public void purchaseTicketStripe(Context context, int ticketHistory, String token, String customerMail,
-                                       String customerName, Callback<Ticket> cb) throws IOException {
-        HashMap<String, Object> argsMap = new HashMap<>();
-        argsMap.put("ticket_history", ticketHistory);
-        argsMap.put("token", token);
-        argsMap.put("customer_mail", customerMail);
-        argsMap.put("customer_name", customerName);
-
-        ChatVerification chatVerification = ChatVerification.Companion.createChatVerification(context, argsMap);
-        service.purchaseTicketStripe(chatVerification).enqueue(cb);
-    }
-
-    public void retrieveEphemeralKey(Context context, String apiVersion, String customerMail, Callback<HashMap<String, Object>> cb) throws IOException {
-        ChatVerification chatVerification = ChatVerification.Companion.createChatVerification(context, new EphimeralKey(customerMail, apiVersion));
-        service.retrieveEphemeralKey(chatVerification).enqueue(cb);
     }
 
     public void getTicketValidity(String eventId, String code, Callback<TicketValidityResponse> callback) {
@@ -128,5 +87,7 @@ public final class TUMCabeClient {
         service.getNameForTicket(request)
                 .enqueue(callback);
     }
+
+    // TODO: redeem ticket endpoint
 
 }
