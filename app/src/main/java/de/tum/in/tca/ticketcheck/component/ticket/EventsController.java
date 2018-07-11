@@ -36,33 +36,31 @@ public class EventsController {
     }
 
 
-    public void downloadFromService() {
-        // get ticket type information from API
-        Thread thread = new Thread(){
-            public void run(){
-                TUMCabeClient api = TUMCabeClient.getInstance(context);
+    private void downloadFromService() {
+        // get event information from API
+        Callback<List<Event>> cb = new Callback<List<Event>>() {
+            @Override
+            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+                // set view
+                List<Event> events = response.body();
+                eventDao.insert(events);
+            }
 
-                // Delete all too old items
-                eventDao.cleanUp();
-
-                // Load all events since the last sync
-                try {
-                    List<Event> events = api.getEvents();
-                    eventDao.insert(events);
-                } catch (IOException e) {
-                    Utils.log(e);
-                }
+            @Override
+            public void onFailure(Call<List<Event>> call, Throwable t) {
+                Utils.log(t);
+                // if the download fails the user should refresh manually
+                // retrying automatically could lead to endless loop if the device is offline
             }
         };
-        thread.start();
         try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            TUMCabeClient.getInstance(context).getEvents(cb);
+        } catch (IOException e) {
+            Utils.log(e);
         }
     }
 
-    public List<Event> refreshEvents(){
+    public List<Event> refreshEvents() {
         downloadFromService();
         return getEvents();
     }

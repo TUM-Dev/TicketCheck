@@ -65,10 +65,8 @@ public final class TUMCabeClient {
 
     // TICKET SALE
     // Getting event information
-    public List<Event> getEvents() throws IOException {
-        List<Event> list = service.getEvents().execute().body();
-
-        return list;
+    public void getEvents(Callback<List<Event>> callback) throws IOException {
+        service.getEvents().enqueue(callback);
     }
 
     public Event getEvent(int eventID) throws IOException {
