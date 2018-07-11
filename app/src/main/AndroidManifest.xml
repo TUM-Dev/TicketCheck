@@ -74,6 +74,18 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTop"
+            android:parentActivityName="de.tum.in.tca.ticketcheck.component.ticket.AdminDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeFullscreen">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.tum.in.tca.ticketcheck.component.ticket.EventsActivity" />
+        </activity>
+        <activity
+            android:name="de.tum.in.tca.ticketcheck.component.ticket.AdminDetailsActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
             android:parentActivityName="de.tum.in.tca.ticketcheck.component.ticket.EventsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeFullscreen">

@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.SearchView;
+import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Callback;

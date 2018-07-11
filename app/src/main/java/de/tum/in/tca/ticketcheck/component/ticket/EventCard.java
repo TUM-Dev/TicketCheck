@@ -25,8 +25,8 @@ public class EventCard extends NotificationAwareCard {
     @Override
     public Intent getIntent() {
         // TODO: switch to AdminDetailsActivity once it is implemented
-        Intent intent = null; //new Intent(getContext(), AdminDetailsActivity.class);
-        //intent.putExtra("event_id", event.getId());
+        Intent intent = new Intent(getContext(), AdminDetailsActivity.class);
+        intent.putExtra("event_id", event.getId());
         return intent;
     }
 
