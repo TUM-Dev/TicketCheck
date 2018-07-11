@@ -48,15 +48,15 @@ public class EventsController {
 
             @Override
             public void onFailure(Call<List<Event>> call, Throwable t) {
-                t.printStackTrace();
-                // try to connect again
-                downloadFromService();
+                Utils.log(t);
+                // if the download fails the user should refresh manually
+                // retrying automatically could lead to endless loop if the device is offline
             }
         };
         try {
             TUMCabeClient.getInstance(context).getEvents(cb);
         } catch (IOException e) {
-            e.printStackTrace();
+            Utils.log(e);
         }
     }
 
