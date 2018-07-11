@@ -4,40 +4,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <!-- The main content view -->
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <!-- The toolbar aka SupportActionBar -->
-        <include layout="@layout/toolbar"/>
-        <LinearLayout
+        <include layout="@layout/toolbar" />
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingTop="?attr/actionBarSize">
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
 
-            <include
-                layout="@layout/layout_all_errors"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"/>
+            <RelativeLayout
+                android:id="@id/relativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:background="#FFFFFF">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/pager"
+                <android.support.v7.widget.SearchView
+                    android:id="@+id/searchTicket"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:queryHint="@string/search_admin">
+
+                </android.support.v7.widget.SearchView>
+            </RelativeLayout>
+
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:transitionName="@string/transition_card"
-                tools:ignore="UnusedAttribute">
+                android:layout_below="@+id/relativeLayout"
+                android:orientation="vertical">
 
-                <android.support.v4.view.PagerTitleStrip
-                    android:id="@+id/pager_title_strip"
-                    style="@style/SectionHeadline"
+                <ListView
+                    android:id="@+id/listTicket"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-            </android.support.v4.view.ViewPager>
+                    android:layout_height="match_parent" />
 
-        </LinearLayout>
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_scanner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|bottom"
+                    android:src="@drawable/ic_scanner" />
+            </FrameLayout>
 
-    </FrameLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
     <!-- The navigation drawer -->
-    <include layout="@layout/navigation_drawer"/>
+    <include layout="@layout/navigation_drawer" />
 </android.support.v4.widget.DrawerLayout>

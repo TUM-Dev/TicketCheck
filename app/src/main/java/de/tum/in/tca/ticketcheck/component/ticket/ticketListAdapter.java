@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.joda.time.format.DateTimeFormat;
@@ -15,9 +14,6 @@ import java.util.List;
 import de.tum.in.tca.ticketcheck.R;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 
-/**
- * Created by YR on 2016/04/12.
- */
 public class ticketListAdapter extends BaseAdapter {
 
     private List<AdminTicket> list = null;
@@ -56,17 +52,22 @@ public class ticketListAdapter extends BaseAdapter {
         View view = inflater.inflate(R.layout.ticket_list_item, null);
 
         TextView nameView = view.findViewById(R.id.name);
-        TextView lrzIdView =  view.findViewById(R.id.lrz_id);
+        TextView lrzIdView = view.findViewById(R.id.lrz_id);
         TextView ticketTypeView = view.findViewById(R.id.ticket_type);
-        TextView purchaseTimeView =  view.findViewById(R.id.purchase);
+        TextView purchaseTimeView = view.findViewById(R.id.purchase);
         TextView redeemTimeView = view.findViewById(R.id.redemption);
 
-        nameView.setText(adminTicket.getName());
-        lrzIdView.setText(adminTicket.getLrzId());
-        ticketTypeView.setText(adminTicket.getTicketType());
-        purchaseTimeView.setText(DateTimeFormat.shortDateTime().print(adminTicket.getPurchaseDate()));
-        redeemTimeView.setText(DateTimeFormat.shortDateTime().print(adminTicket.getRedeemDate()));
+        String nameString = adminTicket.getName();
+        String lrzIdString = "TUM-ID:" + adminTicket.getLrzId();
+        String ticketTypeString = "Ticket Type:" + String.valueOf(adminTicket.getTicketType());
+        String purchasedString = "Purchased:" + DateTimeFormat.shortDateTime().print(adminTicket.getPurchaseDate());
+        String redeemedString = "Redeemed:" + DateTimeFormat.shortDateTime().print(adminTicket.getRedeemDate());
 
+        nameView.setText(nameString);
+        lrzIdView.setText(lrzIdString);
+        ticketTypeView.setText(ticketTypeString);
+        purchaseTimeView.setText(purchasedString);
+        redeemTimeView.setText(redeemedString);
 
         return view;
     }
