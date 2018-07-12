@@ -20,8 +20,6 @@ import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 
 public class AdminDetailsActivity extends BaseActivity {
 
-
-    private SwipeRefreshLayout mSwipeLayout;
     private SearchView searchView;
     private ListView listView;
     private FloatingActionButton floatingScanner;
@@ -92,7 +90,7 @@ public class AdminDetailsActivity extends BaseActivity {
                     findList.clear();
                     for (int i = 0; i < tickets.size(); i++) {
                         AdminTicket findticket = tickets.get(i);
-                        if (findticket.getName().equals(query)) {
+                        if (findticket.getName().toLowerCase().equals(query.toLowerCase())) {
                             findList.add(findticket);
                             break;
                         }
@@ -115,7 +113,7 @@ public class AdminDetailsActivity extends BaseActivity {
                     findList.clear();
                     for (int i = 0; i < tickets.size(); i++) {
                         AdminTicket findticket = tickets.get(i);
-                        if (findticket.getName().contains(newText)) {
+                        if (findticket.getName().toLowerCase().contains(newText.toLowerCase())) {
                             findList.add(findticket);
                         }
                     }
