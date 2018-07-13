@@ -3,12 +3,12 @@ package de.tum.in.tca.ticketcheck.component.ticket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,6 +22,7 @@ public class AdminDetailsActivity extends BaseActivity {
 
     private SearchView searchView;
     private ListView listView;
+    private TextView totalSaleView;
     private FloatingActionButton floatingScanner;
     private ticketListAdapter mAdapter;
     private ticketListAdapter findAdapter;
@@ -37,6 +38,7 @@ public class AdminDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         searchView = findViewById(R.id.searchTicket);
+        totalSaleView = findViewById(R.id.total_sale);
         listView = findViewById(R.id.listTicket);
         floatingScanner = findViewById(R.id.fab_scanner);
 
@@ -48,8 +50,16 @@ public class AdminDetailsActivity extends BaseActivity {
         mAdapter = new ticketListAdapter(tickets, this);
         listView.setAdapter(mAdapter);
 
-        floatingScanner.setOnClickListener(view -> scanning());
+        //Set total ticket and total sale
+        //TODO:send event_id to backend and receive really sum of ticket,following just use dummy ticketdata
+        int totalTicketNumber = 100;
+        int totalSaleNumber = tickets.size();
+        String totalSaleString = "Total Sale : " + totalSaleNumber + "/" + totalTicketNumber;
+        totalSaleView.setText(totalSaleString);
 
+        //Set FAB to scanner
+        floatingScanner.setOnClickListener(view -> scanning());
+        // Set search function
         setupSearchView();
 
     }
