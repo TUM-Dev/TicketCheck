@@ -14,7 +14,7 @@ import java.util.List;
 import de.tum.in.tca.ticketcheck.R;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 
-public class ticketListAdapter extends BaseAdapter {
+public class TicketListAdapter extends BaseAdapter {
 
     private List<AdminTicket> list = null;
 
@@ -22,7 +22,7 @@ public class ticketListAdapter extends BaseAdapter {
 
     private LayoutInflater inflater = null;
 
-    public ticketListAdapter(List<AdminTicket> list, Context context) {
+    public TicketListAdapter(List<AdminTicket> list, Context context) {
         this.list = list;
         this.context = context;
         inflater = LayoutInflater.from(context);

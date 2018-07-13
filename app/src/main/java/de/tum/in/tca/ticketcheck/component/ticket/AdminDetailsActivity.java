@@ -3,7 +3,6 @@ package de.tum.in.tca.ticketcheck.component.ticket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -23,8 +22,8 @@ public class AdminDetailsActivity extends BaseActivity {
     private SearchView searchView;
     private ListView listView;
     private FloatingActionButton floatingScanner;
-    private ticketListAdapter mAdapter;
-    private ticketListAdapter findAdapter;
+    private TicketListAdapter mAdapter;
+    private TicketListAdapter findAdapter;
     private List<AdminTicket> tickets;
     private List<AdminTicket> findList;
     private MenuItem menuItemScanView;
@@ -45,7 +44,7 @@ public class AdminDetailsActivity extends BaseActivity {
         tickets = TicketsController.getTickets();
 
         findList = new ArrayList<>();
-        mAdapter = new ticketListAdapter(tickets, this);
+        mAdapter = new TicketListAdapter(tickets, this);
         listView.setAdapter(mAdapter);
 
         floatingScanner.setOnClickListener(view -> scanning());
@@ -67,7 +66,7 @@ public class AdminDetailsActivity extends BaseActivity {
         if (i == R.id.action_refresh) {
             //TODO:send event_id to backend and receive really ticket data,following just use dummy ticketdata
             tickets = TicketsController.getrefreshTickets();
-            mAdapter = new ticketListAdapter(tickets, this);
+            mAdapter = new TicketListAdapter(tickets, this);
             listView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         }
@@ -99,7 +98,7 @@ public class AdminDetailsActivity extends BaseActivity {
                         Toast.makeText(AdminDetailsActivity.this, "The name is not in the list", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(AdminDetailsActivity.this, "Search successfully", Toast.LENGTH_SHORT).show();
-                        findAdapter = new ticketListAdapter(findList, AdminDetailsActivity.this);
+                        findAdapter = new TicketListAdapter(findList, AdminDetailsActivity.this);
                         listView.setAdapter(findAdapter);
                     }
                 }
@@ -117,7 +116,7 @@ public class AdminDetailsActivity extends BaseActivity {
                             findList.add(findticket);
                         }
                     }
-                    findAdapter = new ticketListAdapter(findList, AdminDetailsActivity.this);
+                    findAdapter = new TicketListAdapter(findList, AdminDetailsActivity.this);
                     findAdapter.notifyDataSetChanged();
                     listView.setAdapter(findAdapter);
                 }
