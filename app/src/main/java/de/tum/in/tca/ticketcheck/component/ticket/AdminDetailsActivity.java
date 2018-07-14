@@ -23,7 +23,6 @@ public class AdminDetailsActivity extends BaseActivity {
     private ListView listView;
     private TicketListAdapter ticketListAdapter;
     private List<AdminTicket> tickets;
-    private List<AdminTicket> foundTicketList;
 
     public AdminDetailsActivity() {
         super(R.layout.activity_admin);
@@ -41,7 +40,6 @@ public class AdminDetailsActivity extends BaseActivity {
         //TODO:send event_id to backend and receive really ticket data,following just use dummy ticketdata
         tickets = TicketsController.getTickets();
 
-        foundTicketList = new ArrayList<>();
         ticketListAdapter = new TicketListAdapter(tickets, this);
         listView.setAdapter(ticketListAdapter);
 
@@ -102,7 +100,7 @@ public class AdminDetailsActivity extends BaseActivity {
             }
 
             private boolean search(String queryText){
-                foundTicketList.clear();
+                List<AdminTicket> foundTicketList = new ArrayList<>();
                 for (AdminTicket foundTicket : tickets) {
                     if (foundTicket.getName().toLowerCase().contains(queryText.toLowerCase()) ||
                             foundTicket.getLrzId().toLowerCase().contains(queryText.toLowerCase())) {
