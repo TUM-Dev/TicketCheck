@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +16,7 @@ import java.util.List;
 import de.tum.in.tca.ticketcheck.R;
 import de.tum.in.tca.ticketcheck.component.generic.activity.BaseActivity;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
+import de.tum.in.tca.ticketcheck.utils.Utils;
 
 public class AdminDetailsActivity extends BaseActivity {
 
@@ -27,8 +27,7 @@ public class AdminDetailsActivity extends BaseActivity {
     private TicketListAdapter mAdapter;
     private TicketListAdapter findAdapter;
     private List<AdminTicket> tickets;
-    private List<AdminTicket> findList;
-    private MenuItem menuItemScanView;
+    private List<AdminTicket> foundTicket;
 
     public AdminDetailsActivity() {
         super(R.layout.activity_admin);
@@ -46,7 +45,7 @@ public class AdminDetailsActivity extends BaseActivity {
         //TODO:send event_id to backend and receive really ticket data,following just use dummy ticketdata
         tickets = TicketsController.getTickets();
 
-        findList = new ArrayList<>();
+        foundTicket = new ArrayList<>();
         mAdapter = new TicketListAdapter(tickets, this);
         listView.setAdapter(mAdapter);
 
@@ -67,7 +66,6 @@ public class AdminDetailsActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_activity_admin, menu);
-        menuItemScanView = menu.findItem(R.id.action_refresh);
         return true;
     }
 
@@ -94,22 +92,23 @@ public class AdminDetailsActivity extends BaseActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             public boolean onQueryTextSubmit(String query) {
                 if (TextUtils.isEmpty(query)) {
-                    Toast.makeText(AdminDetailsActivity.this, "please text something", Toast.LENGTH_SHORT).show();
+                    Utils.showToast(AdminDetailsActivity.this, getString(R.string.pls_text_sth));
                     listView.setAdapter(mAdapter);
                 } else {
-                    findList.clear();
+                    foundTicket.clear();
                     for (int i = 0; i < tickets.size(); i++) {
                         AdminTicket findticket = tickets.get(i);
-                        if (findticket.getName().toLowerCase().equals(query.toLowerCase())) {
-                            findList.add(findticket);
+                        if (findticket.getName().toLowerCase().equals(query.toLowerCase()) ||
+                                findticket.getLrzId().toLowerCase().equals(query.toLowerCase())) {
+                            foundTicket.add(findticket);
                             break;
                         }
                     }
-                    if (findList.size() == 0) {
-                        Toast.makeText(AdminDetailsActivity.this, "The name is not in the list", Toast.LENGTH_SHORT).show();
+                    if (foundTicket.size() == 0) {
+                        Utils.showToast(AdminDetailsActivity.this, getString(R.string.not_in_list));
                     } else {
-                        Toast.makeText(AdminDetailsActivity.this, "Search successfully", Toast.LENGTH_SHORT).show();
-                        findAdapter = new TicketListAdapter(findList, AdminDetailsActivity.this);
+                        Utils.showToast(AdminDetailsActivity.this, getString(R.string.search_success));
+                        findAdapter = new TicketListAdapter(foundTicket, AdminDetailsActivity.this);
                         listView.setAdapter(findAdapter);
                     }
                 }
@@ -120,14 +119,15 @@ public class AdminDetailsActivity extends BaseActivity {
                 if (TextUtils.isEmpty(newText)) {
                     listView.setAdapter(mAdapter);
                 } else {
-                    findList.clear();
+                    foundTicket.clear();
                     for (int i = 0; i < tickets.size(); i++) {
                         AdminTicket findticket = tickets.get(i);
-                        if (findticket.getName().toLowerCase().contains(newText.toLowerCase())) {
-                            findList.add(findticket);
+                        if (findticket.getName().toLowerCase().contains(newText.toLowerCase()) ||
+                                findticket.getLrzId().toLowerCase().contains(newText.toLowerCase())) {
+                            foundTicket.add(findticket);
                         }
                     }
-                    findAdapter = new TicketListAdapter(findList, AdminDetailsActivity.this);
+                    findAdapter = new TicketListAdapter(foundTicket, AdminDetailsActivity.this);
                     findAdapter.notifyDataSetChanged();
                     listView.setAdapter(findAdapter);
                 }
