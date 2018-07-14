@@ -96,11 +96,10 @@ public class AdminDetailsActivity extends BaseActivity {
                     listView.setAdapter(mAdapter);
                 } else {
                     foundTicket.clear();
-                    for (int i = 0; i < tickets.size(); i++) {
-                        AdminTicket findticket = tickets.get(i);
-                        if (findticket.getName().toLowerCase().equals(query.toLowerCase()) ||
-                                findticket.getLrzId().toLowerCase().equals(query.toLowerCase())) {
-                            foundTicket.add(findticket);
+                    for (AdminTicket findTicket : tickets) {
+                        if (findTicket.getName().toLowerCase().equals(query.toLowerCase()) ||
+                                findTicket.getLrzId().toLowerCase().equals(query.toLowerCase())) {
+                            foundTicket.add(findTicket);
                             break;
                         }
                     }
@@ -120,11 +119,10 @@ public class AdminDetailsActivity extends BaseActivity {
                     listView.setAdapter(mAdapter);
                 } else {
                     foundTicket.clear();
-                    for (int i = 0; i < tickets.size(); i++) {
-                        AdminTicket findticket = tickets.get(i);
-                        if (findticket.getName().toLowerCase().contains(newText.toLowerCase()) ||
-                                findticket.getLrzId().toLowerCase().contains(newText.toLowerCase())) {
-                            foundTicket.add(findticket);
+                    for (AdminTicket findTicket : tickets) {
+                        if (findTicket.getName().toLowerCase().contains(newText.toLowerCase()) ||
+                                findTicket.getLrzId().toLowerCase().contains(newText.toLowerCase())) {
+                            foundTicket.add(findTicket);
                         }
                     }
                     findAdapter = new TicketListAdapter(foundTicket, AdminDetailsActivity.this);
