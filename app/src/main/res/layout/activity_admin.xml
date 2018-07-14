@@ -21,7 +21,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/total_sale"
+                    android:id="@+id/sold_tickets"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -48,7 +48,7 @@
                 android:background="#FFFFFF">
 
                 <android.support.v7.widget.SearchView
-                    android:id="@+id/searchTicket"
+                    android:id="@+id/search_ticket"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:queryHint="@string/search_admin">
@@ -64,7 +64,7 @@
                 android:orientation="vertical">
 
                 <ListView
-                    android:id="@+id/listTicket"
+                    android:id="@+id/ticket_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SearchView;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -22,12 +21,9 @@ public class AdminDetailsActivity extends BaseActivity {
 
     private SearchView searchView;
     private ListView listView;
-    private TextView totalSaleView;
-    private FloatingActionButton floatingScanner;
-    private TicketListAdapter mAdapter;
-    private TicketListAdapter findAdapter;
+    private TicketListAdapter ticketListAdapter;
     private List<AdminTicket> tickets;
-    private List<AdminTicket> foundTicket;
+    private List<AdminTicket> foundTicketList;
 
     public AdminDetailsActivity() {
         super(R.layout.activity_admin);
@@ -36,28 +32,28 @@ public class AdminDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        searchView = findViewById(R.id.searchTicket);
-        totalSaleView = findViewById(R.id.total_sale);
-        listView = findViewById(R.id.listTicket);
-        floatingScanner = findViewById(R.id.fab_scanner);
+        searchView = findViewById(R.id.search_ticket);
+        TextView totalSaleView = findViewById(R.id.sold_tickets);
+        listView = findViewById(R.id.ticket_list);
+        FloatingActionButton floatingScanner = findViewById(R.id.fab_scanner);
 
         int clickedEventId = getIntent().getIntExtra("event_id", 0);
         //TODO:send event_id to backend and receive really ticket data,following just use dummy ticketdata
         tickets = TicketsController.getTickets();
 
-        foundTicket = new ArrayList<>();
-        mAdapter = new TicketListAdapter(tickets, this);
-        listView.setAdapter(mAdapter);
+        foundTicketList = new ArrayList<>();
+        ticketListAdapter = new TicketListAdapter(tickets, this);
+        listView.setAdapter(ticketListAdapter);
 
         //Set total ticket and total sale
         //TODO:send event_id to backend and receive really sum of ticket,following just use dummy ticketdata
-        int totalTicketNumber = 100;
-        int totalSaleNumber = tickets.size();
-        String totalSaleString = "Total Sale : " + totalSaleNumber + "/" + totalTicketNumber;
-        totalSaleView.setText(totalSaleString);
+        int totalNumberOfTickets = 100;
+        int numberOfSoldTickets = tickets.size();
+        totalSaleView.setText(getString(R.string.sold_tickets,
+                numberOfSoldTickets, totalNumberOfTickets));
 
         //Set FAB to scanner
-        floatingScanner.setOnClickListener(view -> scanning());
+        floatingScanner.setOnClickListener(view -> openTicketScanActivity());
         // Set search function
         setupSearchView();
 
@@ -75,14 +71,14 @@ public class AdminDetailsActivity extends BaseActivity {
         if (i == R.id.action_refresh) {
             //TODO:send event_id to backend and receive really ticket data,following just use dummy ticketdata
             tickets = TicketsController.getrefreshTickets();
-            mAdapter = new TicketListAdapter(tickets, this);
-            listView.setAdapter(mAdapter);
-            mAdapter.notifyDataSetChanged();
+            ticketListAdapter = new TicketListAdapter(tickets, this);
+            listView.setAdapter(ticketListAdapter);
+            ticketListAdapter.notifyDataSetChanged();
         }
         return true;
     }
 
-    private void scanning() {
+    private void openTicketScanActivity() {
         startActivity(new Intent(this, TicketScanActivity.class));
         //TODO:send current eventId to TicketScanActivity
     }
@@ -90,46 +86,35 @@ public class AdminDetailsActivity extends BaseActivity {
     private void setupSearchView() {
         searchView.setSubmitButtonEnabled(true);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            public boolean onQueryTextSubmit(String query) {
-                if (TextUtils.isEmpty(query)) {
-                    Utils.showToast(AdminDetailsActivity.this, getString(R.string.pls_text_sth));
-                    listView.setAdapter(mAdapter);
-                } else {
-                    foundTicket.clear();
-                    for (AdminTicket findTicket : tickets) {
-                        if (findTicket.getName().toLowerCase().equals(query.toLowerCase()) ||
-                                findTicket.getLrzId().toLowerCase().equals(query.toLowerCase())) {
-                            foundTicket.add(findTicket);
-                            break;
-                        }
-                    }
-                    if (foundTicket.size() == 0) {
-                        Utils.showToast(AdminDetailsActivity.this, getString(R.string.not_in_list));
-                    } else {
-                        Utils.showToast(AdminDetailsActivity.this, getString(R.string.search_success));
-                        findAdapter = new TicketListAdapter(foundTicket, AdminDetailsActivity.this);
-                        listView.setAdapter(findAdapter);
-                    }
+            public boolean onQueryTextSubmit(String queryText) {
+                boolean searchSuccessful = search(queryText);
+
+                if (!searchSuccessful){
+                    Utils.showToast(AdminDetailsActivity.this, getString(R.string.not_in_list));
                 }
+
                 return true;
             }
 
-            public boolean onQueryTextChange(String newText) {
-                if (TextUtils.isEmpty(newText)) {
-                    listView.setAdapter(mAdapter);
-                } else {
-                    foundTicket.clear();
-                    for (AdminTicket findTicket : tickets) {
-                        if (findTicket.getName().toLowerCase().contains(newText.toLowerCase()) ||
-                                findTicket.getLrzId().toLowerCase().contains(newText.toLowerCase())) {
-                            foundTicket.add(findTicket);
-                        }
-                    }
-                    findAdapter = new TicketListAdapter(foundTicket, AdminDetailsActivity.this);
-                    findAdapter.notifyDataSetChanged();
-                    listView.setAdapter(findAdapter);
-                }
+            public boolean onQueryTextChange(String queryText) {
+                search(queryText);
                 return true;
+            }
+
+            private boolean search(String queryText){
+                foundTicketList.clear();
+                for (AdminTicket foundTicket : tickets) {
+                    if (foundTicket.getName().toLowerCase().contains(queryText.toLowerCase()) ||
+                            foundTicket.getLrzId().toLowerCase().contains(queryText.toLowerCase())) {
+                        foundTicketList.add(foundTicket);
+                    }
+                }
+                // for an empty string all tickets are matched
+                ticketListAdapter = new TicketListAdapter(foundTicketList, AdminDetailsActivity.this);
+                ticketListAdapter.notifyDataSetChanged();
+                listView.setAdapter(ticketListAdapter);
+
+                return !foundTicketList.isEmpty();
             }
         });
     }

@@ -16,15 +16,11 @@ import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 
 public class TicketListAdapter extends BaseAdapter {
 
-    private List<AdminTicket> list = null;
-
-    private Context context = null;
-
-    private LayoutInflater inflater = null;
+    private List<AdminTicket> list;
+    private LayoutInflater inflater;
 
     public TicketListAdapter(List<AdminTicket> list, Context context) {
         this.list = list;
-        this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
