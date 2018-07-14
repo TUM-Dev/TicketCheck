@@ -29,5 +29,6 @@ data class Event(@PrimaryKey
                  var date: DateTime = DateTime(),
                  var link: String = "") {
 
+
     fun isFutureEvent() = date.isAfterNow
 }

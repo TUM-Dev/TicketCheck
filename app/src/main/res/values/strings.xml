@@ -618,8 +618,12 @@ Signature: %5$s</string>
     <string name="booked_events">Booked Events</string>
     <string name="link">VISIT WEBSITE</string>
 
+    <!-- Admin Activity -->
+    <string name="search_admin">Search</string>
     <string name="scanner">Scanner</string>
-
+    <string name="ticket_detail">Ticket Detail</string>d
+    <string name="not_in_list">No matching name or lrz ID found…</string>
+    <string name="sold_tickets">Sold Tickets: %1$d/%2$d</string>
 
     <!-- Payment -->
     <string name="creditcard">Credit Card</string>

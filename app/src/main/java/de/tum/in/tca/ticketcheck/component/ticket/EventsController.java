@@ -3,16 +3,11 @@ package de.tum.in.tca.ticketcheck.component.ticket;
 import android.content.Context;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import de.tum.in.tca.ticketcheck.api.TUMCabeClient;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
-import de.tum.in.tca.ticketcheck.component.ticket.model.Ticket;
-import de.tum.in.tca.ticketcheck.component.ticket.model.TicketType;
-import de.tum.in.tca.ticketcheck.component.ui.chat.model.ChatMember;
 import de.tum.in.tca.ticketcheck.database.TcaDb;
-import de.tum.in.tca.ticketcheck.utils.Const;
 import de.tum.in.tca.ticketcheck.utils.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,7 +55,7 @@ public class EventsController {
         }
     }
 
-    public List<Event> refreshEvents(){
+    public List<Event> refreshEvents() {
         downloadFromService();
         return getEvents();
     }
