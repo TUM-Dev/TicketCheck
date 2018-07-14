@@ -3,9 +3,11 @@ package de.tum.in.tca.ticketcheck.api;
 import java.util.HashMap;
 import java.util.List;
 
+import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Ticket;
 import de.tum.in.tca.ticketcheck.component.ticket.model.TicketType;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketRedemptionRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketReservationResponse;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketSuccessResponse;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketValidityRequest;
@@ -40,5 +42,11 @@ public interface TUMCabeAPIService {
 
     @POST(API_EVENTS + "ticket/validate")
     Call<TicketValidityResponse> getNameForTicket(@Body TicketValidityRequest request);
+
+    @POST(API_EVENTS + "ticket/validate")
+    Call<TicketSuccessResponse> redeemTicket(@Body TicketRedemptionRequest request);
+
+    @POST(API_EVENTS + "ticket/sold")
+    Call<List<AdminTicket>> getAdminTicketData(@Body ChatVerification chatVerification);
 
 }

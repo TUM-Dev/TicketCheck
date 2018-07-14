@@ -11,10 +11,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Ticket;
 import de.tum.in.tca.ticketcheck.component.ticket.model.TicketType;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.AdminTicketRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.EphimeralKey;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketRedemptionRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketReservation;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketReservationCancelation;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketReservationResponse;
@@ -88,6 +91,14 @@ public final class TUMCabeClient {
                 .enqueue(callback);
     }
 
-    // TODO: redeem ticket endpoint
+    public void redeemTicket(int ticketHistory, Callback<TicketSuccessResponse> callback) {
+        service.redeemTicket(new TicketRedemptionRequest(ticketHistory))
+                .enqueue(callback);
+    }
 
+    public void getAdminTicketData(Context context, int eventId, Callback<List<AdminTicket>> callback) throws IOException {
+        ChatVerification chatVerification = ChatVerification.Companion.createChatVerification(context, new AdminTicketRequest(eventId));
+        service.getAdminTicketData(chatVerification)
+                .enqueue(callback);
+    }
 }

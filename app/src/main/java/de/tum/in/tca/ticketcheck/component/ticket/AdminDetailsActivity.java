@@ -24,6 +24,9 @@ public class AdminDetailsActivity extends BaseActivity {
     private TicketListAdapter ticketListAdapter;
     private List<AdminTicket> tickets;
 
+    private int eventID;
+    private TicketsController ticketsController;
+
     public AdminDetailsActivity() {
         super(R.layout.activity_admin);
     }
@@ -36,9 +39,10 @@ public class AdminDetailsActivity extends BaseActivity {
         listView = findViewById(R.id.ticket_list);
         FloatingActionButton floatingScanner = findViewById(R.id.fab_scanner);
 
-        int clickedEventId = getIntent().getIntExtra("event_id", 0);
+        eventID = getIntent().getIntExtra("event_id", 0);
         //TODO:send event_id to backend and receive really ticket data,following just use dummy ticketdata
-        tickets = TicketsController.getTickets();
+        ticketsController = new TicketsController(AdminDetailsActivity.this);
+        tickets = ticketsController.getTicketsForEvent(eventID);
 
         ticketListAdapter = new TicketListAdapter(tickets, this);
         listView.setAdapter(ticketListAdapter);
@@ -68,7 +72,7 @@ public class AdminDetailsActivity extends BaseActivity {
         int i = item.getItemId();
         if (i == R.id.action_refresh) {
             //TODO:send event_id to backend and receive really ticket data,following just use dummy ticketdata
-            tickets = TicketsController.getrefreshTickets();
+            tickets = ticketsController.refreshTickets(eventID);
             ticketListAdapter = new TicketListAdapter(tickets, this);
             listView.setAdapter(ticketListAdapter);
             ticketListAdapter.notifyDataSetChanged();

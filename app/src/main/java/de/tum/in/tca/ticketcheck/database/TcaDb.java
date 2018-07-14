@@ -7,18 +7,21 @@ import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 
+import de.tum.in.tca.ticketcheck.component.ticket.AdminTicketDao;
 import de.tum.in.tca.ticketcheck.component.ticket.EventDao;
 import de.tum.in.tca.ticketcheck.component.ticket.TicketDao;
 import de.tum.in.tca.ticketcheck.component.ticket.TicketTypeDao;
+import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Ticket;
 import de.tum.in.tca.ticketcheck.component.ticket.model.TicketType;
 import de.tum.in.tca.ticketcheck.utils.Const;
 
-@Database(version = 1, entities = {
+@Database(version = 2, entities = {
         Event.class,
         Ticket.class,
         TicketType.class,
+        AdminTicket.class
 })
 @TypeConverters(Converters.class)
 public abstract class TcaDb extends RoomDatabase {
@@ -43,4 +46,6 @@ public abstract class TcaDb extends RoomDatabase {
     public abstract TicketDao ticketDao();
 
     public abstract TicketTypeDao ticketTypeDao();
+
+    public abstract AdminTicketDao adminTicketDao();
 }
