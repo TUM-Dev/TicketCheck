@@ -7,6 +7,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,6 +21,7 @@ import de.tum.in.tca.ticketcheck.component.generic.activity.BaseActivity;
 import de.tum.in.tca.ticketcheck.component.ticket.TicketsController;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketStatus;
+import de.tum.in.tca.ticketcheck.database.TcaDb;
 import de.tum.in.tca.ticketcheck.utils.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +38,7 @@ public class AdminDetailsActivity extends BaseActivity {
     private int eventID;
     private int totalTicketCount;
     private TicketsController ticketsController;
+    private int lastSelectedIndex;
 
     public AdminDetailsActivity() {
         super(R.layout.activity_admin);
@@ -56,6 +60,17 @@ public class AdminDetailsActivity extends BaseActivity {
         ticketListAdapter = new TicketListAdapter(tickets, AdminDetailsActivity.this);
         listView.setAdapter(ticketListAdapter);
         ticketListAdapter.notifyDataSetChanged();
+        listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AdminTicket ticket = (AdminTicket) parent.getItemAtPosition(position);
+                lastSelectedIndex = position;
+                Intent intent = new Intent(AdminDetailsActivity.this, TicketDetailsActivity.class);
+                intent.putExtra("ticketId", ticket.getId());
+                startActivity(intent);
+            }
+        });
+
         // Invoke ticket refresh
         refreshTicketList();
 
@@ -95,6 +110,17 @@ public class AdminDetailsActivity extends BaseActivity {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        // Update the ticket that was being shown in the Ticket Detail View, in case the redemption state changed
+        if (lastSelectedIndex < tickets.size()) {
+            tickets.set(lastSelectedIndex,
+                    TcaDb.getInstance(this).adminTicketDao().getByTicketId(tickets.get(lastSelectedIndex).getId()));
+            ((TicketListAdapter) listView.getAdapter()).notifyDataSetChanged();
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.action_refresh) {
@@ -104,8 +130,9 @@ public class AdminDetailsActivity extends BaseActivity {
     }
 
     private void openTicketScanActivity() {
-        startActivity(new Intent(this, TicketScanActivity.class));
-        //TODO:send current eventId to TicketScanActivity
+        Intent intent = new Intent(this, TicketScanActivity.class);
+        intent.putExtra("eventId", eventID);
+        startActivity(intent);
     }
 
     private void setupSearchView() {

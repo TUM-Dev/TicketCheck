@@ -6,7 +6,7 @@
     tools:ignore="UnusedAttribute">
 
     <!-- Standard access rights -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- As AndroidLint suggests: We do not necessarily need camera access -->
@@ -37,7 +37,6 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-
         <uses-library android:name="android.test.runner" />
 
         <provider
@@ -90,6 +89,17 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.tum.in.tca.ticketcheck.component.ticket.activity.EventsActivity" />
+        </activity>
+
+        <activity
+            android:name="de.tum.in.tca.ticketcheck.component.ticket.activity.TicketDetailsActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/ticket_detail"
+            android:launchMode="singleTop"
+            android:parentActivityName=".component.ticket.activity.AdminDetailsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.tum.in.tca.ticketcheck.component.ticket.activity.AdminDetailsActivity" />
         </activity>
     </application>
 

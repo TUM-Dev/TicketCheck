@@ -1,7 +1,9 @@
 package de.tum.in.tca.ticketcheck.component.ticket.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.common.collect.ImmutableList;
@@ -12,11 +14,20 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.util.List;
 
 import de.tum.in.tca.ticketcheck.R;
+import de.tum.in.tca.ticketcheck.component.ticket.TicketsController;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketValidityResponse;
+import de.tum.in.tca.ticketcheck.utils.Utils;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TicketScanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
 
     private ZXingScannerView mScannerView;
+
+    private TicketsController ticketsController;
+    private int eventId;
 
     @Override
     public void onCreate(Bundle savedInstance) {
@@ -24,6 +35,10 @@ public class TicketScanActivity extends AppCompatActivity implements ZXingScanne
         setContentView(R.layout.activity_ticket_scan);
 
         mScannerView = findViewById(R.id.scanner_view);
+
+        ticketsController = new TicketsController(this);
+
+        eventId = getIntent().getIntExtra("eventId", -1);
 
         List<BarcodeFormat> formats = ImmutableList.of(BarcodeFormat.QR_CODE);
         mScannerView.setFormats(formats);
@@ -57,13 +72,30 @@ public class TicketScanActivity extends AppCompatActivity implements ZXingScanne
 
     @Override
     public void handleResult(Result rawResult) {
-        String code = rawResult.getText();
-        ConfirmCheckInFragment fragment = ConfirmCheckInFragment.newInstance("1", code);
-        fragment.show(getSupportFragmentManager(), "confirm_check_in_fragment");
+        Callback<TicketValidityResponse> cb = new Callback<TicketValidityResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<TicketValidityResponse> call,
+                                   @NonNull Response<TicketValidityResponse> response) {
+                TicketValidityResponse ticketValidityResponse = response.body();
+                if(ticketValidityResponse.valid){
+                    Intent intent = new Intent(getApplicationContext(), TicketDetailsActivity.class);
+                    intent.putExtra("ticketId", ticketValidityResponse.ticketHistory);
+                    startActivity(intent);
+                } else {
+                    Utils.showToast(getApplicationContext(), R.string.not_valid);
+                    finish();
+                }
+            }
 
-        // TODO: Send the String to the Server and ask the server to return the Name associated with it
-        // Until then, we will display a dummy string
-
+            @Override
+            public void onFailure(@NonNull Call<TicketValidityResponse> call,
+                                  @NonNull Throwable t) {
+                Utils.log(t);
+                Utils.showToast(getApplicationContext(), R.string.no_internet_connection);
+                finish();
+            }
+        };
+        ticketsController.checkTicketValidity(eventId, rawResult.getText(), cb);
     }
 
 }

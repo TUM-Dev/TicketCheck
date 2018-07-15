@@ -63,14 +63,14 @@ public final class TUMCabeClient {
         service.getEvents().enqueue(callback);
     }
 
-    public void getTicketValidity(String eventId, String code, Callback<TicketValidityResponse> callback) {
+    public void getTicketValidity(int eventId, String code, Callback<TicketValidityResponse> callback) {
         TicketValidityRequest request = new TicketValidityRequest(eventId, code);
         service.getNameForTicket(request)
                 .enqueue(callback);
     }
 
-    public void redeemTicket(int ticketHistory, Callback<TicketSuccessResponse> callback) {
-        service.redeemTicket(new TicketRedemptionRequest(ticketHistory))
+    public void redeemTicket(int ticketId, Callback<TicketSuccessResponse> callback) {
+        service.redeemTicket(new TicketRedemptionRequest(ticketId))
                 .enqueue(callback);
     }
 

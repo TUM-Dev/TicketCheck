@@ -13,14 +13,17 @@ import java.util.List;
 
 import de.tum.in.tca.ticketcheck.R;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
+import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
 
 public class TicketListAdapter extends BaseAdapter {
 
     private List<AdminTicket> list;
     private LayoutInflater inflater;
+    private Context context;
 
     TicketListAdapter(List<AdminTicket> list, Context context) {
         this.list = list;
+        this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
@@ -57,10 +60,10 @@ public class TicketListAdapter extends BaseAdapter {
         String lrzIdString = "TUM-ID: " + adminTicket.getLrzId();
         String ticketTypeString = "Ticket Type: " + String.valueOf(adminTicket.getTicketType());
         String purchasedString = "Purchased: " + (adminTicket.isPurchased()
-                ? DateTimeFormat.shortDateTime().print(adminTicket.getPurchaseDate())
+                ? Event.Companion.getFormattedDateTime(context, adminTicket.getPurchaseDate())
                 : "-");
         String redeemedString = "Redeemed: " + (adminTicket.isRedeemed()
-                ? DateTimeFormat.shortDateTime().print(adminTicket.getRedeemDate())
+                ? Event.Companion.getFormattedDateTime(context, adminTicket.getRedeemDate())
                 : "-");
 
         nameView.setText(nameString);
