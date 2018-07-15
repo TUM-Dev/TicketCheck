@@ -1,8 +1,8 @@
 package de.tum.in.tca.ticketcheck.component.ticket;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
-import java.io.IOException;
 import java.util.List;
 
 import de.tum.in.tca.ticketcheck.api.TUMCabeClient;
@@ -30,29 +30,24 @@ public class EventsController {
         downloadFromService();
     }
 
-
     private void downloadFromService() {
         // get event information from API
         Callback<List<Event>> cb = new Callback<List<Event>>() {
             @Override
-            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+            public void onResponse(@NonNull Call<List<Event>> call, Response<List<Event>> response) {
                 // set view
                 List<Event> events = response.body();
                 eventDao.insert(events);
             }
 
             @Override
-            public void onFailure(Call<List<Event>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Event>> call, @NonNull Throwable t) {
                 Utils.log(t);
                 // if the download fails the user should refresh manually
                 // retrying automatically could lead to endless loop if the device is offline
             }
         };
-        try {
-            TUMCabeClient.getInstance(context).getEvents(cb);
-        } catch (IOException e) {
-            Utils.log(e);
-        }
+        TUMCabeClient.getInstance(context).getEvents(cb);
     }
 
     public List<Event> refreshEvents() {

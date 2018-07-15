@@ -1,4 +1,4 @@
-package de.tum.in.tca.ticketcheck.component.ticket;
+package de.tum.in.tca.ticketcheck.component.ticket.activity;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import de.tum.in.tca.ticketcheck.R;
+import de.tum.in.tca.ticketcheck.component.ticket.EventCard;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
 import de.tum.in.tca.ticketcheck.component.ui.overview.card.CardViewHolder;
 import de.tum.in.tca.ticketcheck.utils.Utils;
@@ -36,7 +37,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         TextView localityView;
         TextView srcDateView;
 
-        public EventViewHolder(View view) {
+        EventViewHolder(View view) {
             super(view);
             cardView = (CardView) view;
             titleView =  view.findViewById(R.id.events_title);
@@ -46,12 +47,13 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         }
     }
 
-    public EventsAdapter(List<Event> events) {
+    EventsAdapter(List<Event> events) {
         mEventList = events;
     }
 
+    @NonNull
     @Override
-    public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         if (mContext==null){
             mContext = parent.getContext();
         }
@@ -60,8 +62,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         return new EventViewHolder(view);
     }
 
-    public static void bindNewsView(RecyclerView.ViewHolder newsViewHolder, Event event, Context context) {
-        EventViewHolder holder = (EventViewHolder) newsViewHolder;
+    private static void bindEventView(RecyclerView.ViewHolder viewHolder, Event event, Context context) {
+        EventViewHolder holder = (EventViewHolder) viewHolder;
 
         holder.imgView.setVisibility(View.VISIBLE);
         holder.titleView.setVisibility(View.VISIBLE);
@@ -119,7 +121,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         eventCard.setEvent(event);
         holder.setCurrentCard(eventCard);
 
-        bindNewsView(holder, event, mContext);
+        bindEventView(holder, event, mContext);
     }
 
     @Override

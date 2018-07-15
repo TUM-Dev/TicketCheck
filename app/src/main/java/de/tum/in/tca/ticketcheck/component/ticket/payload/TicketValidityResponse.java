@@ -32,5 +32,4 @@ public class TicketValidityResponse {
         return firstName + " " + lastName + "\n" + tumID + "\n" + purchaseDate + "\n" + redeemDate + "\n" + status;
 
     }
-
 }

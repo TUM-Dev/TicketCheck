@@ -7,21 +7,16 @@ import com.google.gson.GsonBuilder;
 
 import org.joda.time.DateTime;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
+import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
-import de.tum.in.tca.ticketcheck.component.ticket.model.Ticket;
-import de.tum.in.tca.ticketcheck.component.ticket.model.TicketType;
-import de.tum.in.tca.ticketcheck.component.ticket.payload.EphimeralKey;
-import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketReservation;
-import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketReservationCancelation;
-import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketReservationResponse;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.AdminTicketRequest;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketRedemptionRequest;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketStatus;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketSuccessResponse;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketValidityRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketValidityResponse;
-import de.tum.in.tca.ticketcheck.component.ui.chat.model.ChatVerification;
 import de.tum.in.tca.ticketcheck.utils.Const;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -62,24 +57,10 @@ public final class TUMCabeClient {
         return instance;
     }
 
+    // Get event information
 
-    // TICKET SALE
-    // Getting event information
-    public void getEvents(Callback<List<Event>> callback) throws IOException {
+    public void getEvents(Callback<List<Event>> callback) {
         service.getEvents().enqueue(callback);
-    }
-
-    public Event getEvent(int eventID) throws IOException {
-        Event event = service.getEvent(eventID).execute().body();
-        return event;
-    }
-
-    public List<Event> searchEvents(String searchTerm) throws IOException {
-        return service.searchEvents(searchTerm).execute().body();
-    }
-
-    public List<TicketType> getTicketTypes(int eventID) throws IOException {
-        return service.getTicketTypes(eventID).execute().body();
     }
 
     public void getTicketValidity(String eventId, String code, Callback<TicketValidityResponse> callback) {
@@ -88,6 +69,17 @@ public final class TUMCabeClient {
                 .enqueue(callback);
     }
 
-    // TODO: redeem ticket endpoint
+    public void redeemTicket(int ticketHistory, Callback<TicketSuccessResponse> callback) {
+        service.redeemTicket(new TicketRedemptionRequest(ticketHistory))
+                .enqueue(callback);
+    }
 
+    public void getAdminTicketData(int eventId, Callback<List<AdminTicket>> callback) {
+        service.getAdminTicketData(new AdminTicketRequest(eventId))
+                .enqueue(callback);
+    }
+
+    public void getTicketStats(int event, Callback<List<TicketStatus>> cb) {
+        service.getTicketStats(event).enqueue(cb);
+    }
 }
