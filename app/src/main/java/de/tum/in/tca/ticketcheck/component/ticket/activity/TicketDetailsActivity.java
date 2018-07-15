@@ -6,13 +6,10 @@ import android.widget.TextView;
 
 import de.tum.in.tca.ticketcheck.R;
 import de.tum.in.tca.ticketcheck.component.generic.activity.BaseActivity;
-import de.tum.in.tca.ticketcheck.component.ticket.EventsController;
 
 public class TicketDetailsActivity extends BaseActivity {
     private TextView ticketStatustView;
     private Button checkInButton;
-
-    private EventsController eventsController;
 
     public TicketDetailsActivity() {
 
@@ -23,23 +20,17 @@ public class TicketDetailsActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TextView ticketNameTextView = findViewById(R.id.ticket_name);
-        TextView ticketlrzidTextView = findViewById(R.id.ticket_lrzid);
+        TextView ticketLrzIdTextView = findViewById(R.id.ticket_lrzid);
         TextView ticketNoTextView = findViewById(R.id.ticket_no);
         TextView ticketPurchaseDateTextView = findViewById(R.id.ticket_purchase);
         ticketStatustView = findViewById(R.id.ticket_status);
         checkInButton = findViewById(R.id.check_in);
 
-        String nameString = getIntent().getStringExtra("name");
-        ticketNameTextView.setText(nameString);
-
-        String lrzidString = "TUM-ID:\n" + getIntent().getStringExtra("lrzid");
-        ticketlrzidTextView.setText(lrzidString);
-
-        String ticketnoString = "Ticket No:\n" + getIntent().getStringExtra("ticketId");
-        ticketNoTextView.setText(ticketnoString);
-
-        String purchaseDateString = "Purchase Date:\n" + getIntent().getStringExtra("purchasedate");
-        ticketPurchaseDateTextView.setText(purchaseDateString);
+        ticketNameTextView.setText(getIntent().getStringExtra("name"));
+        ticketLrzIdTextView.setText(getIntent().getStringExtra("lrzid"));
+        ticketNoTextView.setText(
+                String.valueOf(getIntent().getIntExtra("ticketId", -1)));
+        ticketPurchaseDateTextView.setText(getIntent().getStringExtra("purchasedate"));
 
         boolean ticketStatus = getIntent().getBooleanExtra("checked", false);
         if (!ticketStatus) {

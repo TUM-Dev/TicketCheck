@@ -626,6 +626,10 @@ Signature: %5$s</string>
     <string name="sold_tickets">Sold Tickets: %1$d/%2$d</string>
     <string name="check_in_status">Status: Not checked in</string>
     <string name="status">Status:</string>
+    <string name="tum_id">TUM-ID:</string>
+    <string name="check_in">Check in!</string>
+    <string name="checked_in">Checked in</string>
+    <string name="ticket_no">Ticket No:</string>
 
     <!-- Payment -->
     <string name="creditcard">Credit Card</string>
@@ -653,7 +657,6 @@ Signature: %5$s</string>
     <string name="redeemed">Redeemed</string>
     <string name="no_network_connection">Currently no connection to server possible</string>
     <string name="choose_ticket_type">Choose your ticket type</string>
-    <string name="check_in">Check in!</string>
-    <string name="checked_in">Checked in</string>
+    <string name="purchase_date">Purchase date:</string>
 
 </resources>

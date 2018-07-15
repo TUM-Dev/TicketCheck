@@ -63,8 +63,7 @@ public class AdminDetailsActivity extends BaseActivity {
         listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AdminTicket ticket = null;
-                ticket = (AdminTicket) parent.getItemAtPosition(position);
+                AdminTicket ticket = (AdminTicket) parent.getItemAtPosition(position);
                 Intent intent = new Intent(AdminDetailsActivity.this, TicketDetailsActivity.class);
                 intent.putExtra("name", ticket.getName());
                 intent.putExtra("lrzid", ticket.getLrzId());
