@@ -13,7 +13,9 @@ import de.tum.in.tca.ticketcheck.R;
 import de.tum.in.tca.ticketcheck.component.generic.activity.BaseActivity;
 import de.tum.in.tca.ticketcheck.component.ticket.TicketsController;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
+import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketSuccessResponse;
+import de.tum.in.tca.ticketcheck.database.TcaDb;
 import de.tum.in.tca.ticketcheck.utils.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,11 +50,11 @@ public class TicketDetailsActivity extends BaseActivity {
         ticketNameTextView.setText(ticket.getName());
         ticketLrzIdTextView.setText(ticket.getLrzId());
         ticketNoTextView.setText(String.valueOf(ticket.getId()));
-        ticketPurchaseDateTextView.setText(DateTimeFormat.mediumDateTime().
-                print(ticket.getPurchaseDate()));
+        ticketPurchaseDateTextView.setText(ticket.isPurchased()
+                ? Event.Companion.getFormattedDateTime(this, ticket.getPurchaseDate())
+                : "-");
 
-        boolean ticketStatus = getIntent().getBooleanExtra("checked", false);
-        if (!ticketStatus) {
+        if (!ticket.isRedeemed()) {
             ticketStatustView.setText(R.string.check_in_status);
             checkInButton.setText(R.string.check_in);
             checkInButton.setOnClickListener(view -> openCheckInConfirmationDialog());
@@ -60,6 +62,7 @@ public class TicketDetailsActivity extends BaseActivity {
             ticketStatustView.setText(R.string.status);
             checkInButton.setText(R.string.checked_in);
             checkInButton.setBackground(getDrawable(R.drawable.buttonshape_checked));
+            checkInButton.setEnabled(false);
         }
     }
 
@@ -109,5 +112,7 @@ public class TicketDetailsActivity extends BaseActivity {
         ticketStatustView.setText(R.string.status);
         checkInButton.setText(R.string.checked_in);
         checkInButton.setBackground(getDrawable(R.drawable.buttonshape_checked));
+        checkInButton.setEnabled(false);
+        TcaDb.getInstance(this).adminTicketDao().setTicketRedeemed(ticket.getId());
     }
 }

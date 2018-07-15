@@ -21,6 +21,7 @@ import de.tum.in.tca.ticketcheck.component.generic.activity.BaseActivity;
 import de.tum.in.tca.ticketcheck.component.ticket.TicketsController;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketStatus;
+import de.tum.in.tca.ticketcheck.database.TcaDb;
 import de.tum.in.tca.ticketcheck.utils.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +38,7 @@ public class AdminDetailsActivity extends BaseActivity {
     private int eventID;
     private int totalTicketCount;
     private TicketsController ticketsController;
+    private int lastSelectedIndex;
 
     public AdminDetailsActivity() {
         super(R.layout.activity_admin);
@@ -62,6 +64,7 @@ public class AdminDetailsActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AdminTicket ticket = (AdminTicket) parent.getItemAtPosition(position);
+                lastSelectedIndex = position;
                 Intent intent = new Intent(AdminDetailsActivity.this, TicketDetailsActivity.class);
                 intent.putExtra("ticketId", ticket.getId());
                 startActivity(intent);
@@ -104,6 +107,17 @@ public class AdminDetailsActivity extends BaseActivity {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_activity_admin, menu);
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Update the ticket that was being shown in the Ticket Detail View, in case the redemption state changed
+        if (lastSelectedIndex < tickets.size()) {
+            tickets.set(lastSelectedIndex,
+                    TcaDb.getInstance(this).adminTicketDao().getByTicketId(tickets.get(lastSelectedIndex).getId()));
+            ((TicketListAdapter) listView.getAdapter()).notifyDataSetChanged();
+        }
     }
 
     @Override

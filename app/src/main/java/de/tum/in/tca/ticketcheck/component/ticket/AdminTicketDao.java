@@ -23,4 +23,7 @@ public interface AdminTicketDao {
 
     @Query("DELETE FROM adminticket")
     void removeAll();
+
+    @Query("UPDATE adminticket SET redeemDate = date() WHERE id = :ticketID")
+    void setTicketRedeemed(int ticketID);
 }

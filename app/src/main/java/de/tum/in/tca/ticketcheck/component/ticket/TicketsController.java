@@ -71,10 +71,9 @@ public class TicketsController {
         return adminTicketDao.getByTicketId(ticketId);
     }
 
-    public void redeemTicket(int ticketHistory, Callback<TicketSuccessResponse> cb){
-        TUMCabeClient.getInstance(context).redeemTicket(ticketHistory, cb);
+    public void redeemTicket(int ticketId, Callback<TicketSuccessResponse> cb){
+        TUMCabeClient.getInstance(context).redeemTicket(ticketId, cb);
     }
-
 
     public void checkTicketValidity(int eventId, String code, Callback<TicketValidityResponse> cb) {
         TUMCabeClient.getInstance(context).getTicketValidity(eventId, code, cb);
