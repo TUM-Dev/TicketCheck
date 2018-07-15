@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "5670390ec4ba37e7bacee71902a0d37e",
+    "identityHash": "3362786df45e08937a623086d25f0640",
     "entities": [
       {
         "tableName": "Event",
@@ -106,7 +106,7 @@
       },
       {
         "tableName": "TicketType",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `price` INTEGER NOT NULL, `description` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `price` INTEGER NOT NULL, `description` TEXT NOT NULL, `contingent` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -125,6 +125,12 @@
             "columnName": "description",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "contingent",
+            "columnName": "contingent",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -138,7 +144,7 @@
       },
       {
         "tableName": "AdminTicket",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `event` INTEGER NOT NULL, `name` TEXT NOT NULL, `lrzId` TEXT NOT NULL, `ticketType` INTEGER NOT NULL, `purchaseDate` TEXT NOT NULL, `redeemDate` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `event` INTEGER NOT NULL, `name` TEXT NOT NULL, `lrzId` TEXT NOT NULL, `ticketType` INTEGER NOT NULL, `purchaseDate` TEXT, `redeemDate` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -174,13 +180,13 @@
             "fieldPath": "purchaseDate",
             "columnName": "purchaseDate",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "redeemDate",
             "columnName": "redeemDate",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -195,7 +201,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"5670390ec4ba37e7bacee71902a0d37e\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"3362786df45e08937a623086d25f0640\")"
     ]
   }
 }

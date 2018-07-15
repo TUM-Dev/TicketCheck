@@ -17,7 +17,8 @@ data class TicketType(@PrimaryKey
                   @SerializedName("ticket_type")
                   var id: Int = 0,
                   var price: Int = 0,
-                  var description: String = "") {
+                  var description: String = "",
+                  var contingent: Int = 0) {
 
     fun formatedPrice(): String {
         return DecimalFormat("#.00").format(price / 100.0) + " €"

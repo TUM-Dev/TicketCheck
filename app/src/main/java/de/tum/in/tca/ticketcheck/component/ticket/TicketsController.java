@@ -2,12 +2,12 @@ package de.tum.in.tca.ticketcheck.component.ticket;
 
 import android.content.Context;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.tum.in.tca.ticketcheck.api.TUMCabeClient;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
+import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicketRefreshCallback;
 import de.tum.in.tca.ticketcheck.component.ui.chat.model.ChatMember;
 import de.tum.in.tca.ticketcheck.database.TcaDb;
 import de.tum.in.tca.ticketcheck.utils.Const;
@@ -46,14 +46,13 @@ public class TicketsController {
         return adminTicketDao.getByEventId(event);
     }
 
-    public List<AdminTicket> refreshTickets(int eventID) {
-        downloadFromService(eventID);
+    public List<AdminTicket> refreshTickets(int eventID, AdminTicketRefreshCallback cb) {
+        downloadFromService(eventID, cb);
         return getTicketsForEvent(eventID);
     }
 
-    private void downloadFromService(int eventID) {
-        // get event information from API
-        Callback<List<AdminTicket>> cb = new Callback<List<AdminTicket>>() {
+    private void downloadFromService(int eventID, AdminTicketRefreshCallback cb) {
+        Callback<List<AdminTicket>> callback = new Callback<List<AdminTicket>>() {
             @Override
             public void onResponse(Call<List<AdminTicket>> call, Response<List<AdminTicket>> response) {
                 List<AdminTicket> tickets = response.body();
@@ -61,6 +60,7 @@ public class TicketsController {
                     tickets = new ArrayList<>();
                 }
                 adminTicketDao.insert(tickets);
+                cb.handle(tickets);
             }
 
             @Override
@@ -68,11 +68,7 @@ public class TicketsController {
                 Utils.log(t);
             }
         };
-        try {
-            TUMCabeClient.getInstance(context).getAdminTicketData(context, eventID, cb);
-        } catch (IOException e) {
-            Utils.log(e);
-        }
+        TUMCabeClient.getInstance(context).getAdminTicketData(eventID, callback);
     }
 }
 

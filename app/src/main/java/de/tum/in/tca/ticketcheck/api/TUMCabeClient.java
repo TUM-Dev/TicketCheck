@@ -21,6 +21,7 @@ import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketRedemptionReques
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketReservation;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketReservationCancelation;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketReservationResponse;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketStatus;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketSuccessResponse;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketValidityRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketValidityResponse;
@@ -96,9 +97,12 @@ public final class TUMCabeClient {
                 .enqueue(callback);
     }
 
-    public void getAdminTicketData(Context context, int eventId, Callback<List<AdminTicket>> callback) throws IOException {
-        ChatVerification chatVerification = ChatVerification.Companion.createChatVerification(context, new AdminTicketRequest(eventId));
-        service.getAdminTicketData(chatVerification)
+    public void getAdminTicketData(int eventId, Callback<List<AdminTicket>> callback) {
+        service.getAdminTicketData(new AdminTicketRequest(eventId))
                 .enqueue(callback);
+    }
+
+    public void getTicketStats(int event, Callback<List<TicketStatus>> cb) {
+        service.getTicketStats(event).enqueue(cb);
     }
 }

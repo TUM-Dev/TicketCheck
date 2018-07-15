@@ -7,8 +7,10 @@ import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Ticket;
 import de.tum.in.tca.ticketcheck.component.ticket.model.TicketType;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.AdminTicketRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketRedemptionRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketReservationResponse;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketStatus;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketSuccessResponse;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketValidityRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketValidityResponse;
@@ -47,6 +49,9 @@ public interface TUMCabeAPIService {
     Call<TicketSuccessResponse> redeemTicket(@Body TicketRedemptionRequest request);
 
     @POST(API_EVENTS + "ticket/sold")
-    Call<List<AdminTicket>> getAdminTicketData(@Body ChatVerification chatVerification);
+    Call<List<AdminTicket>> getAdminTicketData(@Body AdminTicketRequest adminTicketRequest);
+
+    @GET(API_EVENTS + API_TICKET + "status/{event}")
+    Call<List<TicketStatus>> getTicketStats(@Path("event") int event);
 
 }

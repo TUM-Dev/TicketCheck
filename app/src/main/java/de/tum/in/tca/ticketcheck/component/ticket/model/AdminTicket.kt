@@ -28,6 +28,15 @@ data class AdminTicket(
         @SerializedName("ticket_type")
         var ticketType: Int = 0,
         @SerializedName("purchase")
-        var purchaseDate: DateTime = DateTime(),
+        var purchaseDate: DateTime? = null,
         @SerializedName("redemption")
-        var redeemDate: DateTime = DateTime())
+        var redeemDate: DateTime? = null) {
+
+    fun isPurchased(): Boolean {
+        return purchaseDate != null
+    }
+
+    fun isRedeemed(): Boolean {
+        return redeemDate != null
+    }
+}

@@ -54,10 +54,14 @@ public class TicketListAdapter extends BaseAdapter {
         TextView redeemTimeView = view.findViewById(R.id.redemption);
 
         String nameString = adminTicket.getName();
-        String lrzIdString = "TUM-ID:" + adminTicket.getLrzId();
-        String ticketTypeString = "Ticket Type:" + String.valueOf(adminTicket.getTicketType());
-        String purchasedString = "Purchased:" + DateTimeFormat.shortDateTime().print(adminTicket.getPurchaseDate());
-        String redeemedString = "Redeemed:" + DateTimeFormat.shortDateTime().print(adminTicket.getRedeemDate());
+        String lrzIdString = "TUM-ID: " + adminTicket.getLrzId();
+        String ticketTypeString = "Ticket Type: " + String.valueOf(adminTicket.getTicketType());
+        String purchasedString = "Purchased: " + (adminTicket.isPurchased()
+                ? DateTimeFormat.shortDateTime().print(adminTicket.getPurchaseDate())
+                : "-");
+        String redeemedString = "Redeemed: " + (adminTicket.isRedeemed()
+                ? DateTimeFormat.shortDateTime().print(adminTicket.getRedeemDate())
+                : "-");
 
         nameView.setText(nameString);
         lrzIdView.setText(lrzIdString);
