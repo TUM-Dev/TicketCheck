@@ -1,4 +1,4 @@
-package de.tum.in.tca.ticketcheck.component.ticket;
+package de.tum.in.tca.ticketcheck.component.ticket.activity;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,6 +11,7 @@ import java.util.List;
 import de.tum.in.tca.ticketcheck.R;
 import de.tum.in.tca.ticketcheck.component.generic.activity.BaseActivity;
 import de.tum.in.tca.ticketcheck.component.generic.adapter.EqualSpacingItemDecoration;
+import de.tum.in.tca.ticketcheck.component.ticket.EventsController;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
 import de.tum.in.tca.ticketcheck.database.TcaDb;
 

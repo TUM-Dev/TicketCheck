@@ -27,8 +27,4 @@ data class Event(@PrimaryKey
                  var locality: String = "",
                  @SerializedName("start")
                  var date: DateTime = DateTime(),
-                 var link: String = "") {
-
-
-    fun isFutureEvent() = date.isAfterNow
-}
+                 var link: String = "")

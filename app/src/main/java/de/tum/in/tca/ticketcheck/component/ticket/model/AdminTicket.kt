@@ -8,7 +8,9 @@ import org.joda.time.DateTime
 /**
  * AdminTicket
  *
+ * @param id ticket_history
  * @param name  Name
+ * @param event event ID
  * @param lrzId  lrzId
  * @param ticketType   ticketType
  * @param purchaseDate   purchaseDate
@@ -17,13 +19,24 @@ import org.joda.time.DateTime
 @Entity
 data class AdminTicket(
         @PrimaryKey
-        @SerializedName("name")
+        @SerializedName("ticket_history")
+        var id: Int = 0,
+        var event: Int = 0,
         var name: String = "",
         @SerializedName("lrz_id")
         var lrzId: String = "",
         @SerializedName("ticket_type")
         var ticketType: Int = 0,
         @SerializedName("purchase")
-        var purchaseDate: DateTime = DateTime(),
+        var purchaseDate: DateTime? = null,
         @SerializedName("redemption")
-        var redeemDate: DateTime = DateTime())
+        var redeemDate: DateTime? = null) {
+
+    fun isPurchased(): Boolean {
+        return purchaseDate != null
+    }
+
+    fun isRedeemed(): Boolean {
+        return redeemDate != null
+    }
+}

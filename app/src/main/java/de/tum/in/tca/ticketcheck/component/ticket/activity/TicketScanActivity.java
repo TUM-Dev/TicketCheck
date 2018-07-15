@@ -1,4 +1,4 @@
-package de.tum.in.tca.ticketcheck.component.ticket;
+package de.tum.in.tca.ticketcheck.component.ticket.activity;
 
 import android.Manifest;
 import android.os.Bundle;

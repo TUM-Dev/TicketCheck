@@ -1,7 +1,8 @@
-package de.tum.in.tca.ticketcheck.component.ticket;
+package de.tum.in.tca.ticketcheck.component.ticket.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
@@ -9,19 +10,15 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.tum.in.tca.ticketcheck.R;
-import de.tum.in.tca.ticketcheck.api.AuthenticationManager;
 import de.tum.in.tca.ticketcheck.api.TUMCabeClient;
-import de.tum.in.tca.ticketcheck.api.exception.NoPrivateKey;
 import de.tum.in.tca.ticketcheck.component.generic.activity.BaseActivity;
+import de.tum.in.tca.ticketcheck.component.ticket.TicketsController;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
-import de.tum.in.tca.ticketcheck.component.ticket.model.AdminVerification;
-import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketValidityResponse;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketStatus;
 import de.tum.in.tca.ticketcheck.utils.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,8 +28,13 @@ public class AdminDetailsActivity extends BaseActivity {
 
     private SearchView searchView;
     private ListView listView;
+    private TextView totalSaleView;
     private TicketListAdapter ticketListAdapter;
     private List<AdminTicket> tickets;
+
+    private int eventID;
+    private int totalTicketCount;
+    private TicketsController ticketsController;
 
     public AdminDetailsActivity() {
         super(R.layout.activity_admin);
@@ -43,23 +45,42 @@ public class AdminDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         searchView = findViewById(R.id.search_ticket);
-        TextView totalSaleView = findViewById(R.id.sold_tickets);
+        totalSaleView = findViewById(R.id.sold_tickets);
         listView = findViewById(R.id.ticket_list);
         FloatingActionButton floatingScanner = findViewById(R.id.fab_scanner);
 
-        int clickedEventId = getIntent().getIntExtra("event_id", 0);
-        //TODO:send event_id to backend and receive really ticket data,following just use dummy ticketdata
-        tickets = TicketsController.getTickets();
+        eventID = getIntent().getIntExtra("event_id", 0);
 
-        ticketListAdapter = new TicketListAdapter(tickets, this);
+        ticketsController = new TicketsController(this);
+        // Retrieve the saved ticket data from local database
+        tickets = ticketsController.getTicketsForEvent(eventID);
+        ticketListAdapter = new TicketListAdapter(tickets, AdminDetailsActivity.this);
         listView.setAdapter(ticketListAdapter);
+        ticketListAdapter.notifyDataSetChanged();
+        // Invoke ticket refresh
+        refreshTicketList();
 
         //Set total ticket and total sale
-        //TODO:send event_id to backend and receive really sum of ticket,following just use dummy ticketdata
-        int totalNumberOfTickets = 100;
-        int numberOfSoldTickets = tickets.size();
-        totalSaleView.setText(getString(R.string.sold_tickets,
-                numberOfSoldTickets, totalNumberOfTickets));
+        totalTicketCount = 0;
+        updateTicketCounter();
+        TUMCabeClient.getInstance(AdminDetailsActivity.this).getTicketStats(eventID, new Callback<List<TicketStatus>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<TicketStatus>> call, @NonNull Response<List<TicketStatus>> response) {
+                List<TicketStatus> list = response.body() != null
+                        ? response.body()
+                        : new ArrayList<>();
+                totalTicketCount = 0;
+                for (TicketStatus status : list) {
+                    totalTicketCount += status.getContingent();
+                }
+                updateTicketCounter();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<TicketStatus>> call, @NonNull Throwable t) {
+                Utils.log(t);
+            }
+        });
 
         //Set FAB to scanner
         floatingScanner.setOnClickListener(view -> openTicketScanActivity());
@@ -78,11 +99,7 @@ public class AdminDetailsActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.action_refresh) {
-            //TODO:send event_id to backend and receive really ticket data,following just use dummy ticketdata
-            tickets = TicketsController.getrefreshTickets();
-            ticketListAdapter = new TicketListAdapter(tickets, this);
-            listView.setAdapter(ticketListAdapter);
-            ticketListAdapter.notifyDataSetChanged();
+            refreshTicketList();
         }
         return true;
     }
@@ -98,7 +115,7 @@ public class AdminDetailsActivity extends BaseActivity {
             public boolean onQueryTextSubmit(String queryText) {
                 boolean searchSuccessful = search(queryText);
 
-                if (!searchSuccessful){
+                if (!searchSuccessful) {
                     Utils.showToast(AdminDetailsActivity.this, getString(R.string.not_in_list));
                 }
 
@@ -110,7 +127,7 @@ public class AdminDetailsActivity extends BaseActivity {
                 return true;
             }
 
-            private boolean search(String queryText){
+            private boolean search(String queryText) {
                 List<AdminTicket> foundTicketList = new ArrayList<>();
                 for (AdminTicket foundTicket : tickets) {
                     if (foundTicket.getName().toLowerCase().contains(queryText.toLowerCase()) ||
@@ -126,5 +143,19 @@ public class AdminDetailsActivity extends BaseActivity {
                 return !foundTicketList.isEmpty();
             }
         });
+    }
+
+    private void refreshTicketList() {
+        ticketsController.refreshTickets(eventID, list -> {
+            tickets = list;
+            ticketListAdapter = new TicketListAdapter(tickets, AdminDetailsActivity.this);
+            listView.setAdapter(ticketListAdapter);
+            ticketListAdapter.notifyDataSetChanged();
+            updateTicketCounter();
+        });
+    }
+
+    private void updateTicketCounter() {
+        totalSaleView.setText(getString(R.string.sold_tickets, tickets.size(), totalTicketCount));
     }
 }
