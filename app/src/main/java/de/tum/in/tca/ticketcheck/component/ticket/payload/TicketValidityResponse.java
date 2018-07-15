@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class TicketValidityResponse {
 
+    // TODO: refactor this to Kotlin class!
+
     @SerializedName("valid")
     public boolean valid;
 

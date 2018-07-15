@@ -21,10 +21,12 @@ import retrofit2.Response;
 
 public class ConfirmCheckInFragment extends BottomSheetDialogFragment {
 
-    public static ConfirmCheckInFragment newInstance(String eventId, String code) {
+    // TODO: this is currently not used -> Delete it?
+
+    public static ConfirmCheckInFragment newInstance(int eventId, String code) {
         ConfirmCheckInFragment fragment = new ConfirmCheckInFragment();
         Bundle args = new Bundle();
-        args.putString("eventId", eventId);
+        args.putInt("eventId", eventId);
         args.putString("code", code);
         fragment.setArguments(args);
         return fragment;
@@ -35,7 +37,7 @@ public class ConfirmCheckInFragment extends BottomSheetDialogFragment {
     private AppCompatButton confirmButton;
     private AppCompatButton denyButton;
 
-    private String eventId;
+    private int eventId;
     private String code;
     private TicketValidityResponse ticketValidityResponse;
 
@@ -43,7 +45,7 @@ public class ConfirmCheckInFragment extends BottomSheetDialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            eventId = getArguments().getString("eventId");
+            eventId = getArguments().getInt("eventId");
             code = getArguments().getString("code");
         }
     }

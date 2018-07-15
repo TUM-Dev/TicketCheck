@@ -10,6 +10,7 @@ import de.tum.in.tca.ticketcheck.api.TUMCabeClient;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicketRefreshCallback;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketSuccessResponse;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketValidityResponse;
 import de.tum.in.tca.ticketcheck.database.TcaDb;
 import de.tum.in.tca.ticketcheck.utils.Utils;
 import retrofit2.Call;
@@ -72,6 +73,11 @@ public class TicketsController {
 
     public void redeemTicket(int ticketHistory, Callback<TicketSuccessResponse> cb){
         TUMCabeClient.getInstance(context).redeemTicket(ticketHistory, cb);
+    }
+
+
+    public void checkTicketValidity(int eventId, String code, Callback<TicketValidityResponse> cb) {
+        TUMCabeClient.getInstance(context).getTicketValidity(eventId, code, cb);
     }
 }
 

@@ -660,5 +660,6 @@ Signature: %5$s</string>
     <string name="redeemed">Redeemed</string>
     <string name="no_network_connection">Currently no connection to server possible</string>
     <string name="choose_ticket_type">Choose your ticket type</string>
+    <string name="check_in_failed">Checkin failed</string>
 
 </resources>

@@ -88,7 +88,12 @@ public class TicketDetailsActivity extends BaseActivity {
             @Override
             public void onResponse(@NonNull Call<TicketSuccessResponse> call,
                                    @NonNull Response<TicketSuccessResponse> response) {
-                checkInSuccessful();
+                TicketSuccessResponse ticketSuccessResponse = response.body();
+                if(ticketSuccessResponse != null && ticketSuccessResponse.getSuccess()){
+                    checkInSuccessful();
+                } else {
+                    Utils.showToast(getApplicationContext(), R.string.check_in_failed);
+                }
             }
 
             @Override

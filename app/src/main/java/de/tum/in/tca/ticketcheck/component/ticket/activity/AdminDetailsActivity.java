@@ -12,8 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.joda.time.format.DateTimeFormat;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,8 +116,9 @@ public class AdminDetailsActivity extends BaseActivity {
     }
 
     private void openTicketScanActivity() {
+        Intent intent = new Intent(this, TicketScanActivity.class);
+        intent.putExtra("eventId", eventID);
         startActivity(new Intent(this, TicketScanActivity.class));
-        //TODO:send current eventId to TicketScanActivity
     }
 
     private void setupSearchView() {

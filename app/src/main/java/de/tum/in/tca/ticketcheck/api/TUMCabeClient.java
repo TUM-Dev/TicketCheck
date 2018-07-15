@@ -63,7 +63,7 @@ public final class TUMCabeClient {
         service.getEvents().enqueue(callback);
     }
 
-    public void getTicketValidity(String eventId, String code, Callback<TicketValidityResponse> callback) {
+    public void getTicketValidity(int eventId, String code, Callback<TicketValidityResponse> callback) {
         TicketValidityRequest request = new TicketValidityRequest(eventId, code);
         service.getNameForTicket(request)
                 .enqueue(callback);
