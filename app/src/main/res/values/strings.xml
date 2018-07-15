@@ -621,7 +621,7 @@ Signature: %5$s</string>
     <!-- Admin Activity -->
     <string name="search_admin">Search</string>
     <string name="scanner">Scanner</string>
-    <string name="ticket_detail">Ticket Detail</string>d
+    <string name="ticket_detail">Ticket Details</string>d
     <string name="not_in_list">No matching name or lrz ID found…</string>
     <string name="sold_tickets">Sold Tickets: %1$d/%2$d</string>
     <string name="check_in_status">Status: Not checked in</string>
