@@ -624,6 +624,8 @@ Signature: %5$s</string>
     <string name="ticket_detail">Ticket Detail</string>d
     <string name="not_in_list">No matching name or lrz ID found…</string>
     <string name="sold_tickets">Sold Tickets: %1$d/%2$d</string>
+    <string name="check_in_status">Status: Not checked in</string>
+    <string name="status">Status:</string>
 
     <!-- Payment -->
     <string name="creditcard">Credit Card</string>
@@ -646,10 +648,12 @@ Signature: %5$s</string>
     <string name="not_logged_in_title">Sorry</string>
     <string name="not_logged_in_message">You have to be logged in to purchase tickets.</string>
     <string name="ticket_retrieval_error">Failure while receiving ticket from server.</string>
-    <string name="reserving_ticket">Reserving your ticket, please wait...</string>
+    <string name="reserving_ticket">Reserving your ticket, please wait…</string>
 
     <string name="redeemed">Redeemed</string>
     <string name="no_network_connection">Currently no connection to server possible</string>
     <string name="choose_ticket_type">Choose your ticket type</string>
+    <string name="check_in">Check in!</string>
+    <string name="checked_in">Checked in</string>
 
 </resources>
