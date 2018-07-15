@@ -1,4 +1,4 @@
-package de.tum.in.tca.ticketcheck.component.ticket;
+package de.tum.in.tca.ticketcheck.component.ticket.activity;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import de.tum.in.tca.ticketcheck.R;
 import de.tum.in.tca.ticketcheck.component.generic.activity.BaseActivity;
+import de.tum.in.tca.ticketcheck.component.ticket.EventsController;
 
 public class TicketDetailsActivity extends BaseActivity {
     private TextView ticketNameTextView;

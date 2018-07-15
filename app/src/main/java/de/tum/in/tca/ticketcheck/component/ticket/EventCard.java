@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 
 import org.jetbrains.annotations.NotNull;
 
+import de.tum.in.tca.ticketcheck.component.ticket.activity.AdminDetailsActivity;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
 import de.tum.in.tca.ticketcheck.component.ui.overview.card.NotificationAwareCard;
 import de.tum.in.tumcampusapp.component.ui.overview.CardManager;

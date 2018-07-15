@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import de.tum.in.tca.ticketcheck.R;
-import de.tum.in.tca.ticketcheck.component.ticket.EventsActivity;
+import de.tum.in.tca.ticketcheck.component.ticket.activity.EventsActivity;
 import de.tum.in.tca.ticketcheck.utils.Const;
 import de.tum.in.tca.ticketcheck.utils.Utils;
 

@@ -1,4 +1,4 @@
-package de.tum.in.tca.ticketcheck.component.ticket;
+package de.tum.in.tca.ticketcheck.component.ticket.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +19,7 @@ import java.util.List;
 
 import de.tum.in.tca.ticketcheck.R;
 import de.tum.in.tca.ticketcheck.component.generic.activity.BaseActivity;
+import de.tum.in.tca.ticketcheck.component.ticket.TicketsController;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 import de.tum.in.tca.ticketcheck.utils.Utils;
 

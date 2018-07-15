@@ -1,4 +1,4 @@
-package de.tum.in.tca.ticketcheck.component.ticket;
+package de.tum.in.tca.ticketcheck.component.ticket.activity;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import de.tum.in.tca.ticketcheck.R;
+import de.tum.in.tca.ticketcheck.component.ticket.EventCard;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
 import de.tum.in.tca.ticketcheck.component.ui.overview.card.CardViewHolder;
 import de.tum.in.tca.ticketcheck.utils.Utils;
