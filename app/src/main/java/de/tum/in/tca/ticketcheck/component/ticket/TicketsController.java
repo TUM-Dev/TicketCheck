@@ -3,6 +3,7 @@ package de.tum.in.tca.ticketcheck.component.ticket;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +66,11 @@ public class TicketsController {
                 Utils.log(t);
             }
         };
-        TUMCabeClient.getInstance(context).getAdminTicketData(eventID, callback);
+        try {
+            TUMCabeClient.getInstance(context).getAdminTicketData(context, eventID, callback);
+        } catch (IOException e) {
+            Utils.log(e);
+        }
     }
 }
 

@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 
 import org.joda.time.DateTime;
 
+import java.io.IOException;
 import java.util.List;
 
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminVerification;
@@ -70,13 +71,13 @@ public final class TUMCabeClient {
                 .enqueue(callback);
     }
 
-    public void redeemTicket(int ticketHistory, Callback<TicketSuccessResponse> callback) {
-        service.redeemTicket(new TicketRedemptionRequest(ticketHistory))
+    public void redeemTicket(Context context, int ticketHistory, Callback<TicketSuccessResponse> callback) throws IOException {
+        service.redeemTicket(AdminVerification.Companion.createAdminVerification(context, new TicketRedemptionRequest(ticketHistory)))
                 .enqueue(callback);
     }
 
-    public void getAdminTicketData(int eventId, Callback<List<AdminTicket>> callback) {
-        service.getAdminTicketData(new AdminTicketRequest(eventId))
+    public void getAdminTicketData(Context context, int eventId, Callback<List<AdminTicket>> callback) throws IOException {
+        service.getAdminTicketData(AdminVerification.Companion.createAdminVerification(context, new AdminTicketRequest(eventId)))
                 .enqueue(callback);
     }
 

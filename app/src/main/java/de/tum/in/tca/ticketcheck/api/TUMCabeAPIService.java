@@ -3,12 +3,10 @@ package de.tum.in.tca.ticketcheck.api;
 import java.util.List;
 
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
+import de.tum.in.tca.ticketcheck.component.ticket.model.AdminVerification;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
-import de.tum.in.tca.ticketcheck.component.ticket.payload.AdminTicketRequest;
-import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketRedemptionRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketStatus;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketSuccessResponse;
-import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketValidityRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketValidityResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -25,13 +23,13 @@ public interface TUMCabeAPIService {
     Call<List<Event>> getEvents();
 
     @POST(API_EVENTS + "ticket/validate")
-    Call<TicketValidityResponse> getNameForTicket(@Body TicketValidityRequest request);
+    Call<TicketValidityResponse> getNameForTicket(@Body AdminVerification adminVerification);
 
     @POST(API_EVENTS + "ticket/validate")
-    Call<TicketSuccessResponse> redeemTicket(@Body TicketRedemptionRequest request);
+    Call<TicketSuccessResponse> redeemTicket(@Body AdminVerification adminVerification);
 
     @POST(API_EVENTS + "ticket/sold")
-    Call<List<AdminTicket>> getAdminTicketData(@Body AdminTicketRequest adminTicketRequest);
+    Call<List<AdminTicket>> getAdminTicketData(@Body AdminVerification adminVerification);
 
     @GET(API_EVENTS + API_TICKET + "status/{event}")
     Call<List<TicketStatus>> getTicketStats(@Path("event") int event);
