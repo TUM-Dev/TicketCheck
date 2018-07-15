@@ -2,6 +2,7 @@ package de.tum.in.tca.ticketcheck.component.ticket;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
@@ -16,7 +17,6 @@ import de.tum.in.tca.ticketcheck.R;
 import de.tum.in.tca.ticketcheck.api.TUMCabeClient;
 import de.tum.in.tca.ticketcheck.component.generic.activity.BaseActivity;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
-import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicketRefreshCallback;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketStatus;
 import de.tum.in.tca.ticketcheck.utils.Utils;
 import retrofit2.Call;
@@ -63,7 +63,7 @@ public class AdminDetailsActivity extends BaseActivity {
         updateTicketCounter();
         TUMCabeClient.getInstance(AdminDetailsActivity.this).getTicketStats(eventID, new Callback<List<TicketStatus>>() {
             @Override
-            public void onResponse(Call<List<TicketStatus>> call, Response<List<TicketStatus>> response) {
+            public void onResponse(@NonNull Call<List<TicketStatus>> call, @NonNull Response<List<TicketStatus>> response) {
                 List<TicketStatus> list = response.body() != null
                         ? response.body()
                         : new ArrayList<>();
@@ -75,7 +75,7 @@ public class AdminDetailsActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Call<List<TicketStatus>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<TicketStatus>> call, @NonNull Throwable t) {
                 Utils.log(t);
             }
         });
