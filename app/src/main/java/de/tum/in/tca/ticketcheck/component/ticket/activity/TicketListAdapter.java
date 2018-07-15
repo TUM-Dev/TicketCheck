@@ -16,15 +16,11 @@ import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 
 public class TicketListAdapter extends BaseAdapter {
 
-    private List<AdminTicket> list = null;
+    private List<AdminTicket> list;
+    private LayoutInflater inflater;
 
-    private Context context = null;
-
-    private LayoutInflater inflater = null;
-
-    public TicketListAdapter(List<AdminTicket> list, Context context) {
+    TicketListAdapter(List<AdminTicket> list, Context context) {
         this.list = list;
-        this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
@@ -58,10 +54,14 @@ public class TicketListAdapter extends BaseAdapter {
         TextView redeemTimeView = view.findViewById(R.id.redemption);
 
         String nameString = adminTicket.getName();
-        String lrzIdString = "TUM-ID:" + adminTicket.getLrzId();
-        String ticketTypeString = "Ticket Type:" + String.valueOf(adminTicket.getTicketType());
-        String purchasedString = "Purchased:" + DateTimeFormat.shortDateTime().print(adminTicket.getPurchaseDate());
-        String redeemedString = "Redeemed:" + DateTimeFormat.shortDateTime().print(adminTicket.getRedeemDate());
+        String lrzIdString = "TUM-ID: " + adminTicket.getLrzId();
+        String ticketTypeString = "Ticket Type: " + String.valueOf(adminTicket.getTicketType());
+        String purchasedString = "Purchased: " + (adminTicket.isPurchased()
+                ? DateTimeFormat.shortDateTime().print(adminTicket.getPurchaseDate())
+                : "-");
+        String redeemedString = "Redeemed: " + (adminTicket.isRedeemed()
+                ? DateTimeFormat.shortDateTime().print(adminTicket.getRedeemDate())
+                : "-");
 
         nameView.setText(nameString);
         lrzIdView.setText(lrzIdString);

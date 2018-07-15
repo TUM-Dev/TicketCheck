@@ -8,10 +8,9 @@ import org.jetbrains.annotations.NotNull;
 
 import de.tum.in.tca.ticketcheck.component.ticket.activity.AdminDetailsActivity;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
-import de.tum.in.tca.ticketcheck.component.ui.overview.card.NotificationAwareCard;
-import de.tum.in.tumcampusapp.component.ui.overview.CardManager;
+import de.tum.in.tca.ticketcheck.component.ui.overview.card.Card;
 
-public class EventCard extends NotificationAwareCard {
+public class EventCard extends Card {
 
     private Event event;
 
@@ -20,21 +19,14 @@ public class EventCard extends NotificationAwareCard {
     }
 
     public EventCard(Context context) {
-        super(CardManager.CARD_EVENTS, context, "events");
+        super(CardManager.CARD_EVENTS, context, "events", false);
     }
 
     @Override
     public Intent getIntent() {
-        // TODO: switch to AdminDetailsActivity once it is implemented
         Intent intent = new Intent(getContext(), AdminDetailsActivity.class);
         intent.putExtra("event_id", event.getId());
         return intent;
-    }
-
-    @NotNull
-    @Override
-    public String getTitle() {
-        return null;
     }
 
     @Override
