@@ -8,8 +8,8 @@ import android.view.Menu
 import android.view.MenuItem
 import de.tum.`in`.tca.ticketcheck.R
 import de.tum.`in`.tca.ticketcheck.component.settings.UserPreferencesActivity
-import de.tum.`in`.tca.ticketcheck.component.ticket.EventsActivity
-import de.tum.`in`.tca.ticketcheck.component.ticket.TicketScanActivity
+import de.tum.`in`.tca.ticketcheck.component.ticket.activity.EventsActivity
+import de.tum.`in`.tca.ticketcheck.component.ticket.activity.TicketScanActivity
 
 class DrawerMenuHelper(private val mContext: Context, private val mDrawerLayout: DrawerLayout) : NavigationView.OnNavigationItemSelectedListener {
 

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 
 import org.jetbrains.annotations.NotNull;
 
+import de.tum.in.tca.ticketcheck.component.ticket.activity.AdminDetailsActivity;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
 import de.tum.in.tca.ticketcheck.component.ui.overview.card.Card;
 
@@ -17,7 +18,7 @@ public class EventCard extends Card {
         this.event = event;
     }
 
-    EventCard(Context context) {
+    public EventCard(Context context) {
         super(CardManager.CARD_EVENTS, context, "events", false);
     }
 
