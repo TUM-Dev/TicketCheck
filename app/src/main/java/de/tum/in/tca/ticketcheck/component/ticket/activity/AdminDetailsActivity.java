@@ -65,11 +65,7 @@ public class AdminDetailsActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AdminTicket ticket = (AdminTicket) parent.getItemAtPosition(position);
                 Intent intent = new Intent(AdminDetailsActivity.this, TicketDetailsActivity.class);
-                intent.putExtra("name", ticket.getName());
-                intent.putExtra("lrzid", ticket.getLrzId());
                 intent.putExtra("ticketId", ticket.getId());
-                intent.putExtra("purchasedate", DateTimeFormat.shortDateTime().print(ticket.getPurchaseDate()));
-                intent.putExtra("checked", ticket.isRedeemed());
                 startActivity(intent);
             }
         });

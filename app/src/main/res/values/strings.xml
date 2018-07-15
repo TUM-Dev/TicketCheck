@@ -658,5 +658,6 @@ Signature: %5$s</string>
     <string name="no_network_connection">Currently no connection to server possible</string>
     <string name="choose_ticket_type">Choose your ticket type</string>
     <string name="purchase_date">Purchase date:</string>
+    <string name="check_in_name">Check in %1$s?</string>
 
 </resources>

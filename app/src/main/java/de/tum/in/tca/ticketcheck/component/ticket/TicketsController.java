@@ -31,7 +31,6 @@ public class TicketsController {
     public TicketsController(Context context) {
         this.context = context;
 
-        Utils.setSetting(context, Const.CHAT_MEMBER, new ChatMember("ga38fir"));
         adminTicketDao = TcaDb.getInstance(context).adminTicketDao();
     }
 
@@ -66,6 +65,10 @@ public class TicketsController {
             }
         };
         TUMCabeClient.getInstance(context).getAdminTicketData(eventID, callback);
+    }
+
+    public AdminTicket getTicketById(int ticketId) {
+        return adminTicketDao.getByTicketId(ticketId);
     }
 }
 
