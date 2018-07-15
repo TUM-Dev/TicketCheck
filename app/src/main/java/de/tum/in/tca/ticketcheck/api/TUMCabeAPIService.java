@@ -3,6 +3,7 @@ package de.tum.in.tca.ticketcheck.api;
 import java.util.HashMap;
 import java.util.List;
 
+import de.tum.in.tca.ticketcheck.component.ticket.model.AdminVerification;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Ticket;
 import de.tum.in.tca.ticketcheck.component.ticket.model.TicketType;
@@ -39,6 +40,6 @@ public interface TUMCabeAPIService {
     Call<List<TicketType>> getTicketTypes(@Path("eventID") int eventID);
 
     @POST(API_EVENTS + "ticket/validate")
-    Call<TicketValidityResponse> getNameForTicket(@Body TicketValidityRequest request);
+    Call<TicketValidityResponse> getNameForTicket(@Body AdminVerification adminVerification);
 
 }

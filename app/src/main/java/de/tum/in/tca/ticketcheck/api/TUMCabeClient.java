@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import de.tum.in.tca.ticketcheck.component.ticket.model.AdminVerification;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Ticket;
 import de.tum.in.tca.ticketcheck.component.ticket.model.TicketType;
@@ -82,9 +83,9 @@ public final class TUMCabeClient {
         return service.getTicketTypes(eventID).execute().body();
     }
 
-    public void getTicketValidity(String eventId, String code, Callback<TicketValidityResponse> callback) {
+    public void getTicketValidity(Context context, String eventId, String code, Callback<TicketValidityResponse> callback) throws IOException {
         TicketValidityRequest request = new TicketValidityRequest(eventId, code);
-        service.getNameForTicket(request)
+        service.getNameForTicket(AdminVerification.Companion.createAdminVerification(context, request))
                 .enqueue(callback);
     }
 

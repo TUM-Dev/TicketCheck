@@ -71,7 +71,7 @@ public class ConfirmCheckInFragment extends BottomSheetDialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-
+/*
         TUMCabeClient
                 .getInstance(getContext())
                 .getTicketValidity(eventId, code, new Callback<TicketValidityResponse>() {
@@ -98,7 +98,7 @@ public class ConfirmCheckInFragment extends BottomSheetDialogFragment {
                     public void onFailure(Call<TicketValidityResponse> call, Throwable t) {
                         closeWithErrorMessage();
                     }
-                });
+                });*/
     }
 
     public void confirmTicket() {

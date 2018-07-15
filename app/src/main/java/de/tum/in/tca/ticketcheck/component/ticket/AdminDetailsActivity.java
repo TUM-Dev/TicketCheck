@@ -9,13 +9,23 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.tum.in.tca.ticketcheck.R;
+import de.tum.in.tca.ticketcheck.api.AuthenticationManager;
+import de.tum.in.tca.ticketcheck.api.TUMCabeClient;
+import de.tum.in.tca.ticketcheck.api.exception.NoPrivateKey;
 import de.tum.in.tca.ticketcheck.component.generic.activity.BaseActivity;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
+import de.tum.in.tca.ticketcheck.component.ticket.model.AdminVerification;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketValidityResponse;
 import de.tum.in.tca.ticketcheck.utils.Utils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AdminDetailsActivity extends BaseActivity {
 
@@ -31,6 +41,7 @@ public class AdminDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         searchView = findViewById(R.id.search_ticket);
         TextView totalSaleView = findViewById(R.id.sold_tickets);
         listView = findViewById(R.id.ticket_list);
