@@ -9,9 +9,8 @@ import java.util.List;
 import de.tum.in.tca.ticketcheck.api.TUMCabeClient;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicketRefreshCallback;
-import de.tum.in.tca.ticketcheck.component.ui.chat.model.ChatMember;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketSuccessResponse;
 import de.tum.in.tca.ticketcheck.database.TcaDb;
-import de.tum.in.tca.ticketcheck.utils.Const;
 import de.tum.in.tca.ticketcheck.utils.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,6 +68,10 @@ public class TicketsController {
 
     public AdminTicket getTicketById(int ticketId) {
         return adminTicketDao.getByTicketId(ticketId);
+    }
+
+    public void redeemTicket(int ticketHistory, Callback<TicketSuccessResponse> cb){
+        TUMCabeClient.getInstance(context).redeemTicket(ticketHistory, cb);
     }
 }
 

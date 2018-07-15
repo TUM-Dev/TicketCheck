@@ -69,8 +69,8 @@ public final class TUMCabeClient {
                 .enqueue(callback);
     }
 
-    public void redeemTicket(int ticketHistory, Callback<TicketSuccessResponse> callback) {
-        service.redeemTicket(new TicketRedemptionRequest(ticketHistory))
+    public void redeemTicket(int ticketId, Callback<TicketSuccessResponse> callback) {
+        service.redeemTicket(new TicketRedemptionRequest(ticketId))
                 .enqueue(callback);
     }
 

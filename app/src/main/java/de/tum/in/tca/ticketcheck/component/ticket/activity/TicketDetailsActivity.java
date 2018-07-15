@@ -2,6 +2,7 @@ package de.tum.in.tca.ticketcheck.component.ticket.activity;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.ContextThemeWrapper;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,6 +13,11 @@ import de.tum.in.tca.ticketcheck.R;
 import de.tum.in.tca.ticketcheck.component.generic.activity.BaseActivity;
 import de.tum.in.tca.ticketcheck.component.ticket.TicketsController;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketSuccessResponse;
+import de.tum.in.tca.ticketcheck.utils.Utils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TicketDetailsActivity extends BaseActivity {
     private TextView ticketStatustView;
@@ -64,7 +70,7 @@ public class TicketDetailsActivity extends BaseActivity {
         builder.setTitle(getString(R.string.check_in_confirmation))
                 .setMessage(getString(R.string.check_in_name, ticket.getName()))
                 .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
-                    checkIn();
+                    redeemTicket();
                 })
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
                     dialogInterface.dismiss();
@@ -74,10 +80,29 @@ public class TicketDetailsActivity extends BaseActivity {
         alertDialog.show();
     }
 
-    private void checkIn(){
+    /**
+     * message to server to redeem ticket
+     */
+    private void redeemTicket(){
+        Callback<TicketSuccessResponse> cb = new Callback<TicketSuccessResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<TicketSuccessResponse> call,
+                                   @NonNull Response<TicketSuccessResponse> response) {
+                checkInSuccessful();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<TicketSuccessResponse> call, @NonNull Throwable t) {
+                Utils.showToast(getApplicationContext(),
+                        getString(R.string.no_internet_connection));
+            }
+        };
+        ticketsController.redeemTicket(ticket.getId(), cb);
+    }
+
+    private void checkInSuccessful(){
         ticketStatustView.setText(R.string.status);
         checkInButton.setText(R.string.checked_in);
         checkInButton.setBackground(getDrawable(R.drawable.buttonshape_checked));
-        //TODO:call endpoint of API openCheckInConfirmationDialog(), to change status of ticket at backend
     }
 }
