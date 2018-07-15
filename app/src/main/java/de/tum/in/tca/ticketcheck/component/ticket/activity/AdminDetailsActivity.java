@@ -132,7 +132,7 @@ public class AdminDetailsActivity extends BaseActivity {
     private void openTicketScanActivity() {
         Intent intent = new Intent(this, TicketScanActivity.class);
         intent.putExtra("eventId", eventID);
-        startActivity(new Intent(this, TicketScanActivity.class));
+        startActivity(intent);
     }
 
     private void setupSearchView() {

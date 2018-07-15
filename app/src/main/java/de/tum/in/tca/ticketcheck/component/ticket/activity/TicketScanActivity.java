@@ -83,7 +83,6 @@ public class TicketScanActivity extends AppCompatActivity implements ZXingScanne
                     startActivity(intent);
                 } else {
                     Utils.showToast(getApplicationContext(), R.string.not_valid);
-                    mScannerView.stopCamera();
                     finish();
                 }
             }
@@ -93,7 +92,6 @@ public class TicketScanActivity extends AppCompatActivity implements ZXingScanne
                                   @NonNull Throwable t) {
                 Utils.log(t);
                 Utils.showToast(getApplicationContext(), R.string.no_internet_connection);
-                mScannerView.stopCamera();
                 finish();
             }
         };
