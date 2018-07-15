@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.io.IOException;
+
 import de.tum.in.tca.ticketcheck.R;
 import de.tum.in.tca.ticketcheck.api.TUMCabeClient;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketValidityResponse;
@@ -71,34 +73,38 @@ public class ConfirmCheckInFragment extends BottomSheetDialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-/*
-        TUMCabeClient
-                .getInstance(getContext())
-                .getTicketValidity(eventId, code, new Callback<TicketValidityResponse>() {
-                    @Override
-                    public void onResponse(Call<TicketValidityResponse> call, Response<TicketValidityResponse> response) {
-                        ticketValidityResponse = response.body();
 
-                        if (ticketValidityResponse == null) {
-                            closeWithErrorMessage();
-                            return;
+        try {
+            TUMCabeClient
+                    .getInstance(getContext())
+                    .getTicketValidity(getActivity().getApplicationContext(), eventId, code, new Callback<TicketValidityResponse>() {
+                        @Override
+                        public void onResponse(Call<TicketValidityResponse> call, Response<TicketValidityResponse> response) {
+                            ticketValidityResponse = response.body();
+
+                            if (ticketValidityResponse == null) {
+                                closeWithErrorMessage();
+                                return;
+                            }
+
+                            nameTextView.setText(ticketValidityResponse.getTicketInfo());
+                            nameTextView.setVisibility(View.VISIBLE);
+
+                            progressBar.setVisibility(View.GONE);
+
+                            confirmButton.setVisibility(View.VISIBLE);
+
+                            denyButton.setVisibility(View.VISIBLE);
                         }
 
-                        nameTextView.setText(ticketValidityResponse.getTicketInfo());
-                        nameTextView.setVisibility(View.VISIBLE);
-
-                        progressBar.setVisibility(View.GONE);
-
-                        confirmButton.setVisibility(View.VISIBLE);
-
-                        denyButton.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onFailure(Call<TicketValidityResponse> call, Throwable t) {
-                        closeWithErrorMessage();
-                    }
-                });*/
+                        @Override
+                        public void onFailure(Call<TicketValidityResponse> call, Throwable t) {
+                            closeWithErrorMessage();
+                        }
+                    });
+        } catch (IOException e) {
+            Utils.log(e);
+        }
     }
 
     public void confirmTicket() {

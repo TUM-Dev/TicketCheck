@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Base64;
 
 import java.security.KeyFactory;
-import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -13,7 +12,6 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.UUID;
 
 import de.tum.in.tca.ticketcheck.api.exception.NoPrivateKey;
-import de.tum.in.tca.ticketcheck.api.exception.NoPublicKey;
 import de.tum.in.tca.ticketcheck.utils.Const;
 import de.tum.in.tca.ticketcheck.utils.RSASigner;
 import de.tum.in.tca.ticketcheck.utils.Utils;
