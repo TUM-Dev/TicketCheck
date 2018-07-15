@@ -7,8 +7,12 @@ import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import org.joda.time.format.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +52,20 @@ public class AdminDetailsActivity extends BaseActivity {
         foundTicket = new ArrayList<>();
         mAdapter = new TicketListAdapter(tickets, this);
         listView.setAdapter(mAdapter);
-
+        listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AdminTicket ticket = null;
+                ticket = (AdminTicket) parent.getItemAtPosition(position);
+                Intent intent = new Intent(AdminDetailsActivity.this, TicketDetailsActivity.class);
+                intent.putExtra("name", ticket.getName());
+                intent.putExtra("lrzid", ticket.getLrzId());
+                intent.putExtra("ticketId", ticket.getTicketId());
+                intent.putExtra("purchasedate", DateTimeFormat.shortDateTime().print(ticket.getPurchaseDate()));
+                intent.putExtra("checked", ticket.getChecked());
+                startActivity(intent);
+            }
+        });
         //Set total ticket and total sale
         //TODO:send event_id to backend and receive really sum of ticket,following just use dummy ticketdata
         int totalTicketNumber = 100;

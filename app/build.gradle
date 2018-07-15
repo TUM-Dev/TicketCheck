@@ -64,7 +64,7 @@ android {
 def androidSupportVersion = '27.1.1'
 def retrofitVersion = '2.3.0'
 def roomVersion = '1.1.0'
-def ankoVersion='0.10.5'
+def ankoVersion = '0.10.5'
 
 configurations.all {
     resolutionStrategy {

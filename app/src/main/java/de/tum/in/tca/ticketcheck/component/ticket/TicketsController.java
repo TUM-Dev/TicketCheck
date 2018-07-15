@@ -21,49 +21,47 @@ public class TicketsController {
      */
     public static List<AdminTicket> getTickets() {
         List<AdminTicket> tickets = new ArrayList<>();
-        tickets.add(new AdminTicket("Toni Wampe", "gr234we", 5,
-                new DateTime(2018, 7, 20, 13, 14, 0, 0), new DateTime(2018, 7, 22, 13, 14, 0, 0)
+        tickets.add(new AdminTicket("Toni Wampe", "gr234we","00001",5,new DateTime(2018, 7, 20, 13, 14, 0, 0),
+                new DateTime(2018, 7, 22, 13, 14, 0, 0),false
         ));
-        tickets.add(new AdminTicket("Max Mustermann", "gb123er", 5,
-                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0)
+        tickets.add(new AdminTicket("Max Mustermann", "gb123er", "00002",5,
+                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0),true
         ));
-        tickets.add(new AdminTicket("Max Mustermann", "gb123er", 5,
-                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0)
+        tickets.add(new AdminTicket("Max Mustermann", "gb123er", "00002",5,
+                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0),true
         ));
-        tickets.add(new AdminTicket("Max Mustermann", "gb123er", 5,
-                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0)
+        tickets.add(new AdminTicket("Max Mustermann", "gb123er", "00002",5,
+                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0),true
         ));
-        tickets.add(new AdminTicket("Max Mustermann", "gb123er", 5,
-                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0)
+        tickets.add(new AdminTicket("Max Mustermann", "gb123er", "00002",5,
+                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0),true
         ));
-        tickets.add(new AdminTicket("Max Mustermann", "gb123er", 5,
-                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0)
+        tickets.add(new AdminTicket("Max Mustermann", "gb123er", "00002",5,
+                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0),true
         ));
-        tickets.add(new AdminTicket("Max Mustermann", "gb123er", 5,
-                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0)
+        tickets.add(new AdminTicket("Max Mustermann", "gb123er", "00002",5,
+                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0),true
         ));
-        tickets.add(new AdminTicket("Max Mustermann", "gb123er", 5,
-                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0)
+        tickets.add(new AdminTicket("Max Mustermann", "gb123er", "00002",5,
+                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0),true
         ));
-        tickets.add(new AdminTicket("Max Mustermann", "gb123er", 5,
-                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0)
+        tickets.add(new AdminTicket("Max Mustermann", "gb123er", "00002",5,
+                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0),true
         ));
-        tickets.add(new AdminTicket("Max Mustermann", "gb123er", 5,
-                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0)
+        tickets.add(new AdminTicket("Max Mustermann", "gb123er", "00002",5,
+                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0),true
         ));
-        tickets.add(new AdminTicket("Max Mustermann", "gb123er", 5,
-                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0)
-        ));
+
 
         return tickets;
     }
     public static List<AdminTicket> getrefreshTickets() {
         List<AdminTicket> tickets = new ArrayList<>();
-        tickets.add(new AdminTicket("Toni Wampe", "gr234we", 5,
-                new DateTime(2018, 7, 20, 13, 14, 0, 0), new DateTime(2018, 7, 22, 13, 14, 0, 0)
+        tickets.add(new AdminTicket("Toni Wampe", "gr234we","00001",5,new DateTime(2018, 7, 20, 13, 14, 0, 0),
+                new DateTime(2018, 7, 22, 13, 14, 0, 0),false
         ));
-        tickets.add(new AdminTicket("Max Mustermann", "gb123er", 5,
-                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0)
+        tickets.add(new AdminTicket("Max Mustermann", "gb123er", "00002",5,
+                new DateTime(2018, 8, 2, 13, 14, 0, 0), new DateTime(2018, 8, 4, 13, 14, 0, 0),true
         ));
 
         return tickets;

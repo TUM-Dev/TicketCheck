@@ -13,6 +13,7 @@ import org.joda.time.DateTime
  * @param ticketType   ticketType
  * @param purchaseDate   purchaseDate
  * @param redeemDate   redeemDate
+ * @param checked   checked
  */
 @Entity
 data class AdminTicket(
@@ -21,9 +22,15 @@ data class AdminTicket(
         var name: String = "",
         @SerializedName("lrz_id")
         var lrzId: String = "",
+        @SerializedName("ticket_id")
+        var ticketId: String = "",
         @SerializedName("ticket_type")
         var ticketType: Int = 0,
         @SerializedName("purchase")
         var purchaseDate: DateTime = DateTime(),
         @SerializedName("redemption")
-        var redeemDate: DateTime = DateTime())
+        var redeemDate: DateTime = DateTime(),
+        @SerializedName("checked")
+        var checked: Boolean = false
+
+)
