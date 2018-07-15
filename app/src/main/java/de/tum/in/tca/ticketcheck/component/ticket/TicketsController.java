@@ -1,6 +1,7 @@
 package de.tum.in.tca.ticketcheck.component.ticket;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +18,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Mock class, only used to provide static event data for testing purposes
- * TODO: replace this when the actual data is available
- */
+ * TODO: class comment
+ * */
 public class TicketsController {
 
     private final Context context;
@@ -38,23 +38,23 @@ public class TicketsController {
         adminTicketDao = TcaDb.getInstance(context).adminTicketDao();
     }
 
-    public List<AdminTicket> getTickets() {
-        return adminTicketDao.getAll();
-    }
-
     public List<AdminTicket> getTicketsForEvent(int event) {
         return adminTicketDao.getByEventId(event);
     }
 
-    public List<AdminTicket> refreshTickets(int eventID, AdminTicketRefreshCallback cb) {
+    /**
+     * This method refreshes the tickets from server
+     * @param eventID of the event for which the tickets are needed
+     * @param cb this callback is used to process the refreshed ticket list
+     */
+    public void refreshTickets(int eventID, AdminTicketRefreshCallback cb) {
         downloadFromService(eventID, cb);
-        return getTicketsForEvent(eventID);
     }
 
     private void downloadFromService(int eventID, AdminTicketRefreshCallback cb) {
         Callback<List<AdminTicket>> callback = new Callback<List<AdminTicket>>() {
             @Override
-            public void onResponse(Call<List<AdminTicket>> call, Response<List<AdminTicket>> response) {
+            public void onResponse(@NonNull Call<List<AdminTicket>> call, Response<List<AdminTicket>> response) {
                 List<AdminTicket> tickets = response.body();
                 if (tickets == null) {
                     tickets = new ArrayList<>();
@@ -64,7 +64,7 @@ public class TicketsController {
             }
 
             @Override
-            public void onFailure(Call<List<AdminTicket>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<AdminTicket>> call, @NonNull Throwable t) {
                 Utils.log(t);
             }
         };

@@ -144,15 +144,12 @@ public class AdminDetailsActivity extends BaseActivity {
     }
 
     private void refreshTicketList() {
-        ticketsController.refreshTickets(eventID, new AdminTicketRefreshCallback() {
-            @Override
-            public void handle(List<AdminTicket> list) {
-                tickets = list;
-                ticketListAdapter = new TicketListAdapter(tickets, AdminDetailsActivity.this);
-                listView.setAdapter(ticketListAdapter);
-                ticketListAdapter.notifyDataSetChanged();
-                updateTicketCounter();
-            }
+        ticketsController.refreshTickets(eventID, list -> {
+            tickets = list;
+            ticketListAdapter = new TicketListAdapter(tickets, AdminDetailsActivity.this);
+            listView.setAdapter(ticketListAdapter);
+            ticketListAdapter.notifyDataSetChanged();
+            updateTicketCounter();
         });
     }
 

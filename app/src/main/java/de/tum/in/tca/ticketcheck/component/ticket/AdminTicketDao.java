@@ -15,9 +15,6 @@ public interface AdminTicketDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(List<AdminTicket> adminTickets);
 
-    @Query("SELECT * FROM adminticket")
-    List<AdminTicket> getAll();
-
     @Query("SELECT * FROM adminticket WHERE event = :eventId")
     List<AdminTicket> getByEventId(int eventId);
 
