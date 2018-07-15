@@ -19,7 +19,7 @@ public class TicketListAdapter extends BaseAdapter {
     private List<AdminTicket> list;
     private LayoutInflater inflater;
 
-    public TicketListAdapter(List<AdminTicket> list, Context context) {
+    TicketListAdapter(List<AdminTicket> list, Context context) {
         this.list = list;
         inflater = LayoutInflater.from(context);
     }

@@ -19,5 +19,5 @@ public interface AdminTicketDao {
     List<AdminTicket> getByEventId(int eventId);
 
     @Query("DELETE FROM adminticket")
-    void flush();
+    void removeAll();
 }

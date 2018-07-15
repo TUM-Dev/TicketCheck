@@ -17,9 +17,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * TODO: class comment
- * */
 public class TicketsController {
 
     private final Context context;
