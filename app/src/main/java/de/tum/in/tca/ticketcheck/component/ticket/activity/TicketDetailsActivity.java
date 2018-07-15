@@ -49,7 +49,7 @@ public class TicketDetailsActivity extends BaseActivity {
         if (!ticketStatus) {
             ticketStatustView.setText(R.string.check_in_status);
             checkInButton.setText(R.string.check_in);
-            checkInButton.setOnClickListener(view -> checkIn());
+            checkInButton.setOnClickListener(view -> openCheckInConfirmationDialog());
         } else {
             ticketStatustView.setText(R.string.status);
             checkInButton.setText(R.string.checked_in);
@@ -57,10 +57,27 @@ public class TicketDetailsActivity extends BaseActivity {
         }
     }
 
-    private void checkIn() {
+    private void openCheckInConfirmationDialog() {
+        ContextThemeWrapper ctw =
+                new ContextThemeWrapper(this, R.style.Theme_AppCompat_Light_Dialog_Alert);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctw);
+        builder.setTitle(getString(R.string.check_in_confirmation))
+                .setMessage(getString(R.string.check_in_name, ticket.getName()))
+                .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                    checkIn();
+                })
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                });;
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void checkIn(){
         ticketStatustView.setText(R.string.status);
         checkInButton.setText(R.string.checked_in);
         checkInButton.setBackground(getDrawable(R.drawable.buttonshape_checked));
-        //TODO:call endpoint of API checkIn(), to change status of ticket at backend
+        //TODO:call endpoint of API openCheckInConfirmationDialog(), to change status of ticket at backend
     }
 }
