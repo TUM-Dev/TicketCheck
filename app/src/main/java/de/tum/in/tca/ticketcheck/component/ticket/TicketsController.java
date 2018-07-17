@@ -77,11 +77,19 @@ public class TicketsController {
     }
 
     public void redeemTicket(int ticketId, Callback<TicketSuccessResponse> cb){
-        TUMCabeClient.getInstance(context).redeemTicket(ticketId, cb);
+        try {
+            TUMCabeClient.getInstance(context).redeemTicket(context, ticketId, cb);
+        } catch (IOException e) {
+            Utils.log(e);
+        }
     }
 
     public void checkTicketValidity(int eventId, String code, Callback<TicketValidityResponse> cb) {
-        TUMCabeClient.getInstance(context).getTicketValidity(eventId, code, cb);
+        try {
+            TUMCabeClient.getInstance(context).getTicketValidity(context, eventId, code, cb);
+        } catch (IOException e) {
+            Utils.log(e);
+        }
     }
 }
 
