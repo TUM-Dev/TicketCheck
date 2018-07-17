@@ -25,7 +25,7 @@ public interface TUMCabeAPIService {
     @POST(API_EVENTS + "ticket/validate")
     Call<TicketValidityResponse> getNameForTicket(@Body AdminVerification adminVerification);
 
-    @POST(API_EVENTS + "ticket/validate")
+    @POST(API_EVENTS + "ticket/redeem")
     Call<TicketSuccessResponse> redeemTicket(@Body AdminVerification adminVerification);
 
     @POST(API_EVENTS + "ticket/sold")

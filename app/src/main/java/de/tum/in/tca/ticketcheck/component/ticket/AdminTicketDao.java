@@ -18,6 +18,12 @@ public interface AdminTicketDao {
     @Query("SELECT * FROM adminticket WHERE event = :eventId")
     List<AdminTicket> getByEventId(int eventId);
 
+    @Query("SELECT * FROM adminticket WHERE id = :ticketId")
+    AdminTicket getByTicketId(int ticketId);
+
     @Query("DELETE FROM adminticket")
     void removeAll();
+
+    @Query("UPDATE adminticket SET redeemDate = date() WHERE id = :ticketID")
+    void setTicketRedeemed(int ticketID);
 }

@@ -10,9 +10,9 @@ import java.util.List;
 import de.tum.in.tca.ticketcheck.api.TUMCabeClient;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicketRefreshCallback;
-import de.tum.in.tca.ticketcheck.component.ui.chat.model.ChatMember;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketSuccessResponse;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketValidityResponse;
 import de.tum.in.tca.ticketcheck.database.TcaDb;
-import de.tum.in.tca.ticketcheck.utils.Const;
 import de.tum.in.tca.ticketcheck.utils.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,7 +32,6 @@ public class TicketsController {
     public TicketsController(Context context) {
         this.context = context;
 
-        Utils.setSetting(context, Const.CHAT_MEMBER, new ChatMember("ga38fir"));
         adminTicketDao = TcaDb.getInstance(context).adminTicketDao();
     }
 
@@ -71,6 +70,18 @@ public class TicketsController {
         } catch (IOException e) {
             Utils.log(e);
         }
+    }
+
+    public AdminTicket getTicketById(int ticketId) {
+        return adminTicketDao.getByTicketId(ticketId);
+    }
+
+    public void redeemTicket(int ticketId, Callback<TicketSuccessResponse> cb){
+        TUMCabeClient.getInstance(context).redeemTicket(ticketId, cb);
+    }
+
+    public void checkTicketValidity(int eventId, String code, Callback<TicketValidityResponse> cb) {
+        TUMCabeClient.getInstance(context).getTicketValidity(eventId, code, cb);
     }
 }
 
