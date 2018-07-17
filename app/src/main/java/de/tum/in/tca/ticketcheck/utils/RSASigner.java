@@ -25,7 +25,7 @@ public class RSASigner {
     }
 
     public static Signature getSignatureInstance() {
-        String signature = "SHA1WithRSA";
+        String signature = "SHA256WithRSA";
         try {
             return Signature.getInstance(signature);
         } catch (NoSuchAlgorithmException e) {

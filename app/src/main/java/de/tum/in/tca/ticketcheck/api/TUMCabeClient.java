@@ -13,6 +13,7 @@ import java.util.List;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminVerification;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.AdminKeyUploadRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.AdminTicketRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketRedemptionRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketStatus;
@@ -83,5 +84,9 @@ public final class TUMCabeClient {
 
     public void getTicketStats(int event, Callback<List<TicketStatus>> cb) {
         service.getTicketStats(event).enqueue(cb);
+    }
+
+    public void uploadAdminKey(String key, Callback<TicketSuccessResponse> cb) {
+        service.uploadAdminKey(new AdminKeyUploadRequest(key)).enqueue(cb);
     }
 }
