@@ -69,7 +69,7 @@ def ankoVersion = '0.10.5'
 configurations.all {
     resolutionStrategy {
         force "com.android.support:exifinterface:$androidSupportVersion"
-        force 'com.google.code.findbugs:jsr305:3.0.1'
+        force 'com.google.code.findbugs:jsr305:3.0.2'
     }
 }
 
@@ -82,7 +82,7 @@ dependencies {
     implementation "com.android.support:preference-v14:$androidSupportVersion"
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.google.guava:guava:23.2-android'
-    implementation 'com.google.zxing:core:3.2.1'
+    implementation 'com.google.zxing:core:3.3.3'
     implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
 
     // Android arch components
@@ -101,7 +101,7 @@ dependencies {
 
     // Helpers
     implementation 'net.danlew:android.joda:2.9.9.2'
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
     implementation('org.simpleframework:simple-xml:2.7.1') {
         exclude group: 'stax', module: 'stax-api'
         exclude group: 'xpp3', module: 'xpp3'
@@ -113,7 +113,7 @@ dependencies {
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.0'
 
     // Transport
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
