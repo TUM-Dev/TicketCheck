@@ -54,7 +54,7 @@ public class TicketsController {
             public void onResponse(@NonNull Call<List<AdminTicket>> call, Response<List<AdminTicket>> response) {
                 List<AdminTicket> tickets = response.body();
                 if (tickets == null) {
-                    tickets = new ArrayList<>();
+                    tickets = getTicketsForEvent(eventID);
                 }
                 adminTicketDao.insert(tickets);
                 cb.handle(tickets);
