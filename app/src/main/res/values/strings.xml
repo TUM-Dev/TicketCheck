@@ -662,4 +662,8 @@ Signature: %5$s</string>
     <string name="choose_ticket_type">Choose your ticket type</string>
     <string name="check_in_failed">Checkin failed</string>
 
+    <string name="admin_key_upload_success_title">Upload Complete!</string>
+    <string name="admin_key_upload_success_message">Your public key was successfully uploaded to our server. To use the full functionality of this app, please wait for an administrator to approve our key.</string>
+    <string name="admin_key_upload_error_message">Failure while uploading your public key to our server. Without a validated key, you are not able to use the full functionality of this app.</string>
+
 </resources>

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import java.util.List;
 
 import de.tum.in.tca.ticketcheck.R;
+import de.tum.in.tca.ticketcheck.api.AuthenticationManager;
 import de.tum.in.tca.ticketcheck.component.generic.activity.BaseActivity;
 import de.tum.in.tca.ticketcheck.component.generic.adapter.EqualSpacingItemDecoration;
 import de.tum.in.tca.ticketcheck.component.ticket.EventsController;
@@ -29,6 +30,9 @@ public class EventsActivity extends BaseActivity implements SwipeRefreshLayout.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Prepare Keys
+        new AuthenticationManager(EventsActivity.this).generatePrivateKey();
 
         TcaDb.getInstance(this);
 

@@ -47,6 +47,7 @@ public class AdminDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         searchView = findViewById(R.id.search_ticket);
         totalSaleView = findViewById(R.id.sold_tickets);
         listView = findViewById(R.id.ticket_list);

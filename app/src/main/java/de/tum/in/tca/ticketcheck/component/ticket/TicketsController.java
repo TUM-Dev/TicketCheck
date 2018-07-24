@@ -3,6 +3,7 @@ package de.tum.in.tca.ticketcheck.component.ticket;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class TicketsController {
             public void onResponse(@NonNull Call<List<AdminTicket>> call, Response<List<AdminTicket>> response) {
                 List<AdminTicket> tickets = response.body();
                 if (tickets == null) {
-                    tickets = new ArrayList<>();
+                    tickets = getTicketsForEvent(eventID);
                 }
                 adminTicketDao.insert(tickets);
                 cb.handle(tickets);
@@ -64,7 +65,11 @@ public class TicketsController {
                 Utils.log(t);
             }
         };
-        TUMCabeClient.getInstance(context).getAdminTicketData(eventID, callback);
+        try {
+            TUMCabeClient.getInstance(context).getAdminTicketData(context, eventID, callback);
+        } catch (IOException e) {
+            Utils.log(e);
+        }
     }
 
     public AdminTicket getTicketById(int ticketId) {
@@ -72,11 +77,19 @@ public class TicketsController {
     }
 
     public void redeemTicket(int ticketId, Callback<TicketSuccessResponse> cb){
-        TUMCabeClient.getInstance(context).redeemTicket(ticketId, cb);
+        try {
+            TUMCabeClient.getInstance(context).redeemTicket(context, ticketId, cb);
+        } catch (IOException e) {
+            Utils.log(e);
+        }
     }
 
     public void checkTicketValidity(int eventId, String code, Callback<TicketValidityResponse> cb) {
-        TUMCabeClient.getInstance(context).getTicketValidity(eventId, code, cb);
+        try {
+            TUMCabeClient.getInstance(context).getTicketValidity(context, eventId, code, cb);
+        } catch (IOException e) {
+            Utils.log(e);
+        }
     }
 }
 

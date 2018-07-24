@@ -7,10 +7,13 @@ import com.google.gson.GsonBuilder;
 
 import org.joda.time.DateTime;
 
+import java.io.IOException;
 import java.util.List;
 
+import de.tum.in.tca.ticketcheck.component.ticket.model.AdminVerification;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
+import de.tum.in.tca.ticketcheck.component.ticket.payload.AdminKeyUploadRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.AdminTicketRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketRedemptionRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketStatus;
@@ -63,23 +66,27 @@ public final class TUMCabeClient {
         service.getEvents().enqueue(callback);
     }
 
-    public void getTicketValidity(int eventId, String code, Callback<TicketValidityResponse> callback) {
+    public void getTicketValidity(Context context, int eventId, String code, Callback<TicketValidityResponse> callback) throws IOException {
         TicketValidityRequest request = new TicketValidityRequest(eventId, code);
-        service.getNameForTicket(request)
+        service.getNameForTicket(AdminVerification.Companion.createAdminVerification(context, request))
                 .enqueue(callback);
     }
 
-    public void redeemTicket(int ticketId, Callback<TicketSuccessResponse> callback) {
-        service.redeemTicket(new TicketRedemptionRequest(ticketId))
+    public void redeemTicket(Context context, int ticketId, Callback<TicketSuccessResponse> callback) throws IOException {
+        service.redeemTicket(AdminVerification.Companion.createAdminVerification(context, new TicketRedemptionRequest(ticketId)))
                 .enqueue(callback);
     }
 
-    public void getAdminTicketData(int eventId, Callback<List<AdminTicket>> callback) {
-        service.getAdminTicketData(new AdminTicketRequest(eventId))
+    public void getAdminTicketData(Context context, int eventId, Callback<List<AdminTicket>> callback) throws IOException {
+        service.getAdminTicketData(AdminVerification.Companion.createAdminVerification(context, new AdminTicketRequest(eventId)))
                 .enqueue(callback);
     }
 
     public void getTicketStats(int event, Callback<List<TicketStatus>> cb) {
         service.getTicketStats(event).enqueue(cb);
+    }
+
+    public void uploadAdminKey(String key, Callback<TicketSuccessResponse> cb) {
+        service.uploadAdminKey(new AdminKeyUploadRequest(key)).enqueue(cb);
     }
 }
