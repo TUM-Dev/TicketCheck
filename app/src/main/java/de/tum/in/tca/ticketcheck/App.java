@@ -3,9 +3,6 @@ package de.tum.in.tca.ticketcheck;
 import android.app.Application;
 import android.os.StrictMode;
 
-import com.squareup.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Picasso;
-
 import net.danlew.android.joda.JodaTimeAndroid;
 
 public class App extends Application {
@@ -13,23 +10,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        setupPicasso();
         JodaTimeAndroid.init(this);
         setupStrictMode();
-    }
-
-    protected void setupPicasso() {
-        Picasso.Builder builder = new Picasso.Builder(this);
-        builder.downloader(new OkHttp3Downloader(this, Integer.MAX_VALUE));
-
-        Picasso built = builder.build();
-        built.setLoggingEnabled(true);
-
-        if (BuildConfig.DEBUG) {
-            built.setIndicatorsEnabled(true);
-        }
-
-        Picasso.setSingletonInstance(built);
     }
 
     protected void setupStrictMode() {

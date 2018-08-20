@@ -5,23 +5,16 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
 import de.tum.`in`.tca.ticketcheck.R
 import de.tum.`in`.tca.ticketcheck.component.generic.CardViewHolder
 import de.tum.`in`.tca.ticketcheck.component.ticket.EventCard
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.Event
 import kotlinx.android.synthetic.main.card_events_item.view.*
-import java.util.*
 import java.util.regex.Pattern
 
 class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventViewHolder>() {
 
-    private val events: MutableList<Event>
-
-    init {
-        events = ArrayList()
-    }
+    private var events = listOf<Event>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -42,32 +35,13 @@ class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventViewHolder>() {
 
     fun update(newEvents: List<Event>) {
         val diffResult = DiffUtil.calculateDiff(EventsDiffUtil(events, newEvents))
-        events.clear()
-        events.addAll(newEvents)
+        events = newEvents
         diffResult.dispatchUpdatesTo(this)
     }
 
     class EventViewHolder(view: View) : CardViewHolder(view) {
 
         fun bind(event: Event) = with(itemView) {
-            val imageUrl = event.image
-            if (imageUrl != null && !imageUrl.isEmpty()) {
-                Picasso.get()
-                        .load(imageUrl)
-                        .into(events_img, object : Callback {
-                            override fun onSuccess() {
-                                poster_progress_bar.visibility = View.GONE
-                            }
-
-                            override fun onError(e: Exception) {
-                                poster_progress_bar.visibility = View.GONE
-                            }
-                        })
-            } else {
-                events_img.visibility = View.GONE
-                poster_progress_bar.visibility = View.GONE
-            }
-
             val title = COMPILE.matcher(event.title).replaceAll("")
             events_title.text = title
 

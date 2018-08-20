@@ -2,11 +2,11 @@ package de.tum.`in`.tca.ticketcheck.component.ticket.activity
 
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import de.tum.`in`.tca.ticketcheck.R
 import de.tum.`in`.tca.ticketcheck.api.AuthenticationManager
 import de.tum.`in`.tca.ticketcheck.component.generic.activity.BaseActivity
-import de.tum.`in`.tca.ticketcheck.component.generic.adapter.EqualSpacingItemDecoration
 import de.tum.`in`.tca.ticketcheck.component.ticket.EventsController
 import de.tum.`in`.tca.ticketcheck.component.ticket.adapter.EventsAdapter
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.Event
@@ -37,12 +37,17 @@ class EventsActivity : BaseActivity(R.layout.activity_events), SwipeRefreshLayou
         eventsRecyclerView.setHasFixedSize(true)
         eventsRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        val spacing = Math.round(resources.getDimension(R.dimen.material_card_view_padding))
-        eventsRecyclerView.addItemDecoration(EqualSpacingItemDecoration(spacing))
-
+        eventsRecyclerView.addItemDecoration(
+                DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        )
         eventsRecyclerView.adapter = adapter
 
         eventsSwipeRefreshLayout.setOnRefreshListener(this)
+        eventsSwipeRefreshLayout.setColorSchemeResources(
+                R.color.color_primary,
+                R.color.tum_A100,
+                R.color.tum_A200
+        )
     }
 
     private fun loadEvents() {

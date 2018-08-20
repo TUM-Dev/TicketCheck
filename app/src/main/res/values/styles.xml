@@ -50,16 +50,6 @@
         <item name="preferenceFragmentListStyle">@style/PreferenceFragmentList</item>
     </style>
 
-    <style name="StandardCard" parent="CardView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center</item>
-        <item name="android:elevation">@dimen/card_view_elevation</item>
-        <item name="android:transitionName">@string/transition_card</item>
-        <item name="cardBackgroundColor">#FFFFFF</item>
-        <item name="cardCornerRadius">@dimen/material_corner_radius</item>
-    </style>
-
     <style name="CardTitle">
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
