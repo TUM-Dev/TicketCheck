@@ -2,6 +2,7 @@ package de.tum.`in`.tca.ticketcheck.component.ticket.fragment
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialogFragment
@@ -27,6 +28,8 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
 
     private lateinit var ticket: AdminTicket
     private lateinit var ticketsController: TicketsController
+
+    private var listener: InteractionListener? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -112,14 +115,25 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
         }
     }
 
+    override fun onDismiss(dialog: DialogInterface?) {
+        super.onDismiss(dialog)
+        listener?.onTicketDetailsClosed()
+    }
+
+    interface InteractionListener {
+        fun onTicketDetailsClosed()
+    }
+
     companion object {
 
         @JvmStatic
-        fun newInstance(ticket: AdminTicket): TicketDetailsFragment {
+        fun newInstance(ticket: AdminTicket,
+                        listener: InteractionListener? = null): TicketDetailsFragment {
             return TicketDetailsFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(Const.TICKET, ticket)
                 }
+                this.listener = listener
             }
         }
 
