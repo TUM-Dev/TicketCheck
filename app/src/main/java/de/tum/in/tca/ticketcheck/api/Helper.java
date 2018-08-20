@@ -2,20 +2,12 @@ package de.tum.in.tca.ticketcheck.api;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Build;
 
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
-import com.google.common.net.UrlEscapers;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.Writer;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.concurrent.TimeUnit;
 
@@ -101,35 +93,4 @@ public final class Helper {
         };
     }
 
-    /**
-     * encodes an url
-     *
-     * @param pUrl input url
-     * @return encoded url
-     */
-    public static String encodeUrl(String pUrl) {
-        return UrlEscapers.urlPathSegmentEscaper()
-                          .escape(pUrl);
-    }
-
-    /**
-     * Creates an offline QR-Code
-     * @param message to be encoded
-     * @return QR-Code or null if there was an error
-     */
-    public static Bitmap createQRCode(String message){
-        Writer multiFormatWriter = new MultiFormatWriter();
-        try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(message, BarcodeFormat.QR_CODE, 400,400);
-            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            return barcodeEncoder.createBitmap(bitMatrix);
-        } catch (WriterException e) {
-            Utils.log(e);
-            return null;
-        }
-    }
-
-    private Helper() {
-        // Helper is a utility class
-    }
 }

@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.google.common.collect.ImmutableList
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.Result
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -32,7 +31,7 @@ class TicketScanActivity : AppCompatActivity(), ZXingScannerView.ResultHandler {
         ticketsController = TicketsController(this)
         eventId = intent.getIntExtra(Const.EVENT_ID, -1)
 
-        val formats = ImmutableList.of(BarcodeFormat.QR_CODE)
+        val formats = listOf(BarcodeFormat.QR_CODE)
         scanner_view.setFormats(formats)
     }
 

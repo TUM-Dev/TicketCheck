@@ -81,7 +81,8 @@ dependencies {
     implementation "com.android.support:preference-v7:$androidSupportVersion"
     implementation "com.android.support:preference-v14:$androidSupportVersion"
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    implementation 'com.google.guava:guava:26.0-android'
+
+    // QR code scanning
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0@aar'
 
     // Android arch components
@@ -107,7 +108,6 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
 
     // UI
     implementation 'me.dm7.barcodescanner:zxing:1.9.8'
