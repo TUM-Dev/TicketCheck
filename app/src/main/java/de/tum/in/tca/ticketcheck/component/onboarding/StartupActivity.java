@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import de.tum.in.tca.ticketcheck.R;
-import de.tum.in.tca.ticketcheck.api.AuthenticationManager;
 import de.tum.in.tca.ticketcheck.component.ticket.activity.EventsActivity;
 import de.tum.in.tca.ticketcheck.utils.Const;
 import de.tum.in.tca.ticketcheck.utils.Utils;
@@ -24,8 +23,6 @@ import de.tum.in.tca.ticketcheck.utils.Utils;
 public class StartupActivity extends AppCompatActivity {
 
     private int tapCounter;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +102,6 @@ public class StartupActivity extends AppCompatActivity {
                 Intent intent = new Intent(StartupActivity.this, EventsActivity.class);
                 startActivity(intent);
                 finish();
-                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
             }
 
             @Override

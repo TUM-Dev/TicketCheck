@@ -71,7 +71,7 @@ public final class Helper {
 
         builder.addNetworkInterceptor(new TumHttpLoggingInterceptor(Utils::log));
 
-        //Save it to the static handle and return
+        //Save it to the static onResult and return
         client = builder.build();
         return client;
     }

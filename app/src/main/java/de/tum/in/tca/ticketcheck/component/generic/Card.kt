@@ -1,19 +1,18 @@
-package de.tum.`in`.tca.ticketcheck.component.ui.overview.card
+package de.tum.`in`.tca.ticketcheck.component.generic
 
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.preference.PreferenceManager
-import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.RemoteViews
 import android.widget.TextView
-import de.tum.`in`.tca.ticketcheck.utils.Utils
 import de.tum.`in`.tca.ticketcheck.utils.Const.CARD_POSITION_PREFERENCE_SUFFIX
 import de.tum.`in`.tca.ticketcheck.utils.Const.DISCARD_SETTINGS_START
+import de.tum.`in`.tca.ticketcheck.utils.Utils
 
 /**
  * Base class for all cards
@@ -144,21 +143,8 @@ abstract class Card(
      *
      * @param editor Editor to be used for saving values
      */
-    protected abstract fun discard(editor: Editor)
-
-    class DiffCallback(private val oldList: List<Card>,
-                       private val newList: List<Card>) : DiffUtil.Callback() {
-
-        override fun getOldListSize() = oldList.size
-
-        override fun getNewListSize() = newList.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-                oldList[oldItemPosition].cardType == newList[newItemPosition].cardType
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-                oldList[oldItemPosition] == newList[newItemPosition]
-
+    protected fun discard(editor: Editor) {
+        // Free ad space
     }
 
 }

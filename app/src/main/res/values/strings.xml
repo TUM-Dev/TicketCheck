@@ -4,7 +4,7 @@
     <!-- START Translated, please do not change identifiers -->
 
     <!-- Generic -->
-    <string name="app_name" translatable="false">TCA: Ticket Check</string>
+    <string name="app_name" translatable="false">Ticket Check</string>
     <string name="search">Search</string>
     <string name="tum_logo">TUM Logo</string>
     <string name="update">Update</string>
@@ -623,16 +623,16 @@ Signature: %5$s</string>
     <string name="scanner">Scanner</string>
     <string name="ticket_detail">Ticket Details</string>d
     <string name="not_in_list">No matching name or lrz ID found…</string>
-    <string name="sold_tickets">Sold Tickets: %1$d/%2$d</string>
+    <string name="sold_tickets">%1$d / %2$d tickets sold</string>
     <string name="check_in_status">Status: Not checked in</string>
     <string name="status">Status:</string>
     <string name="tum_id">TUM-ID:</string>
-    <string name="check_in">Check in!</string>
+    <string name="check_in">Check-in</string>
     <string name="checked_in">Checked in</string>
-    <string name="ticket_no">Ticket No:</string>
-    <string name="purchase_date">Purchase date:</string>
-    <string name="check_in_name">Do you want to check in %1$s?</string>
-    <string name="check_in_confirmation">CheckIn Confirmation</string>
+    <string name="ticket_number">Ticket number</string>
+    <string name="purchase_date">Purchase date</string>
+    <string name="check_in_name">Check-in %1$s?</string>
+    <string name="check_in_confirmation">Check-in confirmation</string>
 
     <!-- Payment -->
     <string name="creditcard">Credit Card</string>
@@ -665,5 +665,15 @@ Signature: %5$s</string>
     <string name="admin_key_upload_success_title">Upload Complete!</string>
     <string name="admin_key_upload_success_message">Your public key was successfully uploaded to our server. To use the full functionality of this app, please wait for an administrator to approve our key.</string>
     <string name="admin_key_upload_error_message">Failure while uploading your public key to our server. Without a validated key, you are not able to use the full functionality of this app.</string>
+    <string name="none">None</string>
 
+    <string name="purchased_format_string">Purchased: %s</string>
+    <string name="not_purchased">Not purchased</string>
+
+    <string name="redeemed_format_string">Redeemed: %s</string>
+    <string name="not_redeemed">Not redeemed</string>
+    <string name="ticket">Ticket</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

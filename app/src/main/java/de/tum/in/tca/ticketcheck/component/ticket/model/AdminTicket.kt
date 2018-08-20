@@ -2,6 +2,8 @@ package de.tum.`in`.tca.ticketcheck.component.ticket.model
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import org.joda.time.DateTime
 
@@ -30,13 +32,53 @@ data class AdminTicket(
         @SerializedName("purchase")
         var purchaseDate: DateTime? = null,
         @SerializedName("redemption")
-        var redeemDate: DateTime? = null) {
+        var redeemDate: DateTime? = null
+) : Parcelable {
 
-    fun isPurchased(): Boolean {
-        return purchaseDate != null
+    constructor(parcel: Parcel) : this(
+            parcel.readInt(),
+            parcel.readInt(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readInt(),
+            if (parcel.readInt() == 1) DateTime(parcel.readLong()) else null,
+            if (parcel.readInt() == 1) DateTime(parcel.readLong()) else null
+    )
+
+    val isPurchased: Boolean
+        get() = purchaseDate != null
+
+    val isRedeemed: Boolean
+        get() = redeemDate != null
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
+        parcel.writeInt(event)
+        parcel.writeString(name)
+        parcel.writeString(lrzId)
+        parcel.writeInt(ticketType)
+
+        parcel.writeInt(if (isPurchased) 1 else 0)
+        purchaseDate?.let {
+            parcel.writeLong(it.millis)
+        }
+
+        parcel.writeInt(if (isRedeemed) 1 else 0)
+        redeemDate?.let {
+            parcel.writeLong(it.millis)
+        }
     }
 
-    fun isRedeemed(): Boolean {
-        return redeemDate != null
+    override fun describeContents() = 0
+
+    companion object CREATOR : Parcelable.Creator<AdminTicket> {
+        override fun createFromParcel(parcel: Parcel): AdminTicket {
+            return AdminTicket(parcel)
+        }
+
+        override fun newArray(size: Int): Array<AdminTicket?> {
+            return arrayOfNulls(size)
+        }
     }
+
 }

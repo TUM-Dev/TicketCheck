@@ -61,7 +61,6 @@
             </intent-filter>
         </activity>
 
-
         <activity
             android:name="de.tum.in.tca.ticketcheck.component.ticket.activity.EventsActivity"
             android:configChanges="orientation|screenSize"
@@ -91,16 +90,6 @@
                 android:value="de.tum.in.tca.ticketcheck.component.ticket.activity.EventsActivity" />
         </activity>
 
-        <activity
-            android:name="de.tum.in.tca.ticketcheck.component.ticket.activity.TicketDetailsActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/ticket_detail"
-            android:launchMode="singleTop"
-            android:parentActivityName=".component.ticket.activity.AdminDetailsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.tum.in.tca.ticketcheck.component.ticket.activity.AdminDetailsActivity" />
-        </activity>
     </application>
 
 </manifest>
