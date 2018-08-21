@@ -81,18 +81,19 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
         val cb = object : Callback<TicketSuccessResponse> {
             override fun onResponse(call: Call<TicketSuccessResponse>,
                                     response: Response<TicketSuccessResponse>) {
-                val ticketSuccessResponse = response.body() ?: return
-                if (ticketSuccessResponse.success) {
-                    handleCheckInSuccess()
-                } else {
-                    Utils.showToast(this@TicketDetailsFragment.context,
-                            R.string.check_in_failed)
+                val ticketSuccessResponse = response.body()
+                ticketSuccessResponse?.let {
+                    if (response.isSuccessful && it.success) {
+                        handleCheckInSuccess()
+                        return
+                    }
                 }
+
+                Utils.showToast(this@TicketDetailsFragment.context, R.string.check_in_failed)
             }
 
             override fun onFailure(call: Call<TicketSuccessResponse>, t: Throwable) {
-                Utils.showToast(this@TicketDetailsFragment.context,
-                        getString(R.string.error_something_wrong))
+                Utils.showToast(this@TicketDetailsFragment.context, R.string.error_something_wrong)
             }
         }
 
