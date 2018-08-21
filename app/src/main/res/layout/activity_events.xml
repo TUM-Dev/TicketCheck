@@ -13,7 +13,6 @@
         android:theme="@style/TumToolbar"
         app:popupTheme="@style/TumToolbarPopUp" />
 
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/eventsSwipeRefreshLayout"
         android:layout_width="match_parent"

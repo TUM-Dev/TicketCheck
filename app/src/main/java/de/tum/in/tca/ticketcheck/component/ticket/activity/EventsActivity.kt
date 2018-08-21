@@ -43,6 +43,7 @@ class EventsActivity : BaseActivity(R.layout.activity_events), SwipeRefreshLayou
         eventsRecyclerView.adapter = adapter
 
         eventsSwipeRefreshLayout.setOnRefreshListener(this)
+        eventsSwipeRefreshLayout.isRefreshing = true
         eventsSwipeRefreshLayout.setColorSchemeResources(
                 R.color.color_primary,
                 R.color.tum_A100,
