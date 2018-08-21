@@ -21,8 +21,9 @@ class EventsController(private val context: Context) {
         val cb = object : Callback<List<Event>> {
             override fun onResponse(call: Call<List<Event>>, response: Response<List<Event>>) {
                 val events = response.body() ?: emptyList()
-                eventDao.insert(events)
-                listener.onEventsLoaded(events)
+                val sorted = events.sortedBy { it.date }
+                eventDao.insert(sorted)
+                listener.onEventsLoaded(sorted)
             }
 
             override fun onFailure(call: Call<List<Event>>, t: Throwable) {
@@ -42,4 +43,3 @@ class EventsController(private val context: Context) {
     }
 
 }
-
