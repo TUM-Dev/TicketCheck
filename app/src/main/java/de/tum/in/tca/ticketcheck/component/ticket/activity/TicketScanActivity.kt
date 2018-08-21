@@ -2,6 +2,7 @@ package de.tum.`in`.tca.ticketcheck.component.ticket.activity
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -51,21 +52,31 @@ class TicketScanActivity : AppCompatActivity(),
         val cb = object : Callback<TicketValidityResponse> {
             override fun onResponse(call: Call<TicketValidityResponse>,
                                     response: Response<TicketValidityResponse>) {
-                val ticketValidityResponse = response.body() ?: return
-                if (ticketValidityResponse.valid) {
+                val ticketValidityResponse = response.body()
+                if (ticketValidityResponse  != null
+                        && ticketValidityResponse.valid && response.isSuccessful) {
                     openTicketDetails(ticketValidityResponse)
                 } else {
-                    Utils.showToast(this@TicketScanActivity, R.string.not_valid)
+                    showErrorDialog(R.string.not_valid)
                 }
             }
 
             override fun onFailure(call: Call<TicketValidityResponse>, t: Throwable) {
                 Utils.log(t)
-                Utils.showToast(this@TicketScanActivity, R.string.error_something_wrong)
+                showErrorDialog(R.string.error_something_wrong)
             }
         }
 
         ticketsController.checkTicketValidity(eventId, rawResult.text, cb)
+    }
+
+    private fun showErrorDialog(messageResId: Int) {
+        AlertDialog.Builder(this)
+                .setMessage(messageResId)
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    scanner_view.resumeCameraPreview(this)
+                }
+                .show()
     }
 
     private fun openTicketDetails(ticketValidityResponse: TicketValidityResponse) {

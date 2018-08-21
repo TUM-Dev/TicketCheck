@@ -64,7 +64,7 @@
         <activity
             android:name="de.tum.in.tca.ticketcheck.component.ticket.activity.EventsActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/events_tickets"
+            android:label="@string/events"
             android:launchMode="singleTop">
         </activity>
         <activity
