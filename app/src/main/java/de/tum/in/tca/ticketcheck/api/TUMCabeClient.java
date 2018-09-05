@@ -23,7 +23,6 @@ import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketValidityResponse
 import de.tum.in.tca.ticketcheck.utils.Const;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -42,8 +41,7 @@ public final class TUMCabeClient {
 
     private TUMCabeClient(final Context c) {
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://" + API_HOSTNAME + API_BASEURL)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+                .baseUrl("https://" + API_HOSTNAME + API_BASEURL);
 
         Gson gson = new GsonBuilder().registerTypeAdapter(DateTime.class, new DateSerializer())
                                      .create();
