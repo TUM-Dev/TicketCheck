@@ -135,15 +135,7 @@ class AdminDetailsActivity : BaseActivity(R.layout.activity_admin),
     private fun refreshTickets() {
         ticketsController.refreshTickets(eventID, object : AdminTicketRefreshCallback {
             override fun onResult(results: List<AdminTicket>) {
-                // TODO
-                val time = DateTime.now().minusDays(2)
-                val intermediate = results.toMutableList()
-                intermediate.add(
-                        AdminTicket(1, eventID, "Till Hellmund",
-                                "ga12abc", 1, time, null)
-                )
-
-                handleTicketRefreshSuccess(intermediate)
+                handleTicketRefreshSuccess(results)
             }
 
             override fun onFailure() {
