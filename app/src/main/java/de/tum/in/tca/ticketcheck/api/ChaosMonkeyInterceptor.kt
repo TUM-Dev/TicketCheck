@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom
  * This is a OkHttp Interceptor designed to remind developers, that network requests can and *will*
  * spontaneously fail.
  * If this Interceptor is in the stacktrace you're looking at, you probably didn't gracefully
- * handle failing network conditions
+ * onResult failing network conditions
  */
 class ChaosMonkeyInterceptor : Interceptor {
 
