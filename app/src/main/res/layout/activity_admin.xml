@@ -11,23 +11,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--
-    <android.support.v7.widget.SearchView
-        android:id="@+id/ticketsSearchView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/material_small_padding"
-        android:layout_marginBottom="@dimen/material_small_padding"
-        android:queryHint="@string/search_admin"
-        app:iconifiedByDefault="false"
-        app:layout_constraintBottom_toTopOf="@id/adminSwipeRefreshLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_bar"
-        app:queryHint="@string/search"
-        app:searchIcon="@null" />
-    -->
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/adminSwipeRefreshLayout"
         android:layout_width="0dp"
