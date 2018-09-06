@@ -11,6 +11,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--
     <android.support.v7.widget.SearchView
         android:id="@+id/ticketsSearchView"
         android:layout_width="0dp"
@@ -25,6 +26,7 @@
         app:layout_constraintTop_toBottomOf="@id/app_bar"
         app:queryHint="@string/search"
         app:searchIcon="@null" />
+    -->
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/adminSwipeRefreshLayout"
@@ -33,7 +35,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ticketsSearchView">
+        app:layout_constraintTop_toBottomOf="@id/app_bar">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/ticketsRecyclerView"

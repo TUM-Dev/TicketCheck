@@ -7,6 +7,8 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
+import android.view.Menu
+import android.view.MenuItem
 import de.tum.`in`.tca.ticketcheck.R
 import de.tum.`in`.tca.ticketcheck.api.TUMCabeClient
 import de.tum.`in`.tca.ticketcheck.component.generic.activity.BaseActivity
@@ -32,6 +34,8 @@ class AdminDetailsActivity : BaseActivity(R.layout.activity_admin),
 
     private val eventID: Int by lazy { intent.getIntExtra(Const.EVENT_ID, 0) }
     private val ticketsController: TicketsController by lazy { TicketsController(this) }
+
+    private lateinit var searchItem: MenuItem
 
     private var lastSelectedIndex: Int = 0
     private var totalTicketContingent: Int = 0
@@ -62,8 +66,6 @@ class AdminDetailsActivity : BaseActivity(R.layout.activity_admin),
             itemAnimator = DefaultItemAnimator()
             adapter = ticketsAdapter
         }
-
-        setupSearchView(ticketsSearchView)
 
         refreshTickets()
         refreshTicketCount()
@@ -99,27 +101,6 @@ class AdminDetailsActivity : BaseActivity(R.layout.activity_admin),
             putExtra(Const.EVENT_ID, eventID)
         }
         startActivity(intent)
-    }
-
-    private fun setupSearchView(searchView: SearchView) {
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(queryText: String) = true
-
-            override fun onQueryTextChange(queryText: String): Boolean {
-                search(queryText)
-                return true
-            }
-
-            private fun search(query: String) {
-                val filtered = tickets
-                        .filter {
-                            it.name.contains(query, true)
-                                    || it.lrzId.contains(query, true)
-                        }
-
-                ticketsAdapter.update(filtered)
-            }
-        })
     }
 
     override fun onRefresh() {
@@ -168,6 +149,55 @@ class AdminDetailsActivity : BaseActivity(R.layout.activity_admin),
             val subtitle = getString(R.string.sold_tickets, tickets.size, totalTicketContingent)
             actionBar.subtitle = subtitle
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_admin_details, menu)
+
+        searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as SearchView
+        setupSearchView(searchView)
+
+        return true
+    }
+
+    private fun setupSearchView(searchView: SearchView) {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(queryText: String) = true
+
+            override fun onQueryTextChange(queryText: String): Boolean {
+                performSearch(queryText)
+                return true
+            }
+        })
+
+        searchView.setOnCloseListener {
+            searchItem.collapseActionView()
+            clearSearch()
+            true
+        }
+
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem?) = true
+
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                clearSearch()
+                return true
+            }
+
+        })
+    }
+
+    private fun performSearch(query: String) {
+        val filtered = tickets.filter {
+            it.name.contains(query, true) || it.lrzId.contains(query, true)
+        }
+
+        ticketsAdapter.update(filtered)
+    }
+
+    private fun clearSearch() {
+        ticketsAdapter.update(tickets)
     }
 
 }
