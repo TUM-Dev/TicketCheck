@@ -628,7 +628,7 @@ Signature: %5$s</string>
     <string name="status">Status:</string>
     <string name="tum_id">TUM-ID:</string>
     <string name="check_in">Check-in</string>
-    <string name="checked_in">Checked in</string>
+    <string name="checked_in">Already checked in</string>
     <string name="ticket_number">Ticket number</string>
     <string name="purchase_date">Purchase date</string>
     <string name="check_in_name">Check-in %1$s?</string>
@@ -676,4 +676,5 @@ Signature: %5$s</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="checked_in_format_string">Checked in %s</string>
 </resources>

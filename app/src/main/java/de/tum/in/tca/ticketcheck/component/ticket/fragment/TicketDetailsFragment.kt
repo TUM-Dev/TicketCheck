@@ -65,6 +65,7 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
             ticket_purchase.text = purchaseText
 
             check_in_button.setOnClickListener { openCheckInConfirmationDialog() }
+            cancel_button.setOnClickListener { dismiss() }
             updateCheckInButton(ticket.isRedeemed)
         }
     }
@@ -85,7 +86,6 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
                 ticketSuccessResponse?.let {
                     if (response.isSuccessful && it.success) {
                         handleCheckInSuccess()
-                        return
                     }
                 }
 
@@ -101,17 +101,17 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleCheckInSuccess() {
-        updateCheckInButton(true)
         TcaDb.getInstance(context).adminTicketDao().setTicketRedeemed(ticket.id)
+        Utils.showToast(context, getString(R.string.checked_in_format_string, ticket.name))
+        dismiss()
     }
 
     private fun updateCheckInButton(isCheckedIn: Boolean) {
         check_in_button.isEnabled = !isCheckedIn
         check_in_button.setText(if (isCheckedIn) R.string.checked_in else R.string.check_in)
 
-        val context = context ?: return
         if (isCheckedIn) {
-            val confirmedColor = ContextCompat.getColor(context, R.color.sections_green)
+            val confirmedColor = ContextCompat.getColor(requireContext(), R.color.error)
             check_in_button.backgroundTintList = ColorStateList.valueOf(confirmedColor)
         }
     }
