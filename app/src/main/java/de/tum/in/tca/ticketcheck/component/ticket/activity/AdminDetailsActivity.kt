@@ -20,7 +20,6 @@ import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketStatus
 import de.tum.`in`.tca.ticketcheck.utils.Const
 import de.tum.`in`.tca.ticketcheck.utils.Utils
 import kotlinx.android.synthetic.main.activity_admin.*
-import org.joda.time.DateTime
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,11 +27,11 @@ import retrofit2.Response
 class AdminDetailsActivity : BaseActivity(R.layout.activity_admin),
         TicketsAdapter.OnTicketSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private lateinit var ticketsAdapter: TicketsAdapter
+    private val ticketsAdapter: TicketsAdapter by lazy { TicketsAdapter(this) }
     private var tickets = listOf<AdminTicket>()
 
-    private var eventID: Int = 0
-    private lateinit var ticketsController: TicketsController
+    private val eventID: Int by lazy { intent.getIntExtra(Const.EVENT_ID, 0) }
+    private val ticketsController: TicketsController by lazy { TicketsController(this) }
 
     private var lastSelectedIndex: Int = 0
     private var totalTicketContingent: Int = 0
@@ -50,16 +49,12 @@ class AdminDetailsActivity : BaseActivity(R.layout.activity_admin),
             )
         }
 
-        eventID = intent.getIntExtra(Const.EVENT_ID, 0)
         val title = EventsController(this).getEventById(eventID).title
 
         supportActionBar?.title = title
         supportActionBar?.setSubtitle(R.string.loading)
 
-        ticketsController = TicketsController(this)
         tickets = ticketsController.getTicketsForEvent(eventID)
-
-        ticketsAdapter = TicketsAdapter(this)
 
         ticketsRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@AdminDetailsActivity)

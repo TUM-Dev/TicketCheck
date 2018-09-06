@@ -10,9 +10,10 @@ import org.joda.time.DateTime;
 import java.io.IOException;
 import java.util.List;
 
-import de.tum.in.tca.ticketcheck.component.ticket.model.AdminVerification;
 import de.tum.in.tca.ticketcheck.component.ticket.model.AdminTicket;
+import de.tum.in.tca.ticketcheck.component.ticket.model.AdminVerification;
 import de.tum.in.tca.ticketcheck.component.ticket.model.Event;
+import de.tum.in.tca.ticketcheck.component.ticket.model.TicketType;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.AdminKeyUploadRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.AdminTicketRequest;
 import de.tum.in.tca.ticketcheck.component.ticket.payload.TicketRedemptionRequest;
@@ -78,6 +79,10 @@ public final class TUMCabeClient {
     public void getAdminTicketData(Context context, int eventId, Callback<List<AdminTicket>> callback) throws IOException {
         service.getAdminTicketData(AdminVerification.Companion.createAdminVerification(context, new AdminTicketRequest(eventId)))
                 .enqueue(callback);
+    }
+
+    public void fetchTicketTypes(int eventID, Callback<List<TicketType>> cb) {
+        service.getTicketTypes(eventID).enqueue(cb);
     }
 
     public void getTicketStats(int event, Callback<List<TicketStatus>> cb) {
