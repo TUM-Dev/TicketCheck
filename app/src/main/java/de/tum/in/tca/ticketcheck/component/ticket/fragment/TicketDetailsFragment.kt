@@ -27,7 +27,8 @@ import retrofit2.Response
 class TicketDetailsFragment : BottomSheetDialogFragment() {
 
     private val ticket: AdminTicket by lazy {
-        arguments?.getParcelable(Const.TICKET) ?: throw IllegalStateException("No ticket provided")
+        arguments?.getParcelable<AdminTicket>(Const.TICKET)
+                ?: throw IllegalStateException("No ticket provided")
     }
 
     private val ticketsController: TicketsController by lazy {
