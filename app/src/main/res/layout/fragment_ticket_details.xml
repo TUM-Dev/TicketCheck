@@ -15,7 +15,7 @@
         android:padding="@dimen/material_default_padding">
 
         <TextView
-            android:id="@+id/ticket_name"
+            android:id="@+id/nameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
@@ -26,29 +26,29 @@
             tools:text="Name" />
 
         <TextView
-            android:id="@+id/ticket_lrzid"
+            android:id="@+id/lrzIdTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ticket_name"
+            app:layout_constraintTop_toBottomOf="@id/nameTextView"
             tools:text="ga12baz" />
 
         <View
-            android:id="@+id/divider1"
+            android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/material_default_padding"
             android:layout_marginBottom="@dimen/material_default_padding"
             android:background="@color/placeholder"
-            app:layout_constraintBottom_toTopOf="@id/purchase_info_container"
+            app:layout_constraintBottom_toTopOf="@id/purchaseInfoContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ticket_lrzid" />
+            app:layout_constraintTop_toBottomOf="@id/lrzIdTextView" />
 
         <LinearLayout
-            android:id="@+id/purchase_info_container"
+            android:id="@+id/purchaseInfoContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/material_default_padding"
@@ -56,7 +56,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider1">
+            app:layout_constraintTop_toBottomOf="@id/divider">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -72,7 +72,7 @@
                     android:textColor="@color/color_primary" />
 
                 <TextView
-                    android:id="@+id/ticket_no"
+                    android:id="@+id/ticketNumberTextView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -94,7 +94,7 @@
                     android:textColor="@color/color_primary" />
 
                 <TextView
-                    android:id="@+id/ticket_purchase"
+                    android:id="@+id/purchaseDateTextView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -105,7 +105,7 @@
         </LinearLayout>
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/cancel_button"
+            android:id="@+id/cancelButton"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -113,11 +113,11 @@
             android:text="@string/cancel"
             android:textColor="@color/text_light_gray"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/check_in_button"
-            app:layout_constraintTop_toBottomOf="@id/purchase_info_container" />
+            app:layout_constraintEnd_toStartOf="@id/checkInButton"
+            app:layout_constraintTop_toBottomOf="@id/purchaseInfoContainer" />
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/check_in_button"
+            android:id="@+id/checkInButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/material_default_padding"
@@ -126,7 +126,7 @@
             app:backgroundTint="@color/color_primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/purchase_info_container"
+            app:layout_constraintTop_toBottomOf="@id/purchaseInfoContainer"
             tools:text="Check in" />
 
     </android.support.constraint.ConstraintLayout>

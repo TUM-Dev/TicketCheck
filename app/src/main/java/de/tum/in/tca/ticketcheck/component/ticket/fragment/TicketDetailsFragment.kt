@@ -49,9 +49,9 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         with(view) {
-            ticket_name.text = ticket.name
-            ticket_lrzid.text = ticket.lrzId
-            ticket_no.text = ticketType.description
+            nameTextView.text = ticket.name
+            lrzIdTextView.text = ticket.lrzId
+            ticketNumberTextView.text = ticketType.description
 
             val purchaseDate = ticket.purchaseDate
             val purchaseText = if (purchaseDate != null) {
@@ -59,10 +59,10 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
             } else {
                 context.getString(R.string.none)
             }
-            ticket_purchase.text = purchaseText
+            purchaseDateTextView.text = purchaseText
 
-            check_in_button.setOnClickListener { openCheckInConfirmationDialog() }
-            cancel_button.setOnClickListener { dismiss() }
+            checkInButton.setOnClickListener { openCheckInConfirmationDialog() }
+            cancelButton.setOnClickListener { dismiss() }
             updateCheckInButton(ticket.isRedeemed)
         }
     }
@@ -83,6 +83,7 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
                 ticketSuccessResponse?.let {
                     if (response.isSuccessful && it.success) {
                         handleCheckInSuccess()
+                        return
                     }
                 }
 
@@ -104,12 +105,12 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun updateCheckInButton(isCheckedIn: Boolean) {
-        check_in_button.isEnabled = !isCheckedIn
-        check_in_button.setText(if (isCheckedIn) R.string.checked_in else R.string.check_in)
+        checkInButton.isEnabled = isCheckedIn.not()
+        checkInButton.setText(if (isCheckedIn) R.string.checked_in else R.string.check_in)
 
         if (isCheckedIn) {
             val confirmedColor = ContextCompat.getColor(requireContext(), R.color.error)
-            check_in_button.backgroundTintList = ColorStateList.valueOf(confirmedColor)
+            checkInButton.backgroundTintList = ColorStateList.valueOf(confirmedColor)
         }
     }
 
