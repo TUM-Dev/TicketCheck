@@ -1,5 +1,6 @@
 package de.tum.`in`.tca.ticketcheck.component.ticket
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
@@ -10,8 +11,11 @@ import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket
 @Dao
 interface AdminTicketDao {
 
+    @Query("SELECT * FROM adminticket")
+    fun getAll(): LiveData<List<AdminTicket>>
+
     @Query("SELECT * FROM adminticket WHERE event = :eventId")
-    fun getByEventId(eventId: Int): List<AdminTicket>
+    fun getByEventId(eventId: Int): LiveData<List<AdminTicket>>
 
     @Query("SELECT * FROM adminticket WHERE id = :ticketId")
     fun getByTicketId(ticketId: Int): AdminTicket

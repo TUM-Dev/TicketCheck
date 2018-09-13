@@ -2,9 +2,10 @@ package de.tum.`in`.tca.ticketcheck.component.ticket
 
 import android.content.Context
 import de.tum.`in`.tca.ticketcheck.api.TUMCabeClient
+import de.tum.`in`.tca.ticketcheck.component.ticket.callbacks.ApiResponseCallback
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket
-import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicketRefreshCallback
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.TicketType
+import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketStatus
 import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketSuccessResponse
 import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketValidityResponse
 import de.tum.`in`.tca.ticketcheck.database.TcaDb
@@ -19,27 +20,31 @@ class TicketsController(private val context: Context) {
     private val adminTicketDao = TcaDb.getInstance(context).adminTicketDao()
     private val ticketTypeDao = TcaDb.getInstance(context).ticketTypeDao()
 
-    fun getTicketsForEvent(event: Int): List<AdminTicket> = adminTicketDao.getByEventId(event)
+    fun getTicketsForEvent(event: Int) = adminTicketDao.getByEventId(event)
 
     /**
      * This method refreshes the tickets from server
      * @param eventID of the event for which the tickets are needed
      * @param cb this callback is used to process the refreshed ticket list
      */
-    fun refreshTickets(eventID: Int, cb: AdminTicketRefreshCallback) {
-        downloadFromService(eventID, cb)
-    }
-
-    private fun downloadFromService(eventID: Int, cb: AdminTicketRefreshCallback) {
+    fun refreshTickets(eventID: Int, cb: ApiResponseCallback<List<AdminTicket>>) {
         val callback = object : Callback<List<AdminTicket>> {
-            override fun onResponse(call: Call<List<AdminTicket>>, response: Response<List<AdminTicket>>) {
-                val tickets = response.body() ?: getTicketsForEvent(eventID)
+            override fun onResponse(call: Call<List<AdminTicket>>,
+                                    response: Response<List<AdminTicket>>) {
+                val tickets = response.body()
+
+                if (response.isSuccessful.not() || tickets == null) {
+                    cb.onFailure()
+                    return
+                }
+
                 adminTicketDao.insert(tickets)
                 cb.onResult(tickets)
             }
 
             override fun onFailure(call: Call<List<AdminTicket>>, t: Throwable) {
                 Utils.log(t)
+                cb.onFailure()
             }
         }
 
@@ -47,16 +52,39 @@ class TicketsController(private val context: Context) {
             TUMCabeClient.getInstance(context).getAdminTicketData(context, eventID, callback)
         } catch (e: IOException) {
             Utils.log(e)
+            cb.onFailure()
         }
     }
 
+    fun refreshTicketStats(eventID: Int, cb: ApiResponseCallback<List<TicketStatus>>) {
+        val callback = object : Callback<List<TicketStatus>> {
+            override fun onResponse(call: Call<List<TicketStatus>>,
+                                    response: Response<List<TicketStatus>>) {
+                val ticketStatuses = response.body()
+
+                if (response.isSuccessful.not() || ticketStatuses == null) {
+                    cb.onFailure()
+                    return
+                }
+
+                cb.onResult(ticketStatuses)
+            }
+
+            override fun onFailure(call: Call<List<TicketStatus>>, t: Throwable) {
+                Utils.log(t)
+                cb.onFailure()
+            }
+        }
+
+        TUMCabeClient.getInstance(context).getTicketStats(eventID, callback)
+    }
+
     fun fetchTicketTypes(eventID: Int) {
-        val database = TcaDb.getInstance(context)
         TUMCabeClient.getInstance(context)
                 .fetchTicketTypes(eventID, object : Callback<List<TicketType>> {
                     override fun onResponse(call: Call<List<TicketType>>, response: Response<List<TicketType>>) {
                         val ticketTypes = response.body() ?: return
-                        database.ticketTypeDao().insert(ticketTypes)
+                        ticketTypeDao.insert(ticketTypes)
                     }
 
                     override fun onFailure(call: Call<List<TicketType>>, t: Throwable) {
@@ -68,6 +96,10 @@ class TicketsController(private val context: Context) {
     fun getTicketTypeById(ticketTypeId: Int): TicketType = ticketTypeDao.getById(ticketTypeId)
 
     fun getTicketById(ticketId: Int): AdminTicket = adminTicketDao.getByTicketId(ticketId)
+
+    fun insertTickets(tickets: List<AdminTicket>) {
+        adminTicketDao.insert(tickets)
+    }
 
     fun redeemTicket(ticketId: Int, cb: Callback<TicketSuccessResponse>) {
         try {

@@ -22,7 +22,11 @@ class TicketsAdapter(
     private val listener = context as OnTicketSelectedListener
     private val ticketsController: TicketsController by lazy { TicketsController(context) }
 
-    private val tickets = mutableListOf<AdminTicket>()
+    private val allTickets = mutableListOf<AdminTicket>()
+    private var filteredTickets: List<AdminTicket>? = null
+
+    private val items: List<AdminTicket>
+        get() = filteredTickets ?: allTickets
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -31,18 +35,30 @@ class TicketsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val ticket = tickets[position]
+        val ticket = items[position]
         val ticketType = ticketsController.getTicketTypeById(ticket.ticketType)
         holder.bind(ticket, ticketType, listener)
     }
 
-    override fun getItemCount() = tickets.size
+    override fun getItemCount() = items.size
 
     fun update(newItems: List<AdminTicket>) {
-        val diffResult = DiffUtil.calculateDiff(TicketsDiffUtil(this.tickets, newItems))
-        tickets.clear()
-        tickets.addAll(newItems)
+        val diffResult = DiffUtil.calculateDiff(TicketsDiffUtil(this.allTickets, newItems))
+        allTickets.clear()
+        allTickets.addAll(newItems)
         diffResult.dispatchUpdatesTo(this)
+    }
+
+    fun filter(query: String? = null) {
+        query?.let { q ->
+            filteredTickets = allTickets.filter {
+                it.name.contains(q, true) || it.lrzId.contains(q, true)
+            }
+            return
+        }
+
+        filteredTickets = null
+        update(allTickets)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

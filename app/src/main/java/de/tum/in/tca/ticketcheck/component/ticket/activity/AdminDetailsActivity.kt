@@ -1,64 +1,60 @@
 package de.tum.`in`.tca.ticketcheck.component.ticket.activity
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
+import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup
 import de.tum.`in`.tca.ticketcheck.R
-import de.tum.`in`.tca.ticketcheck.api.TUMCabeClient
 import de.tum.`in`.tca.ticketcheck.component.generic.activity.BaseActivity
 import de.tum.`in`.tca.ticketcheck.component.ticket.EventsController
-import de.tum.`in`.tca.ticketcheck.component.ticket.TicketsController
 import de.tum.`in`.tca.ticketcheck.component.ticket.adapter.TicketsAdapter
 import de.tum.`in`.tca.ticketcheck.component.ticket.fragment.TicketDetailsFragment
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket
-import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicketRefreshCallback
-import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketStatus
+import de.tum.`in`.tca.ticketcheck.component.ticket.model.TicketContingent
+import de.tum.`in`.tca.ticketcheck.component.ticket.viewmodel.AdminDetailsViewModel
 import de.tum.`in`.tca.ticketcheck.utils.Const
-import de.tum.`in`.tca.ticketcheck.utils.Utils
+import de.tum.`in`.tca.ticketcheck.utils.observeNonNull
 import kotlinx.android.synthetic.main.activity_admin.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class AdminDetailsActivity : BaseActivity(R.layout.activity_admin),
-        TicketsAdapter.OnTicketSelectedListener, SwipeRefreshLayout.OnRefreshListener {
+class AdminDetailsActivity : BaseActivity(
+        R.layout.activity_admin
+), TicketsAdapter.OnTicketSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
     private val ticketsAdapter: TicketsAdapter by lazy { TicketsAdapter(this) }
-    private var tickets = listOf<AdminTicket>()
+
+    private val snackbar: Snackbar by lazy {
+        val view = findViewById<ViewGroup>(android.R.id.content)
+        Snackbar.make(view.getChildAt(0), R.string.something_wrong, Snackbar.LENGTH_INDEFINITE)
+    }
 
     private val eventID: Int by lazy { intent.getIntExtra(Const.EVENT_ID, 0) }
-    private val ticketsController: TicketsController by lazy { TicketsController(this) }
 
-    private lateinit var searchItem: MenuItem
-
-    private var lastSelectedIndex: Int = 0
-    private var totalTicketContingent: Int = 0
+    private val viewModel: AdminDetailsViewModel by lazy {
+        val factory = AdminDetailsViewModel.Factory(application, eventID)
+        ViewModelProviders.of(this, factory).get(AdminDetailsViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         adminSwipeRefreshLayout.apply {
-            isRefreshing = true
             setOnRefreshListener(this@AdminDetailsActivity)
             setColorSchemeResources(
                     R.color.color_primary,
                     R.color.tum_A100,
-                    R.color.tum_A200
-            )
+                    R.color.tum_A200)
         }
 
         val title = EventsController(this).getEventById(eventID).title
-
         supportActionBar?.title = title
         supportActionBar?.setSubtitle(R.string.loading)
-
-        tickets = ticketsController.getTicketsForEvent(eventID)
 
         ticketsRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@AdminDetailsActivity)
@@ -67,33 +63,19 @@ class AdminDetailsActivity : BaseActivity(R.layout.activity_admin),
             adapter = ticketsAdapter
         }
 
-        refreshTickets()
-        refreshTicketCount()
+        viewModel.tickets.observeNonNull(this) { updateTickets(it) }
+        viewModel.filteredTickets.observeNonNull(this) { updateTickets(it) }
+        viewModel.ticketContingent.observeNonNull(this) { updateTicketCounter(it) }
+        viewModel.error.observeNonNull(this) { showError(it) }
 
-        val floatingScanner = findViewById<FloatingActionButton>(R.id.scannerFab)
-        floatingScanner.setOnClickListener { view -> openTicketScanActivity() }
-    }
+        refreshTicketsAndStats()
 
-    public override fun onResume() {
-        super.onResume()
-
-        // Update the ticket that was being shown in the Ticket Detail View, in case the redemption state changed
-        // TODO: Fix crash
-        /*
-        if (lastSelectedIndex < tickets.size()) {
-            int ticketId = tickets.get(lastSelectedIndex).getId();
-            AdminTicket ticket = TcaDb.getInstance(this).adminTicketDao().getByTicketId(ticketId);
-            tickets.set(lastSelectedIndex, ticket);
-            recyclerView.getAdapter().notifyItemChanged(lastSelectedIndex);
-        }
-        */
+        scannerFab.setOnClickListener { openTicketScanActivity() }
     }
 
     override fun onTicketSelected(ticket: AdminTicket, position: Int) {
-        lastSelectedIndex = position
-        TicketDetailsFragment
-                .newInstance(ticket)
-                .show(supportFragmentManager, "ticket_details_fragment")
+        val fragment = TicketDetailsFragment.newInstance(ticket)
+        fragment.show(supportFragmentManager, fragment.tag)
     }
 
     private fun openTicketScanActivity() {
@@ -104,69 +86,49 @@ class AdminDetailsActivity : BaseActivity(R.layout.activity_admin),
     }
 
     override fun onRefresh() {
-        refreshTickets()
-        refreshTicketCount()
+        refreshTicketsAndStats()
     }
 
-    private fun refreshTickets() {
-        ticketsController.refreshTickets(eventID, object : AdminTicketRefreshCallback {
-            override fun onResult(results: List<AdminTicket>) {
-                handleTicketRefreshSuccess(results)
-            }
-
-            override fun onFailure() {
-                Utils.showToast(this@AdminDetailsActivity, R.string.error_something_wrong)
-                adminSwipeRefreshLayout.isRefreshing = false
-            }
-        })
+    private fun refreshTicketsAndStats() {
+        adminSwipeRefreshLayout.isRefreshing = true
+        viewModel.fetchTickets()
     }
 
-    private fun handleTicketRefreshSuccess(results: List<AdminTicket>) {
-        tickets = results
-        ticketsAdapter.update(tickets)
-
-        updateTicketCounter()
+    private fun updateTickets(tickets: List<AdminTicket>) {
         adminSwipeRefreshLayout.isRefreshing = false
+        ticketsAdapter.update(tickets)
     }
 
-    private fun refreshTicketCount() {
-        TUMCabeClient.getInstance(this).getTicketStats(eventID, object : Callback<List<TicketStatus>> {
-            override fun onResponse(call: Call<List<TicketStatus>>,
-                                    response: Response<List<TicketStatus>>) {
-                val ticketStatuses = response.body() ?: return
-                totalTicketContingent = ticketStatuses.sumBy{ it.contingent }
-                updateTicketCounter()
-            }
-
-            override fun onFailure(call: Call<List<TicketStatus>>, t: Throwable) {
-                Utils.log(t)
-            }
-        })
+    private fun updateTicketCounter(contingent: TicketContingent) {
+        supportActionBar?.subtitle =
+                getString(R.string.sold_tickets, contingent.sold, contingent.contingent)
     }
 
-    private fun updateTicketCounter() {
-        supportActionBar?.let { actionBar ->
-            val subtitle = getString(R.string.sold_tickets, tickets.size, totalTicketContingent)
-            actionBar.subtitle = subtitle
+    private fun showError(show: Boolean) {
+        adminSwipeRefreshLayout.isRefreshing = false
+        if (show) {
+            snackbar.show()
+        } else {
+            snackbar.dismiss()
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_admin_details, menu)
 
-        searchItem = menu.findItem(R.id.action_search)
+        val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
-        setupSearchView(searchView)
+        setupSearch(searchItem, searchView)
 
         return true
     }
 
-    private fun setupSearchView(searchView: SearchView) {
+    private fun setupSearch(searchItem: MenuItem, searchView: SearchView) {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(queryText: String) = true
 
-            override fun onQueryTextChange(queryText: String): Boolean {
-                performSearch(queryText)
+            override fun onQueryTextChange(query: String): Boolean {
+                performSearch(query)
                 return true
             }
         })
@@ -184,20 +146,15 @@ class AdminDetailsActivity : BaseActivity(R.layout.activity_admin),
                 clearSearch()
                 return true
             }
-
         })
     }
 
     private fun performSearch(query: String) {
-        val filtered = tickets.filter {
-            it.name.contains(query, true) || it.lrzId.contains(query, true)
-        }
-
-        ticketsAdapter.update(filtered)
+        viewModel.filter(query)
     }
 
     private fun clearSearch() {
-        ticketsAdapter.update(tickets)
+        ticketsAdapter.filter(null)
     }
 
 }

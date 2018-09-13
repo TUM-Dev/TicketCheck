@@ -37,9 +37,7 @@ class EventsActivity : BaseActivity(R.layout.activity_events), SwipeRefreshLayou
         eventsRecyclerView.setHasFixedSize(true)
         eventsRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        eventsRecyclerView.addItemDecoration(
-                DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        )
+        eventsRecyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         eventsRecyclerView.adapter = adapter
 
         eventsSwipeRefreshLayout.setOnRefreshListener(this)
