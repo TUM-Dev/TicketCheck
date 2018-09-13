@@ -187,6 +187,7 @@ public class AuthenticationManager {
                     Utils.setSetting(mContext, Const.PUBLIC_KEY_UPLOADED, true);
                     showSuccessDialog();
                 } else {
+                    Utils.log("Could not upload admin key: " + response.toString());
                     showErrorDialog();
                 }
             }
