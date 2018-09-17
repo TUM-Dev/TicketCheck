@@ -8,85 +8,79 @@
     android:padding="@dimen/material_default_padding">
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/nameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/material_small_padding"
         android:fontFamily="sans-serif-medium"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintEnd_toStartOf="@id/ticketTypeTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Name" />
 
     <TextView
-        android:id="@+id/lrz_id"
+        android:id="@+id/lrzIdTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/material_small_padding"
         android:layout_marginBottom="@dimen/material_default_padding"
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@id/purchase"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintBottom_toTopOf="@id/purchaseDateTextView"
+        app:layout_constraintEnd_toStartOf="@id/ticketTypeTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name"
+        app:layout_constraintTop_toBottomOf="@id/nameTextView"
         tools:text="lrz_id" />
 
     <TextView
-        android:id="@+id/purchase"
+        android:id="@+id/purchaseDateTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/material_small_padding"
+        android:layout_marginEnd="@dimen/material_small_padding"
         android:text="@string/not_purchased"
         android:textSize="15sp"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintEnd_toStartOf="@id/ticketTypeTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lrz_id"
+        app:layout_constraintTop_toBottomOf="@id/lrzIdTextView"
         tools:text="purchase" />
 
     <TextView
-        android:id="@+id/redemption"
+        android:id="@+id/redemptionDateTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/material_tiny_padding"
+        android:layout_marginEnd="@dimen/material_small_padding"
         android:text="@string/not_redeemed"
         android:textSize="15sp"
-        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintEnd_toStartOf="@id/ticketTypeTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/purchase"
+        app:layout_constraintTop_toBottomOf="@id/purchaseDateTextView"
         tools:text="redemption" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.8" />
-
     <TextView
-        android:id="@+id/ticket_type_title"
+        android:id="@+id/ticketTypeTitleTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:gravity="end"
-        android:text="@string/ticket"
+        android:text="@string/ticket_type"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        app:layout_constraintBottom_toTopOf="@id/ticket_type"
+        app:layout_constraintBottom_toTopOf="@id/ticketTypeTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
-        android:id="@+id/ticket_type"
+        android:id="@+id/ticketTypeTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="end"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/ticket_type_title"
+        app:layout_constraintTop_toBottomOf="@id/ticketTypeTitleTextView"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="1" />
+        tools:text="TU Students" />
 
 </android.support.constraint.ConstraintLayout>

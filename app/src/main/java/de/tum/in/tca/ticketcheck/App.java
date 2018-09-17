@@ -10,8 +10,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        JodaTimeAndroid.init(this);
         setupStrictMode();
+        JodaTimeAndroid.init(this);
     }
 
     protected void setupStrictMode() {

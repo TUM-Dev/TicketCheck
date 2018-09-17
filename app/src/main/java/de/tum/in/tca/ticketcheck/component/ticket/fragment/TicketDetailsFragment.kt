@@ -1,7 +1,6 @@
 package de.tum.`in`.tca.ticketcheck.component.ticket.fragment
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -14,6 +13,7 @@ import de.tum.`in`.tca.ticketcheck.R
 import de.tum.`in`.tca.ticketcheck.component.ticket.TicketsController
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.Event
+import de.tum.`in`.tca.ticketcheck.component.ticket.model.TicketType
 import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketSuccessResponse
 import de.tum.`in`.tca.ticketcheck.database.TcaDb
 import de.tum.`in`.tca.ticketcheck.utils.Const
@@ -26,22 +26,20 @@ import retrofit2.Response
 
 class TicketDetailsFragment : BottomSheetDialogFragment() {
 
-    private lateinit var ticket: AdminTicket
-    private lateinit var ticketsController: TicketsController
+    private val ticket: AdminTicket by lazy {
+        arguments?.getParcelable<AdminTicket>(Const.TICKET)
+                ?: throw IllegalStateException("No ticket provided")
+    }
+
+    private val ticketsController: TicketsController by lazy {
+        TicketsController(requireContext())
+    }
+
+    private val ticketType: TicketType by lazy {
+        ticketsController.getTicketTypeById(ticket.ticketType)
+    }
 
     private var listener: InteractionListener? = null
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        context?.let { ticketsController = TicketsController(it) }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {  args ->
-            ticket = args.getParcelable(Const.TICKET)
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -52,9 +50,9 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         with(view) {
-            ticket_name.text = ticket.name
-            ticket_lrzid.text = ticket.lrzId
-            ticket_no.text = ticket.id.toString()
+            nameTextView.text = ticket.name
+            lrzIdTextView.text = ticket.lrzId
+            ticketNumberTextView.text = ticketType.description
 
             val purchaseDate = ticket.purchaseDate
             val purchaseText = if (purchaseDate != null) {
@@ -62,9 +60,10 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
             } else {
                 context.getString(R.string.none)
             }
-            ticket_purchase.text = purchaseText
+            purchaseDateTextView.text = purchaseText
 
-            check_in_button.setOnClickListener { openCheckInConfirmationDialog() }
+            checkInButton.setOnClickListener { openCheckInConfirmationDialog() }
+            cancelButton.setOnClickListener { dismiss() }
             updateCheckInButton(ticket.isRedeemed)
         }
     }
@@ -101,18 +100,18 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun handleCheckInSuccess() {
-        updateCheckInButton(true)
         TcaDb.getInstance(context).adminTicketDao().setTicketRedeemed(ticket.id)
+        Utils.showToast(context, getString(R.string.checked_in_format_string, ticket.name))
+        dismiss()
     }
 
     private fun updateCheckInButton(isCheckedIn: Boolean) {
-        check_in_button.isEnabled = !isCheckedIn
-        check_in_button.setText(if (isCheckedIn) R.string.checked_in else R.string.check_in)
+        checkInButton.isEnabled = isCheckedIn.not()
+        checkInButton.setText(if (isCheckedIn) R.string.checked_in else R.string.check_in)
 
-        val context = context ?: return
         if (isCheckedIn) {
-            val confirmedColor = ContextCompat.getColor(context, R.color.sections_green)
-            check_in_button.backgroundTintList = ColorStateList.valueOf(confirmedColor)
+            val confirmedColor = ContextCompat.getColor(requireContext(), R.color.error)
+            checkInButton.backgroundTintList = ColorStateList.valueOf(confirmedColor)
         }
     }
 

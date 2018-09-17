@@ -44,11 +44,6 @@ class EventsAdapter : RecyclerView.Adapter<EventsAdapter.EventViewHolder>() {
         fun bind(event: Event) = with(itemView) {
             val title = COMPILE.matcher(event.title).replaceAll("")
             events_title.text = title
-
-            val locality = event.locality
-            events_src_locality.text = locality
-
-            events_src_date.text = Event.getFormattedDateTime(context, event.date)
         }
 
     }
