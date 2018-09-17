@@ -1,51 +1,17 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:selectableItemBackground">
+    android:layout_height="?android:listPreferredItemHeight"
+    android:background="?android:selectableItemBackground"
+    android:paddingStart="@dimen/material_default_padding"
+    android:paddingEnd="@dimen/material_default_padding">
 
     <TextView
         android:id="@+id/events_title"
         style="@style/CardTitle"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/material_default_padding"
-        android:layout_marginTop="@dimen/material_default_padding"
-        android:layout_marginEnd="@dimen/material_default_padding"
-        app:layout_constraintBottom_toTopOf="@id/events_src_date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_gravity="center_vertical"
         tools:text="Title" />
 
-    <TextView
-        android:id="@+id/events_src_date"
-        style="@style/CardBody"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/material_default_padding"
-        android:layout_marginEnd="@dimen/material_default_padding"
-        android:drawablePadding="@dimen/material_default_padding"
-        app:layout_constraintBottom_toTopOf="@id/events_src_locality"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/events_title"
-        tools:text="Date" />
-
-    <TextView
-        android:id="@+id/events_src_locality"
-        style="@style/CardBody"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/material_default_padding"
-        android:layout_marginEnd="@dimen/material_default_padding"
-        android:layout_marginBottom="@dimen/material_default_padding"
-        android:drawablePadding="@dimen/material_default_padding"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/events_src_date"
-        tools:text="Locality" />
-
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>

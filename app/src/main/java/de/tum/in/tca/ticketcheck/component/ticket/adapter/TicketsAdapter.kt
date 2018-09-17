@@ -1,5 +1,6 @@
 package de.tum.`in`.tca.ticketcheck.component.ticket.adapter
 
+import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
@@ -7,16 +8,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import de.tum.`in`.tca.ticketcheck.R
+import de.tum.`in`.tca.ticketcheck.component.ticket.TicketsController
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.Event
+import de.tum.`in`.tca.ticketcheck.component.ticket.model.TicketType
 import kotlinx.android.synthetic.main.ticket_list_item.view.*
 import org.jetbrains.anko.textColor
 
 class TicketsAdapter(
-        private val listener: OnTicketSelectedListener
+        context: Context
 ) : RecyclerView.Adapter<TicketsAdapter.ViewHolder>() {
 
-    private var tickets = mutableListOf<AdminTicket>()
+    private val listener = context as OnTicketSelectedListener
+    private val ticketsController: TicketsController by lazy { TicketsController(context) }
+
+    private val allTickets = mutableListOf<AdminTicket>()
+    private var filteredTickets: List<AdminTicket>? = null
+
+    private val items: List<AdminTicket>
+        get() = filteredTickets ?: allTickets
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -25,35 +35,50 @@ class TicketsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(tickets[position], listener)
+        val ticket = items[position]
+        val ticketType = ticketsController.getTicketTypeById(ticket.ticketType)
+        holder.bind(ticket, ticketType, listener)
     }
 
-    override fun getItemCount() = tickets.size
+    override fun getItemCount() = items.size
 
     fun update(newItems: List<AdminTicket>) {
-        val diffResult = DiffUtil.calculateDiff(TicketsDiffUtil(this.tickets, newItems))
-        tickets.clear()
-        tickets.addAll(newItems)
+        val diffResult = DiffUtil.calculateDiff(TicketsDiffUtil(this.allTickets, newItems))
+        allTickets.clear()
+        allTickets.addAll(newItems)
         diffResult.dispatchUpdatesTo(this)
+    }
+
+    fun filter(query: String? = null) {
+        query?.let { q ->
+            filteredTickets = allTickets.filter {
+                it.name.contains(q, true) || it.lrzId.contains(q, true)
+            }
+            return
+        }
+
+        filteredTickets = null
+        update(allTickets)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(ticket: AdminTicket, listener: OnTicketSelectedListener) = with(itemView) {
-            name.text = ticket.name
-            lrz_id.text = ticket.lrzId
-            ticket_type.text = ticket.ticketType.toString()
+        fun bind(ticket: AdminTicket,
+                 ticketType: TicketType, listener: OnTicketSelectedListener) = with(itemView) {
+            nameTextView.text = ticket.name
+            lrzIdTextView.text = ticket.lrzId
+            ticketTypeTextView.text = ticketType.description
 
             val purchaseColor = if (ticket.isPurchased) {
                 R.color.text_dark_gray
             } else {
                 R.color.grade_4_7
             }
-            purchase.textColor = ContextCompat.getColor(context, purchaseColor)
+            purchaseDateTextView.textColor = ContextCompat.getColor(context, purchaseColor)
 
             ticket.purchaseDate?.let {
                 val formattedDate = Event.getFormattedDateTime(context, it)
-                purchase.text = context.getString(R.string.purchased_format_string, formattedDate)
+                purchaseDateTextView.text = context.getString(R.string.purchased_format_string, formattedDate)
             }
 
             val redeemColor = if (ticket.isRedeemed) {
@@ -61,11 +86,11 @@ class TicketsAdapter(
             } else {
                 R.color.grade_3_3
             }
-            purchase.textColor = ContextCompat.getColor(context, redeemColor)
+            purchaseDateTextView.textColor = ContextCompat.getColor(context, redeemColor)
 
             ticket.redeemDate?.let {
                 val formattedDate = Event.getFormattedDateTime(context, it)
-                redemption.text = context.getString(R.string.redeemed_format_string, formattedDate)
+                redemptionDateTextView.text = context.getString(R.string.redeemed_format_string, formattedDate)
             }
 
             setOnClickListener { listener.onTicketSelected(ticket, adapterPosition) }
