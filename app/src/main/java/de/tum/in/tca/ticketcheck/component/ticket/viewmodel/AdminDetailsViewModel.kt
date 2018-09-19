@@ -48,43 +48,8 @@ class AdminDetailsViewModel(
         }
     }
 
-    /*
-    init {
-        val ticketsLiveData = ticketsController.getTicketsForEvent(eventId)
-
-        filteredTickets.addSource(ticketsLiveData) { values ->
-            val tickets = values ?: return@addSource
-            filteredTickets.value = tickets
-        }
-
-        filteredTickets.addSource(query) { value ->
-            val query = value ?: return@addSource
-            if (query.isBlank()) {
-                filteredTickets.value = null
-                return@addSource
-            }
-
-
-        }
-    }
-    */
-
     fun filter(value: String) {
-        /*
-        if (value.isBlank()) {
-            filteredTickets.value = tickets.value
-            return
-        }
-        */
-
         query.value = value
-
-        /*
-        val temp = tickets.value.orEmpty()
-        filteredTickets.value = temp.filter {
-            it.name.contains(value, true) || it.lrzId.contains(value, true)
-        }
-        */
     }
 
     fun fetchTickets() {
