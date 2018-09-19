@@ -19,24 +19,72 @@ class AdminDetailsViewModel(
         TicketsController(application.baseContext)
     }
 
-    val tickets: LiveData<List<AdminTicket>>
-        get() = ticketsController.getTicketsForEvent(eventId)
+    private val tickets = mutableListOf<AdminTicket>()
 
-    val filteredTickets = MutableLiveData<List<AdminTicket>>()
+    val adminTickets = MediatorLiveData<List<AdminTicket>>()
+
+    val filteredTickets = MediatorLiveData<List<AdminTicket>>()
 
     val ticketContingent = MutableLiveData<TicketContingent>()
 
     val error = MutableLiveData<Boolean>()
 
-    fun filter(query: String) {
-        if (query.isBlank()) {
+    val query = MutableLiveData<String>()
+
+    init {
+        val ticketsLiveData = ticketsController.getTicketsForEvent(eventId)
+
+        adminTickets.addSource(ticketsLiveData) { values ->
+            val newTickets = values ?: return@addSource
+            tickets.clear()
+            tickets.addAll(newTickets)
+            val query = query.value
+            adminTickets.value = tickets.filter { it.filter(query) }
+        }
+
+        adminTickets.addSource(query) { value ->
+            val newQuery = value ?: return@addSource
+            adminTickets.value = tickets.filter { it.filter(newQuery) }
+        }
+    }
+
+    /*
+    init {
+        val ticketsLiveData = ticketsController.getTicketsForEvent(eventId)
+
+        filteredTickets.addSource(ticketsLiveData) { values ->
+            val tickets = values ?: return@addSource
+            filteredTickets.value = tickets
+        }
+
+        filteredTickets.addSource(query) { value ->
+            val query = value ?: return@addSource
+            if (query.isBlank()) {
+                filteredTickets.value = null
+                return@addSource
+            }
+
+
+        }
+    }
+    */
+
+    fun filter(value: String) {
+        /*
+        if (value.isBlank()) {
             filteredTickets.value = tickets.value
             return
         }
+        */
 
-        filteredTickets.value = tickets.value?.filter {
-            it.name.contains(query, true) || it.lrzId.contains(query, true)
+        query.value = value
+
+        /*
+        val temp = tickets.value.orEmpty()
+        filteredTickets.value = temp.filter {
+            it.name.contains(value, true) || it.lrzId.contains(value, true)
         }
+        */
     }
 
     fun fetchTickets() {
