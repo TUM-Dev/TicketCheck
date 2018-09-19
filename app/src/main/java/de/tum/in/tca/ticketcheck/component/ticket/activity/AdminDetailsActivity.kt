@@ -34,6 +34,8 @@ class AdminDetailsActivity : BaseActivity(
         Snackbar.make(view.getChildAt(0), R.string.something_wrong, Snackbar.LENGTH_INDEFINITE)
     }
 
+    private lateinit var searchItem: MenuItem
+
     private val eventID: Int by lazy { intent.getIntExtra(Const.EVENT_ID, 0) }
 
     private val viewModel: AdminDetailsViewModel by lazy {
@@ -63,7 +65,7 @@ class AdminDetailsActivity : BaseActivity(
             adapter = ticketsAdapter
         }
 
-        viewModel.tickets.observeNonNull(this) { updateTickets(it) }
+        viewModel.adminTickets.observeNonNull(this) { updateTickets(it) }
         viewModel.filteredTickets.observeNonNull(this) { updateTickets(it) }
         viewModel.ticketContingent.observeNonNull(this) { updateTicketCounter(it) }
         viewModel.error.observeNonNull(this) { showError(it) }
@@ -116,7 +118,7 @@ class AdminDetailsActivity : BaseActivity(
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_admin_details, menu)
 
-        val searchItem = menu.findItem(R.id.action_search)
+        searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
         setupSearch(searchItem, searchView)
 

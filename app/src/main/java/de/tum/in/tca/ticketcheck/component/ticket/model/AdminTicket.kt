@@ -51,6 +51,14 @@ data class AdminTicket(
     val isRedeemed: Boolean
         get() = redeemDate != null
 
+    fun filter(query: String?): Boolean {
+        query?.let {
+            return name.contains(it, true) || lrzId.contains(it, true)
+        }
+
+        return true
+    }
+
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
         parcel.writeInt(event)

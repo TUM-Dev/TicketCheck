@@ -19,24 +19,37 @@ class AdminDetailsViewModel(
         TicketsController(application.baseContext)
     }
 
-    val tickets: LiveData<List<AdminTicket>>
-        get() = ticketsController.getTicketsForEvent(eventId)
+    private val tickets = mutableListOf<AdminTicket>()
 
-    val filteredTickets = MutableLiveData<List<AdminTicket>>()
+    val adminTickets = MediatorLiveData<List<AdminTicket>>()
+
+    val filteredTickets = MediatorLiveData<List<AdminTicket>>()
 
     val ticketContingent = MutableLiveData<TicketContingent>()
 
     val error = MutableLiveData<Boolean>()
 
-    fun filter(query: String) {
-        if (query.isBlank()) {
-            filteredTickets.value = tickets.value
-            return
+    val query = MutableLiveData<String>()
+
+    init {
+        val ticketsLiveData = ticketsController.getTicketsForEvent(eventId)
+
+        adminTickets.addSource(ticketsLiveData) { values ->
+            val newTickets = values ?: return@addSource
+            tickets.clear()
+            tickets.addAll(newTickets)
+            val query = query.value
+            adminTickets.value = tickets.filter { it.filter(query) }
         }
 
-        filteredTickets.value = tickets.value?.filter {
-            it.name.contains(query, true) || it.lrzId.contains(query, true)
+        adminTickets.addSource(query) { value ->
+            val newQuery = value ?: return@addSource
+            adminTickets.value = tickets.filter { it.filter(newQuery) }
         }
+    }
+
+    fun filter(value: String) {
+        query.value = value
     }
 
     fun fetchTickets() {
