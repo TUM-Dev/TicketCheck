@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
 import de.tum.`in`.tca.ticketcheck.R
 import de.tum.`in`.tca.ticketcheck.component.generic.activity.BaseActivity
@@ -98,7 +99,15 @@ class AdminDetailsActivity : BaseActivity(
 
     private fun updateTickets(tickets: List<AdminTicket>) {
         adminSwipeRefreshLayout.isRefreshing = false
-        ticketsAdapter.update(tickets)
+
+        if (tickets.isNotEmpty()) {
+            ticketsRecyclerView.visibility = View.VISIBLE
+            placeholderTextView.visibility = View.GONE
+            ticketsAdapter.update(tickets)
+        } else {
+            ticketsRecyclerView.visibility = View.GONE
+            placeholderTextView.visibility = View.VISIBLE
+        }
     }
 
     private fun updateTicketCounter(contingent: TicketContingent) {

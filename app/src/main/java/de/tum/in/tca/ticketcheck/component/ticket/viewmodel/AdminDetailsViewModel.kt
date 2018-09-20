@@ -85,7 +85,7 @@ class AdminDetailsViewModel(
     }
 
     fun insert(tickets: List<AdminTicket>) {
-        ticketsController.insertTickets(tickets)
+        ticketsController.replaceTickets(tickets)
     }
 
     class Factory(
