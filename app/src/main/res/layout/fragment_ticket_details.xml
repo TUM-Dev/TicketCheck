@@ -114,11 +114,12 @@
             android:textColor="@color/text_light_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/checkInButton"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/purchaseInfoContainer" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/checkInButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/material_default_padding"
             android:layout_marginTop="@dimen/material_default_padding"
@@ -126,6 +127,7 @@
             app:backgroundTint="@color/color_primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cancelButton"
             app:layout_constraintTop_toBottomOf="@id/purchaseInfoContainer"
             tools:text="Check in" />
 

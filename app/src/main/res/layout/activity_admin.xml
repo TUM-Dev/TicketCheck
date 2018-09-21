@@ -24,12 +24,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/ticketsRecyclerView"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingBottom="@dimen/list_fab_bottom_padding" />
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/placeholderTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/no_tickets_sold"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/ticketsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingBottom="@dimen/list_fab_bottom_padding" />
+
+            </FrameLayout>
 
         </android.support.v4.widget.SwipeRefreshLayout>
 

@@ -97,7 +97,8 @@ class TicketsController(private val context: Context) {
 
     fun getTicketById(ticketId: Int): AdminTicket = adminTicketDao.getByTicketId(ticketId)
 
-    fun insertTickets(tickets: List<AdminTicket>) {
+    fun replaceTickets(tickets: List<AdminTicket>) {
+        adminTicketDao.removeAll()
         adminTicketDao.insert(tickets)
     }
 

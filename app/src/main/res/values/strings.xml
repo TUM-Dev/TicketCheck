@@ -680,4 +680,5 @@ Signature: %5$s</string>
     <string name="ticket_type_staff">Staff</string>
     <string name="ticket_type_general">General</string>
     <string name="ticket_type_lmu_student">LMU Student</string>
+    <string name="no_tickets_sold">No tickets sold yet</string>
 </resources>
