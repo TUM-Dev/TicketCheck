@@ -96,7 +96,7 @@ dependencies {
     implementation "org.jetbrains.anko:anko:$ankoVersion"
 
     // Helpers
-    implementation 'net.danlew:android.joda:2.9.9.4'
+    implementation 'net.danlew:android.joda:2.10.1'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 
