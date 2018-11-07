@@ -1,6 +1,6 @@
 package de.tum.`in`.tca.ticketcheck.component.ticket.adapter
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket
 
 class TicketsDiffUtil(

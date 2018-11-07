@@ -14,7 +14,7 @@ apply from: '../gradle/scripts/detekt.gradle'
 apply from: '../gradle/scripts/testLogging.gradle'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     buildToolsVersion '27.0.3'
     buildTypes {
         all {
@@ -33,7 +33,7 @@ android {
     defaultConfig {
         applicationId "de.tum.in.tca.ticketcheck"
         minSdkVersion 23
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         kapt.arguments {
@@ -77,26 +77,26 @@ configurations.all {
 dependencies {
 
     // Support libraries
-    implementation "com.android.support:design:$androidSupportVersion"
-    implementation "com.android.support:preference-v7:$androidSupportVersion"
-    implementation "com.android.support:preference-v14:$androidSupportVersion"
-    implementation "com.android.support:support-v4:$androidSupportVersion"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    releaseImplementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation 'com.google.android.material:material:1.1.0-alpha01'
+    implementation 'androidx.preference:preference:1.0.0'
+    implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    releaseImplementation 'com.google.firebase:firebase-core:16.0.4'
 
     // Android architecture components
-    implementation "android.arch.persistence.room:runtime:$roomVersion"
-    implementation 'android.arch.lifecycle:runtime:1.1.1'
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
-    kapt "android.arch.lifecycle:compiler:$roomVersion"
-    kapt "android.arch.persistence.room:compiler:$roomVersion"
+    implementation 'androidx.room:room-runtime:2.1.0-alpha02'
+    implementation 'androidx.lifecycle:lifecycle-runtime:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
+    kapt 'androidx.room:room-compiler:2.1.0-alpha02'
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.anko:anko:$ankoVersion"
 
     // Helpers
-    implementation 'net.danlew:android.joda:2.9.9.4'
+    implementation 'net.danlew:android.joda:2.10.1'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 

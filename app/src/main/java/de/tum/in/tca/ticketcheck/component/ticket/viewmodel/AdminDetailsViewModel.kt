@@ -1,7 +1,7 @@
 package de.tum.`in`.tca.ticketcheck.component.ticket.viewmodel
 
 import android.app.Application
-import android.arch.lifecycle.*
+import androidx.lifecycle.*
 import de.tum.`in`.tca.ticketcheck.component.ticket.TicketsController
 import de.tum.`in`.tca.ticketcheck.component.ticket.callbacks.ApiResponseCallback
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket

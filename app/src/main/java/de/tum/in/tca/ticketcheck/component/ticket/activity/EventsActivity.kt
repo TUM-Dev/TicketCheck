@@ -1,9 +1,9 @@
 package de.tum.`in`.tca.ticketcheck.component.ticket.activity
 
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import de.tum.`in`.tca.ticketcheck.R
 import de.tum.`in`.tca.ticketcheck.api.AuthenticationManager
 import de.tum.`in`.tca.ticketcheck.component.generic.activity.BaseActivity

@@ -2,7 +2,6 @@ package de.tum.in.tca.ticketcheck.api;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.util.Base64;
 
 import java.security.KeyFactory;
@@ -14,6 +13,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.UUID;
 
+import androidx.annotation.NonNull;
 import de.tum.in.tca.ticketcheck.R;
 import de.tum.in.tca.ticketcheck.api.exception.NoPrivateKey;
 import de.tum.in.tca.ticketcheck.api.exception.NoPublicKey;

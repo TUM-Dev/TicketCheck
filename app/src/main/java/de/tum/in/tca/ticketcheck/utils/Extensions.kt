@@ -1,8 +1,8 @@
 package de.tum.`in`.tca.ticketcheck.utils
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 
 inline fun <T> tryOrNull(f: () -> T): T? {
     return try {

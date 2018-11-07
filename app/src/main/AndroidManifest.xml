@@ -40,7 +40,7 @@
         <uses-library android:name="android.test.runner" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="de.tum.in.tca.ticketcheck.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
