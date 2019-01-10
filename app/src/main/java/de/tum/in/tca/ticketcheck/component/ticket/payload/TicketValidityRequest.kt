@@ -4,4 +4,4 @@ import com.google.gson.annotations.SerializedName
 
 data class TicketValidityRequest(@SerializedName("event_id")
                                  val eventId: Int,
-                                 val code: String)
+                                 val codes: Array<String>)

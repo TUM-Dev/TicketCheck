@@ -65,8 +65,8 @@ public final class TUMCabeClient {
         service.getEvents().enqueue(callback);
     }
 
-    public void getTicketValidity(Context context, int eventId, String code, Callback<TicketValidityResponse> callback) throws IOException {
-        TicketValidityRequest request = new TicketValidityRequest(eventId, code);
+    public void getTicketValidity(Context context, int eventId, String[] codes, Callback<TicketValidityResponse> callback) throws IOException {
+        TicketValidityRequest request = new TicketValidityRequest(eventId, codes);
         service.getNameForTicket(AdminVerification.Companion.createAdminVerification(context, request))
                 .enqueue(callback);
     }

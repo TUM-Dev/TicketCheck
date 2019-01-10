@@ -110,9 +110,9 @@ class TicketsController(private val context: Context) {
         }
     }
 
-    fun checkTicketValidity(eventId: Int, code: String, cb: Callback<TicketValidityResponse>) {
+    fun checkTicketValidity(eventId: Int, codes: Array<String>, cb: Callback<TicketValidityResponse>) {
         try {
-            TUMCabeClient.getInstance(context).getTicketValidity(context, eventId, code, cb)
+            TUMCabeClient.getInstance(context).getTicketValidity(context, eventId, codes, cb)
         } catch (e: IOException) {
             Utils.log(e)
         }

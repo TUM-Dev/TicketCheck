@@ -67,7 +67,8 @@ class TicketScanActivity : AppCompatActivity(),
             }
         }
 
-        ticketsController.checkTicketValidity(eventId, rawResult.text, cb)
+        val codes = rawResult.text.split(';').toTypedArray()
+        ticketsController.checkTicketValidity(eventId, codes, cb)
     }
 
     private fun showErrorDialog(messageResId: Int) {
