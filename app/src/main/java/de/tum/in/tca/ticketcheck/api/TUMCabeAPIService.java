@@ -21,7 +21,7 @@ import static de.tum.in.tca.ticketcheck.api.TUMCabeClient.API_TICKET;
 
 public interface TUMCabeAPIService {
 
-    @GET(API_EVENTS + "list")
+    @GET(API_EVENTS + "list/admin/")
     Call<List<Event>> getEvents();
 
     @POST(API_EVENTS + "ticket/validate")
