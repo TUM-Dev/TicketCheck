@@ -106,7 +106,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
     // QR code scanning
-    implementation 'me.dm7.barcodescanner:zxing:1.9.8'
+    implementation 'me.dm7.barcodescanner:zxing:1.9.13'
 }
 
 apply plugin: 'com.google.gms.google-services'
