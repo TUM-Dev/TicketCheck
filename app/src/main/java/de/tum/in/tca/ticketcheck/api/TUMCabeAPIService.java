@@ -24,11 +24,11 @@ public interface TUMCabeAPIService {
     @GET(API_EVENTS + "list")
     Call<List<Event>> getEvents();
 
-    @POST(API_EVENTS + "ticket/validate")
-    Call<TicketValidityResponse> getNameForTicket(@Body AdminVerification adminVerification);
+    @POST(API_EVENTS + "ticket/validate/multiple")
+    Call<TicketValidityResponse> getTicketValidity(@Body AdminVerification adminVerification);
 
-    @POST(API_EVENTS + "ticket/redeem")
-    Call<TicketSuccessResponse> redeemTicket(@Body AdminVerification adminVerification);
+    @POST(API_EVENTS + "ticket/redeem/multiple")
+    Call<TicketSuccessResponse> redeemTickets(@Body AdminVerification adminVerification);
 
     @POST(API_EVENTS + "ticket/sold")
     Call<List<AdminTicket>> getAdminTicketData(@Body AdminVerification adminVerification);

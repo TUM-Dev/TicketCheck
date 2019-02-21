@@ -5,6 +5,8 @@ import de.tum.`in`.tca.ticketcheck.api.TUMCabeClient
 import de.tum.`in`.tca.ticketcheck.component.ticket.callbacks.ApiResponseCallback
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.TicketType
+import de.tum.`in`.tca.ticketcheck.component.ticket.model.TicketTypeCount
+import de.tum.`in`.tca.ticketcheck.component.ticket.model.TicketWithRedemption
 import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketStatus
 import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketSuccessResponse
 import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketValidityResponse
@@ -95,24 +97,34 @@ class TicketsController(private val context: Context) {
 
     fun getTicketTypeById(ticketTypeId: Int): TicketType = ticketTypeDao.getById(ticketTypeId)
 
-    fun getTicketById(ticketId: Int): AdminTicket = adminTicketDao.getByTicketId(ticketId)
+    fun getTicketTypesByTicketIds(ticketIds: List<Int>): List<TicketTypeCount> = ticketTypeDao.getByIds(ticketIds)
+
+    fun getTicketsById(ticketIds: List<Int>): List<AdminTicket> = adminTicketDao.getByTicketIds(ticketIds)
+
+    fun updateRedemption(tickets: List<TicketWithRedemption>) {
+        for (ticket in tickets) {
+            if (ticket.redeemDate != null) {
+                adminTicketDao.updateRedemptionDate(ticket.ticketId, ticket.redeemDate!!)
+            }
+        }
+    }
 
     fun replaceTickets(tickets: List<AdminTicket>) {
         adminTicketDao.removeAll()
         adminTicketDao.insert(tickets)
     }
 
-    fun redeemTicket(ticketId: Int, cb: Callback<TicketSuccessResponse>) {
+    fun redeemTickets(ticketIds: List<Int>, cb: Callback<TicketSuccessResponse>) {
         try {
-            TUMCabeClient.getInstance(context).redeemTicket(context, ticketId, cb)
+            TUMCabeClient.getInstance(context).redeemTickets(context, ticketIds, cb)
         } catch (e: IOException) {
             Utils.log(e)
         }
     }
 
-    fun checkTicketValidity(eventId: Int, codes: Array<String>, cb: Callback<TicketValidityResponse>) {
+    fun checkTicketValidity(eventId: Int, code: String, cb: Callback<TicketValidityResponse>) {
         try {
-            TUMCabeClient.getInstance(context).getTicketValidity(context, eventId, codes, cb)
+            TUMCabeClient.getInstance(context).getTicketValidity(context, eventId, code, cb)
         } catch (e: IOException) {
             Utils.log(e)
         }

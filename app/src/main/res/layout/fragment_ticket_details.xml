@@ -47,62 +47,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/lrzIdTextView" />
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/purchaseInfoContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/material_default_padding"
             android:baselineAligned="false"
             android:orientation="horizontal"
+            android:layout_marginTop="@dimen/material_small_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider">
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            tools:layout_height="150dp"
+            tools:listitem="@layout/ticket_type_item" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ticket_type"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/color_primary" />
-
-                <TextView
-                    android:id="@+id/ticketNumberTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    tools:text="TUM Student" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/purchase_date"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/color_primary" />
-
-                <TextView
-                    android:id="@+id/purchaseDateTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    tools:text="05.04.2018 13:34" />
-
-            </LinearLayout>
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/purchaseDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/material_tiny_padding"
+            android:layout_marginTop="@dimen/material_default_padding"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/purchaseInfoContainer"
+            tools:text="Kaufdatum: 05.04.2018 13:34" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/cancelButton"
@@ -110,12 +77,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/material_default_padding"
+            app:layout_constraintBaseline_toBaselineOf="@id/checkInButton"
             android:text="@string/cancel"
             android:textColor="@color/text_light_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/checkInButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/purchaseInfoContainer" />
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/checkInButton"
@@ -128,7 +95,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/cancelButton"
-            app:layout_constraintTop_toBottomOf="@id/purchaseInfoContainer"
+            app:layout_constraintTop_toBottomOf="@id/purchaseDateTextView"
             tools:text="Check in" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

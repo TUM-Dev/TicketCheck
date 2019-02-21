@@ -77,7 +77,9 @@ class AdminDetailsActivity : BaseActivity(
     }
 
     override fun onTicketSelected(ticket: AdminTicket, position: Int) {
-        val fragment = TicketDetailsFragment.newInstance(ticket)
+        val ticketIdList = ArrayList<Int>()
+        ticketIdList.add(ticket.id)
+        val fragment = TicketDetailsFragment.newInstance(ticketIdList)
         fragment.show(supportFragmentManager, fragment.tag)
     }
 

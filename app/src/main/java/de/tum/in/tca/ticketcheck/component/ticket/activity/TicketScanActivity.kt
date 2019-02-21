@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.Result
 import de.tum.`in`.tca.ticketcheck.R
+import de.tum.`in`.tca.ticketcheck.R.string.ticket
 import de.tum.`in`.tca.ticketcheck.component.ticket.TicketsController
 import de.tum.`in`.tca.ticketcheck.component.ticket.fragment.TicketDetailsFragment
 import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketValidityResponse
@@ -53,8 +54,8 @@ class TicketScanActivity : AppCompatActivity(),
             override fun onResponse(call: Call<TicketValidityResponse>,
                                     response: Response<TicketValidityResponse>) {
                 val ticketValidityResponse = response.body()
-                if (ticketValidityResponse  != null
-                        && ticketValidityResponse.valid && response.isSuccessful) {
+                if (ticketValidityResponse != null && response.isSuccessful
+                        && ticketValidityResponse.valid) {
                     openTicketDetails(ticketValidityResponse)
                 } else {
                     showErrorDialog(R.string.not_valid)
@@ -66,9 +67,7 @@ class TicketScanActivity : AppCompatActivity(),
                 showErrorDialog(R.string.error_something_wrong)
             }
         }
-
-        val codes = rawResult.text.split(';').toTypedArray()
-        ticketsController.checkTicketValidity(eventId, codes, cb)
+        ticketsController.checkTicketValidity(eventId, rawResult.text, cb)
     }
 
     private fun showErrorDialog(messageResId: Int) {
@@ -81,10 +80,12 @@ class TicketScanActivity : AppCompatActivity(),
     }
 
     private fun openTicketDetails(ticketValidityResponse: TicketValidityResponse) {
-        val ticket = ticketsController.getTicketById(ticketValidityResponse.ticketHistory)
+        val tickets = ticketValidityResponse.tickets
+        ticketsController.updateRedemption(tickets)
 
+        val ids = tickets.map { it.ticketId }
         TicketDetailsFragment
-                .newInstance(ticket, this)
+                .newInstance(ids, this)
                 .show(supportFragmentManager, "ticket_details_fragment")
     }
 
