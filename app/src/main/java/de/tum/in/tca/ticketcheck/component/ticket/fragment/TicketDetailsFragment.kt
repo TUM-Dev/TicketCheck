@@ -4,22 +4,22 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.os.Bundle
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import androidx.core.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import de.tum.`in`.tca.ticketcheck.R
 import de.tum.`in`.tca.ticketcheck.component.ticket.TicketsController
 import de.tum.`in`.tca.ticketcheck.component.ticket.adapter.TicketTypeAdapter
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket
-import de.tum.`in`.tca.ticketcheck.component.ticket.model.Event
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.TicketTypeCount
 import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketSuccessResponse
 import de.tum.`in`.tca.ticketcheck.database.TcaDb
 import de.tum.`in`.tca.ticketcheck.utils.Const
 import de.tum.`in`.tca.ticketcheck.utils.Utils
+import de.tum.`in`.tca.ticketcheck.component.ticket.model.Event
 import kotlinx.android.synthetic.main.fragment_ticket_details.*
 import kotlinx.android.synthetic.main.fragment_ticket_details.view.*
 import retrofit2.Call
@@ -69,7 +69,7 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
             cancelButton.setOnClickListener { dismiss() }
 
             var allRedeemed = true
-            tickets.forEach {if (it.isRedeemed.not()) allRedeemed = false}
+            tickets.forEach { if (it.isRedeemed.not()) allRedeemed = false }
             updateCheckInButton(allRedeemed)
 
             purchaseInfoContainer.layoutManager = LinearLayoutManager(context)
@@ -126,7 +126,7 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
         }
     }
 
-    override fun onDismiss(dialog: DialogInterface?) {
+    override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         listener?.onTicketDetailsClosed()
     }
