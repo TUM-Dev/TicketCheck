@@ -147,7 +147,7 @@ public class AuthenticationManager {
 
             // If we already have one don't create a new one
             return true;
-        } catch (NoPrivateKey | NoPublicKey e) { //NOPMD
+        } catch (NoPrivateKey | NoPublicKey e) {
             //Otherwise catch a not existing private key exception and proceed generation
         }
 
