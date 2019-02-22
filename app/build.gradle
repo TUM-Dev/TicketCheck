@@ -1,17 +1,7 @@
-plugins {
-    id 'io.gitlab.arturbosch.detekt' version "1.0.0.RC6-4"
-    id 'de.aaschmid.cpd' version '1.0'
-}
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply from: '../gradle/scripts/findbugs.gradle'
-apply from: '../gradle/scripts/pmd.gradle'
-apply from: '../gradle/scripts/jacoco.gradle'
-apply from: '../gradle/scripts/checkstyle.gradle'
-apply from: '../gradle/scripts/detekt.gradle'
-apply from: '../gradle/scripts/testLogging.gradle'
 
 android {
     compileSdkVersion 28
@@ -52,10 +42,6 @@ android {
                 'UnusedResources',    // unused resources get purged by shrinkResources
                 'SelectableText'      // disabled by default
     }
-    packagingOptions {
-        exclude 'META-INF/maven/com.google.guava/guava/pom.properties'
-        exclude 'META-INF/maven/com.google.guava/guava/pom.xml'
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -70,7 +56,6 @@ def ankoVersion = '0.10.8'
 configurations.all {
     resolutionStrategy {
         force "com.android.support:exifinterface:$androidSupportVersion"
-        force 'com.google.code.findbugs:jsr305:3.0.2'
     }
 }
 
@@ -101,12 +86,12 @@ dependencies {
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 
     // Transport
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.13.1'
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
     // QR code scanning
-    implementation 'me.dm7.barcodescanner:zxing:1.9.8'
+    implementation 'me.dm7.barcodescanner:zxing:1.9.13'
 }
 
 apply plugin: 'com.google.gms.google-services'
