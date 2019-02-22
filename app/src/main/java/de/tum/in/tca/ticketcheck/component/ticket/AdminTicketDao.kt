@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket
+import de.tum.`in`.tca.ticketcheck.component.ticket.model.Customer
 
 @Dao
 interface AdminTicketDao {
@@ -11,11 +12,13 @@ interface AdminTicketDao {
     @Query("SELECT * FROM adminticket")
     fun getAll(): LiveData<List<AdminTicket>>
 
-    @Query("SELECT * FROM adminticket WHERE event = :eventId")
-    fun getByEventId(eventId: Int): LiveData<List<AdminTicket>>
+    @Query("SELECT * FROM adminticket WHERE event = :eventId AND lrzId = :lrzId")
+    fun getByEventAndCustomer(eventId: Int, lrzId: String): List<AdminTicket>
 
-    @Query("SELECT * FROM adminticket WHERE id IN (:ticketIds)" +
-            "ORDER BY ticketType")
+    @Query("SELECT name, lrzId, count(*) as nrOfTickets FROM adminticket WHERE event = :eventId GROUP BY lrzId, name")
+    fun getCustomersByEventId(eventId: Int): LiveData<List<Customer>>
+
+    @Query("SELECT * FROM adminticket WHERE id IN (:ticketIds)")
     fun getByTicketIds(ticketIds: List<Int>): List<AdminTicket>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import de.tum.`in`.tca.ticketcheck.R
 import de.tum.`in`.tca.ticketcheck.component.ticket.TicketsController
+import de.tum.`in`.tca.ticketcheck.component.ticket.adapter.EqualSpacingItemDecoration
 import de.tum.`in`.tca.ticketcheck.component.ticket.adapter.TicketTypeAdapter
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.TicketTypeCount
@@ -22,6 +23,7 @@ import de.tum.`in`.tca.ticketcheck.utils.Utils
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.Event
 import kotlinx.android.synthetic.main.fragment_ticket_details.*
 import kotlinx.android.synthetic.main.fragment_ticket_details.view.*
+import kotlinx.android.synthetic.main.ticket_list_item.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -59,7 +61,8 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
 
             val purchaseDate = tickets[0].purchaseDate
             val purchaseText = if (purchaseDate != null) {
-                Event.getFormattedDateTime(context, purchaseDate)
+                val formattedDate = Event.getFormattedDateTime(context, purchaseDate)
+                context.getString(R.string.redeemed_format_string, formattedDate)
             } else {
                 context.getString(R.string.none)
             }
@@ -76,6 +79,8 @@ class TicketDetailsFragment : BottomSheetDialogFragment() {
             purchaseInfoContainer.setHasFixedSize(true)
             purchaseInfoContainer.isNestedScrollingEnabled = false
             purchaseInfoContainer.adapter = TicketTypeAdapter(ticketTypes)
+            val spacing = Math.round(resources.getDimension(R.dimen.material_card_view_padding))
+            purchaseInfoContainer.addItemDecoration(EqualSpacingItemDecoration(spacing))
         }
     }
 

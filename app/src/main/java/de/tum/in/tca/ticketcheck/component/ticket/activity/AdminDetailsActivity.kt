@@ -13,11 +13,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import de.tum.`in`.tca.ticketcheck.R
+import de.tum.`in`.tca.ticketcheck.R.string.ticket
 import de.tum.`in`.tca.ticketcheck.component.generic.activity.BaseActivity
 import de.tum.`in`.tca.ticketcheck.component.ticket.EventsController
 import de.tum.`in`.tca.ticketcheck.component.ticket.adapter.TicketsAdapter
 import de.tum.`in`.tca.ticketcheck.component.ticket.fragment.TicketDetailsFragment
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket
+import de.tum.`in`.tca.ticketcheck.component.ticket.model.Customer
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.TicketContingent
 import de.tum.`in`.tca.ticketcheck.component.ticket.viewmodel.AdminDetailsViewModel
 import de.tum.`in`.tca.ticketcheck.utils.Const
@@ -66,8 +68,7 @@ class AdminDetailsActivity : BaseActivity(
             adapter = ticketsAdapter
         }
 
-        viewModel.adminTickets.observeNonNull(this) { updateTickets(it) }
-        viewModel.filteredTickets.observeNonNull(this) { updateTickets(it) }
+        viewModel.customers.observeNonNull(this) { updateTickets(it) }
         viewModel.ticketContingent.observeNonNull(this) { updateTicketCounter(it) }
         viewModel.error.observeNonNull(this) { showError(it) }
 
@@ -76,10 +77,8 @@ class AdminDetailsActivity : BaseActivity(
         scannerFab.setOnClickListener { openTicketScanActivity() }
     }
 
-    override fun onTicketSelected(ticket: AdminTicket, position: Int) {
-        val ticketIdList = ArrayList<Int>()
-        ticketIdList.add(ticket.id)
-        val fragment = TicketDetailsFragment.newInstance(ticketIdList)
+    override fun onTicketSelected(ticketIds: List<Int>, position: Int) {
+        val fragment = TicketDetailsFragment.newInstance(ticketIds)
         fragment.show(supportFragmentManager, fragment.tag)
     }
 
@@ -99,13 +98,13 @@ class AdminDetailsActivity : BaseActivity(
         viewModel.fetchTickets()
     }
 
-    private fun updateTickets(tickets: List<AdminTicket>) {
+    private fun updateTickets(customers: List<Customer>) {
         adminSwipeRefreshLayout.isRefreshing = false
 
-        if (tickets.isNotEmpty()) {
+        if (customers.isNotEmpty()) {
             ticketsRecyclerView.visibility = View.VISIBLE
             placeholderTextView.visibility = View.GONE
-            ticketsAdapter.update(tickets)
+            ticketsAdapter.update(customers, eventID)
         } else {
             ticketsRecyclerView.visibility = View.GONE
             placeholderTextView.visibility = View.VISIBLE
@@ -167,7 +166,7 @@ class AdminDetailsActivity : BaseActivity(
     }
 
     private fun clearSearch() {
-        ticketsAdapter.filter(null)
+        viewModel.filter(null)
     }
 
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import de.tum.`in`.tca.ticketcheck.component.ticket.TicketsController
 import de.tum.`in`.tca.ticketcheck.component.ticket.callbacks.ApiResponseCallback
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket
+import de.tum.`in`.tca.ticketcheck.component.ticket.model.Customer
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.TicketContingent
 import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketStatus
 import java.util.*
@@ -19,36 +20,34 @@ class AdminDetailsViewModel(
         TicketsController(application.baseContext)
     }
 
-    private val tickets = mutableListOf<AdminTicket>()
+    private val allCustomers = mutableListOf<Customer>()
 
-    val adminTickets = MediatorLiveData<List<AdminTicket>>()
-
-    val filteredTickets = MediatorLiveData<List<AdminTicket>>()
+    val customers = MediatorLiveData<List<Customer>>()
 
     val ticketContingent = MutableLiveData<TicketContingent>()
 
     val error = MutableLiveData<Boolean>()
 
-    val query = MutableLiveData<String>()
+    val query = MutableLiveData<String?>()
 
     init {
-        val ticketsLiveData = ticketsController.getTicketsForEvent(eventId)
+        val customersLiveData = ticketsController.getCustomersByEventId(eventId)
 
-        adminTickets.addSource(ticketsLiveData) { values ->
-            val newTickets = values ?: return@addSource
-            tickets.clear()
-            tickets.addAll(newTickets)
+        customers.addSource(customersLiveData) { values ->
+            val newCustomers = values ?: return@addSource
+            allCustomers.clear()
+            allCustomers.addAll(newCustomers)
             val query = query.value
-            adminTickets.value = tickets.filter { it.filter(query) }
+            customers.value = allCustomers.filter { it.filter(query) }
         }
 
-        adminTickets.addSource(query) { value ->
+        customers.addSource(query) { value ->
             val newQuery = value ?: return@addSource
-            adminTickets.value = tickets.filter { it.filter(newQuery) }
+            customers.value = allCustomers.filter { it.filter(newQuery) }
         }
     }
 
-    fun filter(value: String) {
+    fun filter(value: String?) {
         query.value = value
     }
 

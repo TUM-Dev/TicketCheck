@@ -1,12 +1,11 @@
 package de.tum.`in`.tca.ticketcheck.component.ticket
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import de.tum.`in`.tca.ticketcheck.R.string.event
 import de.tum.`in`.tca.ticketcheck.api.TUMCabeClient
 import de.tum.`in`.tca.ticketcheck.component.ticket.callbacks.ApiResponseCallback
-import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket
-import de.tum.`in`.tca.ticketcheck.component.ticket.model.TicketType
-import de.tum.`in`.tca.ticketcheck.component.ticket.model.TicketTypeCount
-import de.tum.`in`.tca.ticketcheck.component.ticket.model.TicketWithRedemption
+import de.tum.`in`.tca.ticketcheck.component.ticket.model.*
 import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketStatus
 import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketSuccessResponse
 import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketValidityResponse
@@ -22,7 +21,7 @@ class TicketsController(private val context: Context) {
     private val adminTicketDao = TcaDb.getInstance(context).adminTicketDao()
     private val ticketTypeDao = TcaDb.getInstance(context).ticketTypeDao()
 
-    fun getTicketsForEvent(event: Int) = adminTicketDao.getByEventId(event)
+    fun getCustomersByEventId(eventId: Int) = adminTicketDao.getCustomersByEventId(eventId)
 
     /**
      * This method refreshes the tickets from server
@@ -95,7 +94,8 @@ class TicketsController(private val context: Context) {
                 })
     }
 
-    fun getTicketTypeById(ticketTypeId: Int): TicketType = ticketTypeDao.getById(ticketTypeId)
+    fun getByEventAndCustomer(eventId: Int, lrzId: String): List<AdminTicket> =
+            adminTicketDao.getByEventAndCustomer(eventId, lrzId)
 
     fun getTicketTypesByTicketIds(ticketIds: List<Int>): List<TicketTypeCount> = ticketTypeDao.getByIds(ticketIds)
 
