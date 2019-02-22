@@ -6,12 +6,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply from: '../gradle/scripts/findbugs.gradle'
-apply from: '../gradle/scripts/pmd.gradle'
-apply from: '../gradle/scripts/jacoco.gradle'
-apply from: '../gradle/scripts/checkstyle.gradle'
-apply from: '../gradle/scripts/detekt.gradle'
-apply from: '../gradle/scripts/testLogging.gradle'
 
 android {
     compileSdkVersion 28
@@ -101,12 +95,12 @@ dependencies {
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 
     // Transport
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.13.1'
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
     // QR code scanning
-    implementation 'me.dm7.barcodescanner:zxing:1.9.8'
+    implementation 'me.dm7.barcodescanner:zxing:1.9.13'
 }
 
 apply plugin: 'com.google.gms.google-services'
