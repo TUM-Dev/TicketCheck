@@ -29,6 +29,7 @@
     <application
         android:name=".App"
         android:allowBackup="false"
+        android:usesCleartextTraffic="true"
         android:description="@string/app_short_description"
         android:icon="@mipmap/ticket_check_launcher"
         android:roundIcon="@mipmap/ticket_check_launcher_round"
