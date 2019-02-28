@@ -66,18 +66,21 @@ class TicketsAdapter(
                 ticketPurchaseDate.text = context.getString(R.string.purchased_format_string, formattedDate)
             }
 
-            var allRedeemed = true
-            tickets.forEach { if (it.isRedeemed.not()) allRedeemed = false }
+            val allRedeemed = customer.nrOfTickets == customer.nrOfTicketsRedeemed
             val redeemColor = if (allRedeemed) {
                 R.color.text_dark_gray
             } else {
                 R.color.grade_3_3
             }
-            ticketPurchaseDate.textColor = ContextCompat.getColor(context, redeemColor)
+            redemptionDateTextView.textColor = ContextCompat.getColor(context, redeemColor)
 
-            tickets[0].redeemDate?.let {
-                val formattedDate = Event.getFormattedDateTime(context, it)
-                redemptionDateTextView.text = context.getString(R.string.redeemed_format_string, formattedDate)
+            if (allRedeemed) {
+                tickets[0].redeemDate?.let {
+                    val formattedDate = Event.getFormattedDateTime(context, it)
+                    redemptionDateTextView.text = context.getString(R.string.redeemed_format_string, formattedDate)
+                }
+            } else {
+                redemptionDateTextView.text = context.getString(R.string.not_redeemed)
             }
 
             ticketTypesRecyclerView.layoutManager = LinearLayoutManager(context)

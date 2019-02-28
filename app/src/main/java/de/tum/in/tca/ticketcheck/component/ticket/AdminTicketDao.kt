@@ -15,7 +15,7 @@ interface AdminTicketDao {
     @Query("SELECT * FROM adminticket WHERE event = :eventId AND lrzId = :lrzId")
     fun getByEventAndCustomer(eventId: Int, lrzId: String): List<AdminTicket>
 
-    @Query("SELECT name, lrzId, count(*) as nrOfTickets FROM adminticket WHERE event = :eventId GROUP BY lrzId, name")
+    @Query("SELECT ticket.name, ticket.lrzId, count(*) as nrOfTickets, redeemed.nrOfTicketsRedeemed  FROM adminticket ticket LEFT JOIN (SELECT lrzId, count(*) as nrOfTicketsRedeemed FROM adminticket WHERE event = :eventId AND redeemDate not null GROUP BY lrzId, name) redeemed ON ticket.lrzId = redeemed.lrzId WHERE event = :eventId  GROUP BY ticket.lrzId, ticket.name")
     fun getCustomersByEventId(eventId: Int): LiveData<List<Customer>>
 
     @Query("SELECT * FROM adminticket WHERE id IN (:ticketIds)")
