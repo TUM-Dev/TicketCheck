@@ -67,12 +67,12 @@ public final class TUMCabeClient {
 
     public void getTicketValidity(Context context, int eventId, String code, Callback<TicketValidityResponse> callback) throws IOException {
         TicketValidityRequest request = new TicketValidityRequest(eventId, code);
-        service.getNameForTicket(AdminVerification.Companion.createAdminVerification(context, request))
+        service.getTicketValidity(AdminVerification.Companion.createAdminVerification(context, request))
                 .enqueue(callback);
     }
 
-    public void redeemTicket(Context context, int ticketId, Callback<TicketSuccessResponse> callback) throws IOException {
-        service.redeemTicket(AdminVerification.Companion.createAdminVerification(context, new TicketRedemptionRequest(ticketId)))
+    public void redeemTickets(Context context, List<Integer> ticketIds, Callback<TicketSuccessResponse> callback) throws IOException {
+        service.redeemTickets(AdminVerification.Companion.createAdminVerification(context, new TicketRedemptionRequest(ticketIds)))
                 .enqueue(callback);
     }
 

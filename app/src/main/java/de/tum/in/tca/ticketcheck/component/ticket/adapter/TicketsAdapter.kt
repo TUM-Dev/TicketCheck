@@ -6,12 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import de.tum.`in`.tca.ticketcheck.R
+import de.tum.`in`.tca.ticketcheck.R.id.*
+import de.tum.`in`.tca.ticketcheck.R.string.ticket
 import de.tum.`in`.tca.ticketcheck.component.ticket.TicketsController
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket
+import de.tum.`in`.tca.ticketcheck.component.ticket.model.Customer
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.Event
 import de.tum.`in`.tca.ticketcheck.component.ticket.model.TicketType
+import kotlinx.android.synthetic.main.fragment_ticket_details.view.*
 import kotlinx.android.synthetic.main.ticket_list_item.view.*
 import org.jetbrains.anko.textColor
 
@@ -22,11 +27,8 @@ class TicketsAdapter(
     private val listener = context as OnTicketSelectedListener
     private val ticketsController: TicketsController by lazy { TicketsController(context) }
 
-    private val allTickets = mutableListOf<AdminTicket>()
-    private var filteredTickets: List<AdminTicket>? = null
-
-    private val items: List<AdminTicket>
-        get() = filteredTickets ?: allTickets
+    private val allCustomers = mutableListOf<Customer>()
+    private var eventId = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -35,71 +37,63 @@ class TicketsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val ticket = items[position]
-        val ticketType = ticketsController.getTicketTypeById(ticket.ticketType)
-        holder.bind(ticket, ticketType, listener)
+        val customer = allCustomers[position]
+        holder.bind(customer, eventId, ticketsController, listener)
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() = allCustomers.size
 
-    fun update(newItems: List<AdminTicket>) {
-        val diffResult = DiffUtil.calculateDiff(TicketsDiffUtil(this.allTickets, newItems))
-        allTickets.clear()
-        allTickets.addAll(newItems)
+    fun update(newItems: List<Customer>, eventId: Int) {
+        this.eventId = eventId
+        val diffResult = DiffUtil.calculateDiff(TicketsDiffUtil(this.allCustomers, newItems))
+        allCustomers.clear()
+        allCustomers.addAll(newItems)
         diffResult.dispatchUpdatesTo(this)
-    }
-
-    fun filter(query: String? = null) {
-        query?.let { q ->
-            filteredTickets = allTickets.filter {
-                it.name.contains(q, true) || it.lrzId.contains(q, true)
-            }
-            return
-        }
-
-        filteredTickets = null
-        update(allTickets)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(ticket: AdminTicket,
-                 ticketType: TicketType, listener: OnTicketSelectedListener) = with(itemView) {
-            nameTextView.text = ticket.name
-            lrzIdTextView.text = ticket.lrzId
-            ticketTypeTextView.text = ticketType.description
+        fun bind(customer: Customer, eventId: Int, ticketsController: TicketsController, listener: OnTicketSelectedListener) = with(itemView) {
+            customerNameTextView.text = customer.name
+            customerLrzIdTextView.text = customer.lrzId
 
-            val purchaseColor = if (ticket.isPurchased) {
-                R.color.text_dark_gray
-            } else {
-                R.color.grade_4_7
-            }
-            purchaseDateTextView.textColor = ContextCompat.getColor(context, purchaseColor)
+            val tickets = ticketsController.getByEventAndCustomer(eventId, customer.lrzId)
+            val ticketIds = tickets.map { it.id }
+            val ticketTypes = ticketsController.getTicketTypesByTicketIds(ticketIds)
 
-            ticket.purchaseDate?.let {
+            tickets[0].purchaseDate?.let {
                 val formattedDate = Event.getFormattedDateTime(context, it)
-                purchaseDateTextView.text = context.getString(R.string.purchased_format_string, formattedDate)
+                ticketPurchaseDate.text = context.getString(R.string.purchased_format_string, formattedDate)
             }
 
-            val redeemColor = if (ticket.isRedeemed) {
+            val allRedeemed = customer.nrOfTickets == customer.nrOfTicketsRedeemed
+            val redeemColor = if (allRedeemed) {
                 R.color.text_dark_gray
             } else {
                 R.color.grade_3_3
             }
-            purchaseDateTextView.textColor = ContextCompat.getColor(context, redeemColor)
+            redemptionDateTextView.textColor = ContextCompat.getColor(context, redeemColor)
 
-            ticket.redeemDate?.let {
-                val formattedDate = Event.getFormattedDateTime(context, it)
-                redemptionDateTextView.text = context.getString(R.string.redeemed_format_string, formattedDate)
+            if (allRedeemed) {
+                tickets[0].redeemDate?.let {
+                    val formattedDate = Event.getFormattedDateTime(context, it)
+                    redemptionDateTextView.text = context.getString(R.string.redeemed_format_string, formattedDate)
+                }
+            } else {
+                redemptionDateTextView.text = context.getString(R.string.not_redeemed)
             }
 
-            setOnClickListener { listener.onTicketSelected(ticket, adapterPosition) }
+            ticketTypesRecyclerView.layoutManager = LinearLayoutManager(context)
+            ticketTypesRecyclerView.adapter = TicketTypeAdapter(ticketTypes)
+            ticketTypesRecyclerView.setHasFixedSize(true)
+            ticketTypesRecyclerView.isNestedScrollingEnabled = false
+            clickSurface.setOnClickListener { listener.onTicketSelected(ticketIds, adapterPosition) }
         }
 
     }
 
     interface OnTicketSelectedListener {
-        fun onTicketSelected(ticket: AdminTicket, position: Int)
+        fun onTicketSelected(ticketIds: List<Int>, position: Int)
     }
 
 }

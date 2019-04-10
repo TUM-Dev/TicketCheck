@@ -596,7 +596,7 @@ Signature: %5$s</string>
     <string name="discard">Discard</string>
     <string name="keep_editing">Keep editing</string>
 
-    <!-- Ticket Activity -->
+    <!-- TicketWithRedemption Activity -->
     <string name="your_ticket">Your Ticket</string>
     <string name="show_ticket">Show Ticket</string>
     <string name="buy_ticket">BUY NOW</string>
@@ -681,4 +681,6 @@ Signature: %5$s</string>
     <string name="ticket_type_general">General</string>
     <string name="ticket_type_lmu_student">LMU Student</string>
     <string name="no_tickets_sold">No tickets sold yet</string>
+
+    <string name="amount_x" translatable="false">%dx</string>
 </resources>

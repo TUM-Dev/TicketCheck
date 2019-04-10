@@ -1,10 +1,11 @@
 package de.tum.`in`.tca.ticketcheck.component.ticket
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import de.tum.`in`.tca.ticketcheck.R.string.event
 import de.tum.`in`.tca.ticketcheck.api.TUMCabeClient
 import de.tum.`in`.tca.ticketcheck.component.ticket.callbacks.ApiResponseCallback
-import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket
-import de.tum.`in`.tca.ticketcheck.component.ticket.model.TicketType
+import de.tum.`in`.tca.ticketcheck.component.ticket.model.*
 import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketStatus
 import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketSuccessResponse
 import de.tum.`in`.tca.ticketcheck.component.ticket.payload.TicketValidityResponse
@@ -20,7 +21,7 @@ class TicketsController(private val context: Context) {
     private val adminTicketDao = TcaDb.getInstance(context).adminTicketDao()
     private val ticketTypeDao = TcaDb.getInstance(context).ticketTypeDao()
 
-    fun getTicketsForEvent(event: Int) = adminTicketDao.getByEventId(event)
+    fun getCustomersByEventId(eventId: Int) = adminTicketDao.getCustomersByEventId(eventId)
 
     /**
      * This method refreshes the tickets from server
@@ -93,18 +94,29 @@ class TicketsController(private val context: Context) {
                 })
     }
 
-    fun getTicketTypeById(ticketTypeId: Int): TicketType = ticketTypeDao.getById(ticketTypeId)
+    fun getByEventAndCustomer(eventId: Int, lrzId: String): List<AdminTicket> =
+            adminTicketDao.getByEventAndCustomer(eventId, lrzId)
 
-    fun getTicketById(ticketId: Int): AdminTicket = adminTicketDao.getByTicketId(ticketId)
+    fun getTicketTypesByTicketIds(ticketIds: List<Int>): List<TicketTypeCount> = ticketTypeDao.getByIds(ticketIds)
+
+    fun getTicketsById(ticketIds: List<Int>): List<AdminTicket> = adminTicketDao.getByTicketIds(ticketIds)
+
+    fun updateRedemption(tickets: List<TicketWithRedemption>) {
+        for (ticket in tickets) {
+            if (ticket.redeemDate != null) {
+                adminTicketDao.updateRedemptionDate(ticket.ticketId, ticket.redeemDate!!)
+            }
+        }
+    }
 
     fun replaceTickets(tickets: List<AdminTicket>) {
         adminTicketDao.removeAll()
         adminTicketDao.insert(tickets)
     }
 
-    fun redeemTicket(ticketId: Int, cb: Callback<TicketSuccessResponse>) {
+    fun redeemTickets(ticketIds: List<Int>, cb: Callback<TicketSuccessResponse>) {
         try {
-            TUMCabeClient.getInstance(context).redeemTicket(context, ticketId, cb)
+            TUMCabeClient.getInstance(context).redeemTickets(context, ticketIds, cb)
         } catch (e: IOException) {
             Utils.log(e)
         }

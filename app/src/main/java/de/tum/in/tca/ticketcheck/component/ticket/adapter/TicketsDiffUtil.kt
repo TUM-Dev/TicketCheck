@@ -1,11 +1,11 @@
 package de.tum.`in`.tca.ticketcheck.component.ticket.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import de.tum.`in`.tca.ticketcheck.component.ticket.model.AdminTicket
+import de.tum.`in`.tca.ticketcheck.component.ticket.model.Customer
 
 class TicketsDiffUtil(
-        private val oldItems: List<AdminTicket>,
-        private val newItems: List<AdminTicket>
+        private val oldItems: List<Customer>,
+        private val newItems: List<Customer>
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize() = oldItems.size
@@ -13,7 +13,7 @@ class TicketsDiffUtil(
     override fun getNewListSize() = newItems.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldItems[oldItemPosition].id == newItems[newItemPosition].id
+        return oldItems[oldItemPosition].lrzId == newItems[newItemPosition].lrzId
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
