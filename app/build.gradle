@@ -24,8 +24,8 @@ android {
         applicationId "de.tum.in.tca.ticketcheck"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.1-dev"
         kapt.arguments {
             arg("room.schemaLocation", "$projectDir/schemas".toString())
         }
